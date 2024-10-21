@@ -1,0 +1,23 @@
+{
+    "name": "ibrahimelmonier/settings",
+    "type": "laravel-module",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ibrahim El-Monier",
+            "email": "elmonieribrahim@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Settings\\": ""
+        }
+    }
+}

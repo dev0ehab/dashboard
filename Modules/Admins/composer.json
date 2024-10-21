@@ -1,0 +1,32 @@
+{
+    "name": "ibrahimelmonier/admins",
+    "type": "laravel-module",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ibrahim El-Monier",
+            "email": "elmonieribrahim@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Admins\\Providers\\AdminsServiceProvider"
+            ],
+            "aliases": {
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Admins\\": ""
+        },
+        "classmap": [
+            "Database/Seeders",
+            "Database/factories"
+        ],
+        "files": [
+            "Support/helpers.php"
+        ]
+    }
+}
