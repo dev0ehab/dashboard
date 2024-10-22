@@ -6,40 +6,14 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 use Modules\Admins\Entities\ResetPasswordCode;
-use Modules\Admins\Entities\User;
+use Modules\Admins\Entities\Admin;
 use Modules\Admins\Entities\Verification;
 use Modules\Admins\Events\VerificationCreated;
 
-trait UserHelpers
+trait AdminHelpers
 {
     /**
-     * Determine whether the user type is admin.
-     *
-     * @return bool
-     */
-    public function isAdmin()
-    {
-        return ($this->type === User::ADMIN_TYPE);
-    }
-
-    /**
-     * Set the user type.
-     *
-     * @return $this
-     */
-    public function setType($type)
-    {
-        if (in_array($type, array_keys(trans('admins::users.types')))) {
-            $this->forceFill([
-                'type' => $type,
-            ])->save();
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set the user type.
+     * Set the Admin type.
      *
      * @return $this
      */
@@ -53,17 +27,7 @@ trait UserHelpers
     }
 
     /**
-     * Determine whether the user can access dashboard.
-     *
-     * @return bool
-     */
-    public function canAccessDashboard()
-    {
-        return $this->isAdmin() || $this->can_access;
-    }
-
-    /**
-     * The user profile image url.
+     * The Admin profile image url.
      *
      * @return bool
      */
@@ -73,7 +37,7 @@ trait UserHelpers
     }
 
     /**
-     * @return User
+     * @return Admin
      */
     public function block()
     {
@@ -81,7 +45,7 @@ trait UserHelpers
     }
 
     /**
-     * @return User
+     * @return Admin
      */
     public function unblock()
     {
@@ -89,7 +53,7 @@ trait UserHelpers
     }
 
     /**
-     * send verification sms to user
+     * send verification sms to Admin
      * @param $phone
      * @param $code
      */
@@ -192,7 +156,7 @@ trait UserHelpers
         }
 
         $verification = Verification::updateOrCreate([
-            'user_id' => $this->id,
+            'Admin_id' => $this->id,
             'phone' => $this->phone,
         ], [
             'code' => random_int(1111, 9999),

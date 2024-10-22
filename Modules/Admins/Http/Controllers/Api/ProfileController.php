@@ -21,12 +21,7 @@ class ProfileController extends Controller
      */
     public function show(): JsonResponse
     {
-        $user = auth()->user();
-
-        if (!$user) {
-            return $this->sendError(trans('admins::auth.failed'));
-        }
-        $data = $user->getResource();
+        $data = auth()->user()->getResource();
         return $this->sendResponse($data, 'success');
     }
 
@@ -40,30 +35,12 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
 
-        if (!$user) {
-            return $this->sendError(trans('admins::auth.failed'));
-        }
-
-        $user->update($request->all());
+        $user->update($request->validated());
 
         if ($request->avatar && $request->avatar != null) {
             $user->addMediaFromBase64($request->avatar)
                 ->usingFileName('avatar.png')
                 ->toMediaCollection('avatars');
-        }
-
-        $data = $user->getResource();
-        return $this->sendResponse($data, 'success');
-    }
-
-    /**
-     * @return JsonResponse
-     */
-    public function exist(): JsonResponse
-    {
-        $user = auth()->user();
-        if (!$user->exists()) {
-            return $this->sendError(trans('admins::auth.failed'));
         }
 
         $data = $user->getResource();
@@ -96,19 +73,5 @@ class ProfileController extends Controller
 
         $user->tokens()->delete();
         return $this->sendSuccess('you Have Signed Out Successfully');
-    }
-
-    /**
-     * @return JsonResponse
-     */
-    public function check(): JsonResponse
-    {
-        $user = auth()->user();
-
-        if (!$user) {
-            return $this->sendError('false');
-        } else {
-            return $this->sendSuccess('true');
-        }
     }
 }

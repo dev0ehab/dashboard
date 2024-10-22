@@ -1,25 +1,18 @@
 <?php
 
-namespace Modules\Admins\Entities;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ResetPasswordCode extends Model
+class ResetPasswordToken extends Model
 {
     /**
      * the code expiration by seconds.
      *
      * @var int
      */
-    const EXPIRE_DURATION = 10 * 60;
-
-    /**
-     * The name of the "updated at" column.
-     *
-     * @var string
-     */
-    const UPDATED_AT = null;
+    const EXPIRE_DURATION = 50 * 60;
 
     /**
      * The attributes that are mass assignable.
@@ -27,12 +20,17 @@ class ResetPasswordCode extends Model
      * @var array
      */
     protected $fillable = [
-        'username',
-        'code',
+        'user_id',
+        'token',
     ];
 
     /**
-     * Determine whither this code has been expired.
+     * const.
+     */
+    const UPDATED_AT = null;
+
+    /**
+     * Check if this code has been expired.
      *
      * @return bool
      */
@@ -42,10 +40,12 @@ class ResetPasswordCode extends Model
     }
 
     /**
+     * the user who created this token.
+     *
      * @return BelongsTo
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'username', 'phone');
+        return $this->belongsTo(User::class);
     }
 }

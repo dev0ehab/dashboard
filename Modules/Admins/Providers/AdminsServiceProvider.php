@@ -2,7 +2,6 @@
 
 namespace Modules\Admins\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 

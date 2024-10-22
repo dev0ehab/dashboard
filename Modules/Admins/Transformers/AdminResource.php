@@ -7,12 +7,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /** @mixin \Modules\Admins\Entities\Admin */
 class AdminResource extends JsonResource
 {
+
     /**
      * Transform the resource into an array.
      *
      * @param \Illuminate\Http\Request
      * @return array
-     * @throws \Laracasts\Presenter\Exceptions\PresenterException
      */
     public function toArray($request)
     {

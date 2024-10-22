@@ -34,8 +34,6 @@ class RegisterController extends Controller
 
         event(new Registered($user));
 
-//        $user->setType(User::CUSTOMER_TYPE);
-
         $user->sendVerificationCode(request('test_mode'));
 
         $data = $user->getResource();

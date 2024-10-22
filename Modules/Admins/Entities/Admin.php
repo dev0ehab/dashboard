@@ -2,32 +2,55 @@
 
 namespace Modules\Admins\Entities;
 
-use Modules\Admins\Entities\Scopes\AdminScopes;
+use Laratrust\Contracts\LaratrustUser;
+use Laratrust\Traits\HasRolesAndPermissions;
+use Modules\Admins\Entities\Helpers\AdminHelpers;
+use Modules\Admins\Entities\Relations\AdminRelations;
 use Modules\Admins\Transformers\AdminResource;
-use Parental\HasParent;
+use App\Http\Filters\Filterable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Admin extends User
+class Admin extends Authenticatable implements HasMedia , LaratrustUser
 {
-    use HasParent, AdminScopes;
+    use Notifiable, AdminHelpers, HasApiTokens, InteractsWithMedia, HasRolesAndPermissions  , SoftDeletes, AdminRelations;
+
+        /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
 
     /**
-     * Get the class name for polymorphic relations.
+     * The attributes that should be hidden for serialization.
      *
-     * @return string
+     * @var array<int, string>
      */
-    public function getMorphClass()
-    {
-        return User::class;
-    }
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     /**
-     * Get the default foreign key name for the model.
+     * Get the attributes that should be cast.
      *
-     * @return string
+     * @return array<string, string>
      */
-    public function getForeignKey()
+    protected function casts(): array
     {
-        return 'user_id';
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 
     /**

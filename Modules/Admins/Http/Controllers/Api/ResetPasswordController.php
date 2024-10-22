@@ -2,6 +2,7 @@
 
 namespace Modules\Admins\Http\Controllers\Api;
 
+use App\Models\ResetPasswordCode;
 use Exception;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,9 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Modules\Admins\Entities\ResetPasswordCode;
-use Modules\Admins\Entities\ResetPasswordToken;
-use Modules\Admins\Entities\User;
+use Modules\Admins\Entities\Admin;
 use Modules\Admins\Events\ResetPasswordCreated;
 use Modules\Admins\Http\Requests\Api\ForgetPasswordRequest;
 use Modules\Admins\Http\Requests\Api\ResetPasswordCodeRequest;
@@ -33,7 +32,7 @@ class ResetPasswordController extends Controller
      */
     public function forget(ForgetPasswordRequest $request): JsonResponse
     {
-        $user = User::where(function (Builder $query) use ($request) {
+        $user = Admin::where(function (Builder $query) use ($request) {
             $query->where('email', $request->username);
             $query->orWhere('phone', $request->username);
         })->first();
