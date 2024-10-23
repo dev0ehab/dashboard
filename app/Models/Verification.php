@@ -23,18 +23,13 @@ class Verification extends Model
      * @var string[]
      */
     protected $fillable = [
-        'user_id',
-        'phone',
+        'verifiable_id',
+        'verifiable_type',
+        "verficiation_type",
+        "verficiation_value",
         'code',
+        'created_at',
     ];
-
-    /**
-     * @return BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     /**
      * Determine whither the verification code is expired.

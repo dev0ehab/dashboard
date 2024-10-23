@@ -48,7 +48,7 @@ class UserRepository implements CrudRepository
         $user = User::create($data);
 
         // add role to user
-        $user->attachRole($user->user_type->role);
+        $user->addRole($user->user_type->role);
 
         $user->setVerified();
 

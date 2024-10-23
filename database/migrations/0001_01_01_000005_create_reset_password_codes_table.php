@@ -15,8 +15,6 @@ return new class extends Migration
     {
         Schema::create('reset_password_codes', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->index();
-
             $table->morphs('resetable');
             $table->string('reset_type');
             $table->string('reset_value');

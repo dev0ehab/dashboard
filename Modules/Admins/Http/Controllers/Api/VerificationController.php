@@ -2,15 +2,13 @@
 
 namespace Modules\Admins\Http\Controllers\Api;
 
-use Illuminate\Database\Eloquent\Builder;
+use App\Events\VerificationCreated;
+use App\Models\Verification;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Modules\Admins\Entities\Customer;
-use Modules\Admins\Entities\User;
-use Modules\Admins\Entities\Verification;
-use Modules\Admins\Events\VerificationCreated;
+use Modules\Admins\Entities\Admin;
 use Modules\Admins\Http\Requests\Api\VerificationRequest;
 use Modules\Admins\Http\Requests\Api\VerifyRequest;
 use Modules\Support\Traits\ApiTrait;
@@ -18,6 +16,8 @@ use Modules\Support\Traits\ApiTrait;
 class VerificationController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests, ApiTrait;
+
+    protected $class = Admin::class;
 
     /**
      * Send or resend the verification code.
@@ -28,27 +28,18 @@ class VerificationController extends Controller
      */
     public function send(VerifyRequest $request): JsonResponse
     {
-        $user = User::where(function (Builder $query) use ($request) {
-            $query->where('email', $request->phone);
-            $query->orWhere('phone', $request->phone);
-        })->first();
+        $auth_model_type = get_model_auth_type($this->class);
+        $auth_model = $this->class::where($auth_model_type, $request->username)->first();
 
-        if (!$user) {
+
+        if (!$auth_model) {
             return $this->sendError(trans('admins::auth.failed'));
         }
 
-        $verification = Verification::updateOrCreate([
-            'user_id' => $user->id,
-            'phone' => $request->phone,
-        ], [
-            'code' => random_int(1111, 9999),
-        ]);
-        if ($request->test_mode != 1 || !$request->test_mode) {
-            event(new VerificationCreated($verification));
-        }
+        event(new VerificationCreated($auth_model));
 
         return response()->json([
-            'code' => $verification->code,
+            'code' => request('verification_code'),
             'message' => trans('admins::verification.sent'),
         ]);
     }
@@ -61,14 +52,18 @@ class VerificationController extends Controller
      */
     public function verify(VerificationRequest $request): JsonResponse
     {
-        $user = User::wherePhone($request->phone)->first();
+        $auth_model_type = get_model_auth_type($this->class);
+        $auth_model = $this->class::where($auth_model_type, $request->username)->first();
 
-        if (!$user) {
+        if (!$auth_model) {
             return $this->sendError(trans('admins::auth.failed'));
         }
 
         $verification = Verification::where([
-            'user_id' => $user->id,
+            'verifiable_id' => $auth_model->id,
+            'verifiable_type' => $this->class,
+            'verficiation_type' => get_model_auth_type($this->class),
+            'verficiation_value' => $request->username,
             'code' => $request->code,
         ])->first();
 
@@ -76,15 +71,16 @@ class VerificationController extends Controller
             return $this->sendError(trans('admins::verification.invalid'));
         }
 
-        $user->forceFill([
-            'phone' => $verification->phone,
-            'email_verified_at' => now(),
+        $auth_model->forceFill([
+            $auth_model_type => $verification->phone,
+            "{$auth_model_type}_verified_at" => now(),
         ])->save();
 
         $verification->delete();
 
-        $data = $user->getResource();
-        $data['token'] = $user->createTokenForDevice($request->device_name);
+        $data = $auth_model->getResource();
+        $data['token'] = $auth_model->createTokenForDevice($request->device_name);
+
         return $this->sendResponse($data, trans('admins::verification.is_verified'));
     }
 }

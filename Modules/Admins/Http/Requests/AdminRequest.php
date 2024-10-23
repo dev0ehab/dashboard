@@ -4,6 +4,7 @@ namespace Modules\Admins\Http\Requests;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Password;
 
 class AdminRequest extends FormRequest
 {
@@ -43,7 +44,7 @@ class AdminRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'min:8', 'confirmed'],
+            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised()],
         ];
     }
 

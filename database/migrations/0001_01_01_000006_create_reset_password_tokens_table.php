@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('reset_password_tokens', function (Blueprint $table) {
             $table->id();
             $table->morphs('resetable');
+            $table->string('reset_type');
+            $table->string('reset_value');
             $table->string('token');
             $table->timestamp('created_at');
         });

@@ -7,7 +7,6 @@ use Laratrust\Traits\HasRolesAndPermissions;
 use Modules\Admins\Entities\Helpers\AdminHelpers;
 use Modules\Admins\Entities\Relations\AdminRelations;
 use Modules\Admins\Transformers\AdminResource;
-use App\Http\Filters\Filterable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,18 +14,22 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Admin extends Authenticatable implements HasMedia , LaratrustUser
+class Admin extends Authenticatable implements HasMedia, LaratrustUser
 {
-    use Notifiable, AdminHelpers, HasApiTokens, InteractsWithMedia, HasRolesAndPermissions  , SoftDeletes, AdminRelations;
+    use Notifiable, AdminHelpers, HasApiTokens, InteractsWithMedia, HasRolesAndPermissions, SoftDeletes, AdminRelations;
 
-        /**
+    const VerificationType = 'phone';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'f_name',
+        'l_name',
         'email',
+        'phone',
         'password',
     ];
 

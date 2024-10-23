@@ -4,19 +4,20 @@ namespace Modules\Admins\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
-use Modules\Admins\Entities\User;
+use Modules\Admins\Entities\Admin;
 use Modules\Admins\Http\Requests\Api\LoginRequest;
 use Modules\Support\Traits\ApiTrait;
 
 class LoginController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests, ApiTrait;
+
+    protected $class = Admin::class;
 
     /**
      * Handle a login request to the application.
@@ -26,43 +27,48 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $user = User::where(function (Builder $query) use ($request) {
-            $query->where('email', $request->username);
-            $query->orWhere('phone', $request->username);
-        })->first();
+        $auth_model_type = get_model_auth_type($this->class);
 
-        if (!$user) {
+        $auth_model = $this->class::where($auth_model_type, $request->username)->first();
+
+        if (!$auth_model) {
             return $this->sendError(trans('admins::auth.failed'));
         }
 
-        if ($user->blocked_at) {
+        if ($auth_model->blocked_at) {
             auth()->logout();
             return $this->sendError(trans('admins::auth.blocked'));
         }
 
-        if (!Hash::check($request->password, $user->password)) {
+        if (!Hash::check($request->password, $auth_model->password)) {
             return $this->sendError(trans('admins::users.messages.password'));
         }
 
-        if (!$user->hasVerifiedEmail()) {
+        if (!$auth_model->hasVerifiedEmail()) {
             auth()->logout();
-            $user->sendVerificationCode(request('test_mode'));
-            $data = $user->getResource();
+            // $auth_model->sendVerificationCode(request('test_mode'));
+            $data = $auth_model->getResource();
             return $this->sendResponse($data, trans('admins::users.messages.verified'));
         }
 
-        event(new Login('sanctum', $user, false));
+        event(new Login('sanctum', $auth_model, false));
 
-        $user->last_login_at = Carbon::now()->toDateTimeString();
-        $user->preferred_locale = $request->preferred_locale ?? app()->getLocale();
+        $auth_model->last_login_at = Carbon::now()->toDateTimeString();
+        $auth_model->preferred_locale = $request->preferred_locale ?? app()->getLocale();
 
-        if ($user->device_token === null || $user->device_token != $request->device_token) {
-            $user->device_token = $request->device_token;
+        if ($auth_model->device_token === null || $auth_model->device_token != $request->device_token) {
+            $auth_model->device_token = $request->device_token;
         }
 
-        $user->push();
+        $auth_model->push();
 
-        $data = $user->getResource();
-        return $this->sendResponse($data, 'success');
+        $response = [
+            'success' => true,
+            'data' => $auth_model->getResource(),
+            'token' => $auth_model->createToken('MyApp')->plainTextToken,
+            'message' => 'success',
+        ];
+
+        return response()->json($response);
     }
 }

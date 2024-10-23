@@ -3,17 +3,16 @@
 namespace Modules\Admins\Http\Controllers\Api;
 
 use App\Models\ResetPasswordCode;
+use App\Models\ResetPasswordToken;
 use Exception;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Modules\Admins\Entities\Admin;
-use Modules\Admins\Events\ResetPasswordCreated;
+use App\Events\ResetPasswordCreated;
 use Modules\Admins\Http\Requests\Api\ForgetPasswordRequest;
 use Modules\Admins\Http\Requests\Api\ResetPasswordCodeRequest;
 use Modules\Admins\Http\Requests\Api\ResetPasswordRequest;
@@ -22,6 +21,8 @@ use Modules\Support\Traits\ApiTrait;
 class ResetPasswordController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests, ApiTrait;
+
+    protected $class = Admin::class;
 
     /**
      * Send forget password code to the user.
@@ -32,28 +33,27 @@ class ResetPasswordController extends Controller
      */
     public function forget(ForgetPasswordRequest $request): JsonResponse
     {
-        $user = Admin::where(function (Builder $query) use ($request) {
-            $query->where('email', $request->username);
-            $query->orWhere('phone', $request->username);
-        })->first();
+        $auth_model_type = get_model_auth_type($this->class);
 
-        if (!$user) {
+        $auth_model = $this->class::where($auth_model_type, $request->username)->first();
+
+        if (!$auth_model) {
             return $this->sendError(trans('admins::auth.failed'));
         }
 
         $resetPasswordCode = ResetPasswordCode::updateOrCreate([
-            'username' => $request->username,
+            'resetable_id' => $auth_model->id,
+            'resetable_type' => get_class($auth_model),
+            'reset_type' => get_model_auth_type($auth_model),
+            'reset_value' => $request->username,
         ], [
-            'username' => $request->username,
-            'code' => random_int(1000, 9999),
+            'code' => $code = random_int(1000, 9999),
+            'created_at' => now(),
         ]);
 
-//        $user->notify(new SendForgetPasswordCodeNotification($resetPasswordCode->code));
-        if ($request->test_mode != 1 || !$request->test_mode) {
-            event(new ResetPasswordCreated($resetPasswordCode));
-        }
+        event(new ResetPasswordCreated($resetPasswordCode));
 
-        $data = $user->getResource();
+        $data['reset_password_code'] = $code;
 
         return $this->sendResponse($data, trans('admins::auth.messages.forget-password-code-sent'));
     }
@@ -66,31 +66,38 @@ class ResetPasswordController extends Controller
      */
     public function code(ResetPasswordCodeRequest $request): JsonResponse
     {
-        $resetPasswordCode = ResetPasswordCode::where('username', $request->username)
-            ->where('code', $request->code)
-            ->first();
+        $auth_model_type = get_model_auth_type($this->class);
+        $auth_model = $this->class::where($auth_model_type, $request->username)->first();
 
-        $user = User::where(function (Builder $query) use ($request) {
-            $query->where('email', $request->username);
-            $query->orWhere('phone', $request->username);
-        })->first();
+        $dataReset = [
+            'resetable_id' => $auth_model->id,
+            'resetable_type' => $this->class,
+            'reset_type' => get_model_auth_type($this->class),
+            'reset_value' => $request->username,
+            'code' => $request->code,
+        ];
 
-        if (!$resetPasswordCode || $resetPasswordCode->isExpired() || !$user) {
+        $resetPasswordCode = ResetPasswordCode::where($dataReset)->first();
+
+        if (!$resetPasswordCode || $resetPasswordCode->isExpired() || !$auth_model) {
             return $this->sendError(trans('validation.exists', [
                 'attribute' => trans('admins::auth.attributes.code'),
             ]));
         }
 
-        $reset_token = ResetPasswordToken::forceCreate([
-            'user_id' => $user->id,
+        ResetPasswordCode::where(['resetable_id' => $auth_model->id, 'resetable_type' => get_class($auth_model)])->delete();
+
+        ResetPasswordToken::updateOrCreate([
+            'resetable_id' => $auth_model->id,
+            'resetable_type' => $this->class,
+            'reset_type' => get_model_auth_type($this->class),
+            'reset_value' => $request->username,
+        ], [
             'token' => $token = Str::random(80),
+            'created_at' => now(),
         ]);
 
-        $data = $user->getResource();
-
-        $data['reset_token'] = $reset_token->token;
-
-//        $resetPasswordCode->delete();
+        $data['reset_token'] = $token;
 
         return $this->sendResponse($data, 'success');
     }
@@ -101,7 +108,13 @@ class ResetPasswordController extends Controller
      */
     public function reset(ResetPasswordRequest $request): JsonResponse
     {
-        $resetPasswordToken = ResetPasswordToken::where($request->only('token'))->first();
+        $dataReset = [
+            'resetable_type' => $this->class,
+            'reset_type' => get_model_auth_type($this->class),
+            'token' => $request->token,
+        ];
+
+        $resetPasswordToken = ResetPasswordToken::where($dataReset)->latest()->first();
 
         if (!$resetPasswordToken || $resetPasswordToken->isExpired()) {
             return $this->sendError(trans('validation.exists', [
@@ -109,23 +122,17 @@ class ResetPasswordController extends Controller
             ]));
         }
 
-        $user = $resetPasswordToken->user;
+        $auth_model = $resetPasswordToken->resetable;
 
-        ResetPasswordCode::where('username', $user->phone)
-            ->delete();
-
-        $user->update([
-            'password' => Hash::make($request->password),
+        $auth_model->update([
+            'password' => $request->password,
         ]);
 
-//        $user->notify(new PasswordUpdatedNotification());
+        event(new Login('sanctum', $auth_model, false));
 
-        event(new Login('sanctum', $user, false));
+        ResetPasswordToken::where(['resetable_id' => $auth_model->id, 'resetable_type' => get_class($auth_model)])->delete();
 
-        $resetPasswordToken->delete();
 
-        $data = $user->getResource();
-
-        return $this->sendResponse($data, 'success');
+        return $this->sendSuccess( 'success');
     }
 }

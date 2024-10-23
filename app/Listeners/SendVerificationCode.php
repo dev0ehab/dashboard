@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Admins\Listeners;
+namespace App\Listeners;
 
 use Illuminate\Support\Facades\Storage;
-use Modules\Admins\Events\VerificationCreated;
+use App\Events\VerificationCreated;
 
 
 class SendVerificationCode
@@ -26,7 +26,8 @@ class SendVerificationCode
      */
     public function handle(VerificationCreated $event)
     {
-        if (!$event->verification->user->hasVerifiedEmail()) {
+        dd($event->verification->verifiable);
+        if (!$event->verification->verifiable->hasVerifiedEmail()) {
             $event->verification->user->sendSmsVerificationNotification($event->verification->phone, $event->verification->code);
         }
 

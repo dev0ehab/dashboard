@@ -47,15 +47,7 @@ class ProfileRequest extends FormRequest
      */
     public function attributes()
     {
-        switch (auth()->user()->type) {
-            case User::ADMIN_TYPE:
-                return trans('admins::admins.attributes');
-                break;
-            case User::CUSTOMER_TYPE:
-            default:
-                return trans('admins::customers.attributes');
-                break;
-        }
+        return trans('admins::admins.attributes');
     }
 
     /**

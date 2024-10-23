@@ -1,3 +1,3 @@
 <?php
 
-Route::get('/select/roles', 'SelectController@roles')->name('roles.select');
+Route::get(uri: '/select/roles', 'SelectController@roles')->name('roles.select');

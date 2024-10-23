@@ -24,8 +24,7 @@ class VerifyRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => ['required'],
-//            'password' => 'required',
+            'username' => ['required'],
         ];
     }
 

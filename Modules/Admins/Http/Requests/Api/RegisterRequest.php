@@ -5,13 +5,12 @@ namespace Modules\Admins\Http\Requests\Api;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
-use Modules\Admins\Entities\Customer;
-use Modules\Admins\Http\Requests\WithHashedPassword;
 use Modules\Support\Traits\ApiTrait;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
-    use WithHashedPassword, ApiTrait;
+    use  ApiTrait;
 
     /**
      * Determine if the supervisor is authorized to make this request.
@@ -34,7 +33,7 @@ class RegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'unique:users,email'],
             'phone' => ['required', 'unique:users,phone'],
-            'password' => ['required', 'min:6'],
+            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised()],
             'avatar' => ['nullable', 'base64_image'],
         ];
     }
@@ -60,16 +59,6 @@ class RegisterRequest extends FormRequest
 
     private function failedValidationResponse($validator)
     {
-        $user = Customer::inRequest(request())->first();
-
-        if ($user) {
-            if (!$user->hasVerifiedEmail()) {
-                $user->sendVerificationCode(request('test_mode'));
-                $data = $user->getResource();
-                return $this->sendResponse($data, trans('admins::users.messages.verified'));
-            }
-        }
-
         return $this->sendErrorData($validator->errors()->toArray(), 'fail');
     }
 }

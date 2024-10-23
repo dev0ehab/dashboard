@@ -14,16 +14,30 @@ class AdminsTableSeeder extends Seeder
      */
     public function run()
     {
+        $root = Admin::Create([
+            'f_name' => 'Mr',
+            'l_name' => 'Root',
+            'email' => 'root@demo.com',
+            'phone' => '0543037411',
+            'password' => 'password',
+        ]);
 
-        $admins = Admin::limit(2)->get();
-        $bar = $this->command->getOutput()->createProgressBar(
-            count($admins)
-        );
+
+        $admin = Admin::firstOrCreate([
+            'f_name' => 'Mr',
+            'l_name' => 'Admin',
+            'email' => 'admin@demo.com',
+            'phone' => '0543037412',
+            'password' => 'password',
+        ]);
+
+        $admins = [$root, $admin];
+        $bar = $this->command->getOutput()->createProgressBar(count($admins));
 
         $bar->start();
 
         foreach ($admins as $admin) {
-            $admin->attachRole('super_admin');
+            $admin->addRole('super_admin');
             $bar->advance();
         }
 

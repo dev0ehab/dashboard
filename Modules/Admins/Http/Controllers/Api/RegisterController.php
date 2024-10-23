@@ -2,6 +2,7 @@
 
 namespace Modules\Admins\Http\Controllers\Api;
 
+use App\Events\VerificationCreated;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,6 +16,8 @@ class RegisterController extends Controller
 {
     use AuthorizesRequests, ValidatesRequests, ApiTrait;
 
+    protected $class = Admin::class;
+
     /**
      * Handle a login request to the application.
      *
@@ -24,19 +27,18 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        $user = User::create($request->allWithHashedPassword());
+        $auth_model = $this->class::create($request->validated());
 
         if ($request->avatar) {
-            $user->addMediaFromBase64($request->avatar)
+            $auth_model->addMediaFromBase64($request->avatar)
                 ->usingFileName('avatar.png')
                 ->toMediaCollection('avatars');
         }
 
-        event(new Registered($user));
+        event(new Registered($auth_model));
+        event(new VerificationCreated($auth_model->verification));
 
-        $user->sendVerificationCode(request('test_mode'));
-
-        $data = $user->getResource();
+        $data = $auth_model->getResource();
         return $this->sendResponse($data, 'success');
     }
 }

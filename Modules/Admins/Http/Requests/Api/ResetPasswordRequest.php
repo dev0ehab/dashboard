@@ -6,6 +6,8 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use Modules\Support\Traits\ApiTrait;
+use Illuminate\Validation\Rules\Password;
+
 
 class ResetPasswordRequest extends FormRequest
 {
@@ -29,8 +31,8 @@ class ResetPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'token' => ['required', 'string'],
-            'password' => ['required', 'min:6'],
+            'token' => ['required', 'exists:reset_password_tokens,token'],
+            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
         ];
     }
 

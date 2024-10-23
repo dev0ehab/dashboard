@@ -1,32 +1,32 @@
 <?php
 
-namespace Modules\Admins\Events;
+namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Admins\Entities\Verification;
+use App\Models\ResetPasswordCode;
 
 
-class VerificationCreated
+class ResetPasswordCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var Verification
+     * @var ResetPasswordCode
      */
-    public Verification $verification;
+    public ResetPasswordCode $resetPasswordCode;
 
     /**
      * Create a new event instance.
      *
-     * @param Verification $verification
+     * @param ResetPasswordCode $resetPasswordCode
      */
-    public function __construct(Verification $verification)
+    public function __construct(ResetPasswordCode $resetPasswordCode)
     {
-        $this->verification = $verification;
+        $this->resetPasswordCode = $resetPasswordCode;
     }
 
     /**

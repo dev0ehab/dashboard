@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class ResetPasswordToken extends Model
 {
@@ -20,8 +21,12 @@ class ResetPasswordToken extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'resetable_id',
+        'resetable_type',
+        "reset_type",
+        "reset_value",
         'token',
+        'created_at',
     ];
 
     /**
@@ -39,13 +44,12 @@ class ResetPasswordToken extends Model
         return $this->created_at->addSeconds(static::EXPIRE_DURATION)->isPast();
     }
 
+
     /**
-     * the user who created this token.
-     *
-     * @return BelongsTo
+     * Get the resetable model .
      */
-    public function user()
+    public function resetable(): MorphTo
     {
-        return $this->belongsTo(User::class);
+        return $this->morphTo();
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class ResetPasswordCode extends Model
 {
@@ -27,8 +27,12 @@ class ResetPasswordCode extends Model
      * @var array
      */
     protected $fillable = [
-        'username',
+        'resetable_id',
+        'resetable_type',
+        "reset_type",
+        "reset_value",
         'code',
+        'created_at',
     ];
 
     /**
@@ -41,11 +45,12 @@ class ResetPasswordCode extends Model
         return $this->created_at->addSeconds(static::EXPIRE_DURATION)->isPast();
     }
 
+
     /**
-     * @return BelongsTo
+     * Get the resetable model .
      */
-    public function user()
+    public function resetable(): MorphTo
     {
-        return $this->belongsTo(User::class, 'username', 'phone');
+        return $this->morphTo();
     }
 }

@@ -14,18 +14,16 @@
 Route::prefix('admin')->group(
     function () {
 
-        Route::post('/register', 'Api\RegisterController@register')->name('user.register');
-        Route::post('/login', 'Api\LoginController@login')->name('user.login');
-        //Route::post('/firebase/login', 'Api\LoginController@firebase')->name('user.login.firebase');
+        Route::post('/register', 'Api\RegisterController@register');
+        Route::post('/login', 'Api\LoginController@login');
 
-        Route::post('/password/forget', 'Api\ResetPasswordController@forget')->name('user.password.forget');
-        Route::post('/password/code', 'Api\ResetPasswordController@code')->name('user.password.code');
-        Route::post('/password/reset', 'Api\ResetPasswordController@reset')->name('user.password.reset');
-        Route::get('/select/users', 'SelectController@index')->name('users.select');
+        Route::post('/password/forget', 'Api\ResetPasswordController@forget');
+        Route::post('/password/code', 'Api\ResetPasswordController@code');
+        Route::post('/password/reset', 'Api\ResetPasswordController@reset');
 
-        Route::post('verification/send', 'Api\VerificationController@send')->name('verification.send');
-        Route::post('verification/resend', 'Api\VerificationController@send')->name('verification.resend');
-        Route::post('verification/verify', 'Api\VerificationController@verify')->name('verification.verify');
+        Route::post('verification/send', 'Api\VerificationController@send');
+        Route::post('verification/resend', 'Api\VerificationController@send');
+        Route::post('verification/verify', 'Api\VerificationController@verify');
 
     }
 );
