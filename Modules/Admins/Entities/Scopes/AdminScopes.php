@@ -6,8 +6,6 @@ namespace Modules\Admins\Entities\Scopes;
 
 trait AdminScopes
 {
-// scopes ------------------------------
-
     public function scopeWhereRole($query, $role_name)
     {
         return $query->whereHas('roles', function ($q) use ($role_name) {

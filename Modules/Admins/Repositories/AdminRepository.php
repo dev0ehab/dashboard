@@ -33,10 +33,6 @@ class AdminRepository implements CrudRepository
      */
     public function all()
     {
-        // if (\Module::collections()->has('Roles')) {
-        //     return Admin::whereRoleNot(['super_admin', 'user'])->filter($this->filter)->paginate(request('perPage'));
-        // }
-
         return Admin::where('email', '!=', 'admin@demo.com')->where('email', '!=', 'root@demo.com')->filter($this->filter)->paginate(request('perPage'));
     }
 
@@ -51,14 +47,8 @@ class AdminRepository implements CrudRepository
         $admin = Admin::create($data);
 
         $admin->addRoles([$data['role_id']]);
-        // $this->setType($admin, $data);
-        // if (\Module::collections()->has('Roles')) {
-        //     $admin->addRoles([$data['role_id']]);
-        // }
 
         $admin->setVerified();
-
-        // $admin->addAllMediaFromTokens();
 
         $admin->addMediaFromRequest('avatar')->toMediaCollection('avatars');
 
@@ -93,16 +83,8 @@ class AdminRepository implements CrudRepository
 
         $admin->update($data);
 
-        $this->setType($admin, $data);
-
-        // if (\Module::collections()->has('Roles')) {
-        //     $admin->syncRoles([$data['role_id']]);
-        // }
-
-        // $admin->addAllMediaFromTokens();
-
         if (isset($data['avatar'])) {
-            delFile($admin->getMediaResource('avatars'));
+            $admin->clearMediaCollection('avatars');
             $admin->addMediaFromRequest('avatar')->toMediaCollection('avatars');
         }
 
@@ -119,22 +101,6 @@ class AdminRepository implements CrudRepository
     public function delete($model)
     {
         $this->find($model)->delete();
-    }
-
-    /**
-     * Set the client type.
-     *
-     * @param Admin $admin
-     * @param array $data
-     * @return Admin
-     */
-    private function setType(Admin $admin, array $data)
-    {
-        if (isset($data['type'])) {
-            $admin->setType($data['type']);
-        }
-
-        return $admin;
     }
 
     /**

@@ -1,8 +1,9 @@
 <?php
 
 
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\PersonalAccessToken;
-
 
 if (!function_exists('app_name')) {
     /**
@@ -138,6 +139,24 @@ if (!function_exists('user')) {
 if (!function_exists('get_model_auth_type')) {
     function get_model_auth_type($model)
     {
+        if (request()->has('auth_type')) {
+
+            $validator = Validator::make(request()->only('auth_type'), [
+                'auth_type' => 'sometimes|in:phone,email'
+            ]);
+
+            if ($validator->fails()) {
+
+                $response = [
+                    'success' => false,
+                    'message' => $validator->errors()->first(),
+                ];
+                throw new HttpResponseException(response()->json($response, 400));
+            }
+
+            return request()->get('auth_type');
+        }
+
         $model = is_object($model) ? get_class($model) : $model;
         return defined("{$model}::VerificationType") ? $model::VerificationType : 'phone';
     }

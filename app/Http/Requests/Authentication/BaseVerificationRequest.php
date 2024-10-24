@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Admins\Http\Requests\Api;
+namespace App\Http\Requests\Authentication;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
-use Modules\Support\Traits\ApiTrait;
+use App\Traits\ApiTrait;
 
-class LoginRequest extends FormRequest
+class BaseVerificationRequest extends FormRequest
 {
     use ApiTrait;
 
@@ -16,7 +16,7 @@ class LoginRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
@@ -26,11 +26,18 @@ class LoginRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'username' => 'required',
-            'password' => 'required',
+            'code' => 'required',
+            'username' => [
+                'required',
+                "exists:$this->table,$this->auth_type",
+                $this->auth_type == 'email' ? 'email' : "starts_with:$this->dial_code",
+                $this->auth_type == 'phone' ? 'min:10' : null,
+            ],
+
+            'dial_code' => [$this->auth_type == 'phone' ? 'required' : 'nullable', "max:4", "starts_with:+"],
         ];
     }
 
@@ -41,7 +48,7 @@ class LoginRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return trans('admins::auth.attributes');
+        return trans("$this->table::verification.attributes");
     }
 
     /**

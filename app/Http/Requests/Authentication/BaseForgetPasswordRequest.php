@@ -1,15 +1,17 @@
 <?php
 
-namespace Modules\Admins\Http\Requests\Api;
+namespace App\Http\Requests\Authentication;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
-use Modules\Support\Traits\ApiTrait;
+use App\Traits\ApiTrait;
 
-class VerificationRequest extends FormRequest
+class BaseForgetPasswordRequest extends FormRequest
 {
     use ApiTrait;
+
+    protected $translations;
 
     /**
      * Determine if the supervisor is authorized to make this request.
@@ -29,8 +31,14 @@ class VerificationRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required',
-            'phone' => 'required',
+            'username' => [
+                'required',
+                "exists:$this->table,$this->auth_type",
+                $this->auth_type == 'email' ? 'email' : "starts_with:$this->dial_code",
+                $this->auth_type == 'phone' ? 'min:10' : null,
+            ],
+
+            'dial_code' => [$this->auth_type == 'phone' ? 'required' : 'nullable', "max:4", "starts_with:+"],
         ];
     }
 
@@ -39,9 +47,9 @@ class VerificationRequest extends FormRequest
      *
      * @return array
      */
-    public function attributes(): array
+    public function attributes()
     {
-        return trans('admins::verification.attributes');
+        return trans($this->translations ?? 'admins::auth.attributes');
     }
 
     /**

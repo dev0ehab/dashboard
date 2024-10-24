@@ -1,16 +1,16 @@
 <?php
 
-namespace Modules\Admins\Http\Requests\Api;
+namespace App\Http\Requests\Authentication;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
-use Modules\Support\Traits\ApiTrait;
+use App\Traits\ApiTrait;
 use Illuminate\Validation\Rules\Password;
 
-class RegisterRequest extends FormRequest
+class BaseRegisterRequest extends FormRequest
 {
-    use  ApiTrait;
+    use ApiTrait;
 
     /**
      * Determine if the supervisor is authorized to make this request.
@@ -31,8 +31,8 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['nullable', 'email', 'unique:users,email'],
-            'phone' => ['required', 'unique:users,phone'],
+            'email' => ['nullable', 'email', "unique:$this->table,email"],
+            'phone' => ['required', "unique:$this->table,phone"],
             'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised()],
             'avatar' => ['nullable', 'base64_image'],
         ];
@@ -52,12 +52,8 @@ class RegisterRequest extends FormRequest
      * @param Validator $validator
      * @throws ValidationException
      */
-    protected function failedValidation(Validator $validator)
-    {
-        throw new ValidationException($validator, $this->failedValidationResponse($validator));
-    }
 
-    private function failedValidationResponse($validator)
+    protected function failedValidationResponse($validator)
     {
         return $this->sendErrorData($validator->errors()->toArray(), 'fail');
     }

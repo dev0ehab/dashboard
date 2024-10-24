@@ -2,10 +2,10 @@
 
 namespace Modules\Admins\Http\Controllers\Api;
 
-use App\Http\Controllers\Authentication\BaseVerificationController;
+use App\Http\Controllers\Authentication\BaseChangeAuthenticable;
 use Modules\Admins\Entities\Admin;
 
-class VerificationController extends BaseVerificationController
+class ChangeAuthenticable extends BaseChangeAuthenticable
 {
     protected $class = Admin::class;
 }

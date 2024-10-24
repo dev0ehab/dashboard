@@ -1,40 +1,10 @@
 <?php
 
-namespace Modules\Admins\Http\Requests\Api;
+namespace Modules\Admins\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Authentication\BaseVerifyRequest;
 
-class VerifyRequest extends FormRequest
+class VerifyRequest extends BaseVerifyRequest
 {
-    /**
-     * Determine if the supervisor is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'username' => ['required'],
-        ];
-    }
-
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array
-     */
-    public function attributes()
-    {
-        return trans('admins::verification.attributes');
-    }
 }

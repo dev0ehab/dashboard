@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Admins\Http\Requests\Api;
+namespace App\Http\Requests\Authentication;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
-use Modules\Support\Traits\ApiTrait;
+use App\Traits\ApiTrait;
 
-class ForgetPasswordRequest extends FormRequest
+class BaseResetPasswordCodeRequest extends FormRequest
 {
     use ApiTrait;
 
@@ -29,7 +29,15 @@ class ForgetPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required',
+            'code' => ['required', 'exists:reset_password_codes,code'],
+            'username' => [
+                'required',
+                "exists:$this->table,$this->auth_type",
+                $this->auth_type == 'email' ? 'email' : "starts_with:$this->dial_code",
+                $this->auth_type == 'phone' ? 'min:10' : null,
+            ],
+
+            'dial_code' => [$this->auth_type == 'phone' ? 'required' : 'nullable', "max:4", "starts_with:+"],
         ];
     }
 

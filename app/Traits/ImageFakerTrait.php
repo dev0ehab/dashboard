@@ -5,7 +5,6 @@ namespace Modules\Support\Traits;
 use Faker\Factory as Faker;
 use File;
 
-
 trait ImageFakerTrait
 {
     public function createImage($model, $url  = "images/fakers",  $count = 1, $media = "images")

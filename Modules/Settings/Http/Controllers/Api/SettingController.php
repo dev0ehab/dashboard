@@ -13,7 +13,7 @@ use Modules\Settings\Transformers\PixelResource;
 use Modules\Settings\Transformers\SeoResource;
 use Modules\Settings\Transformers\SettingResource;
 use Modules\Settings\Transformers\StaticPagesResource;
-use Modules\Support\Traits\ApiTrait;
+use App\Traits\ApiTrait;
 
 class SettingController extends Controller
 {

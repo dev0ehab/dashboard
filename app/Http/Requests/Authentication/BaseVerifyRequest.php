@@ -1,18 +1,15 @@
 <?php
 
-namespace Modules\Admins\Http\Requests\Api;
+namespace App\Http\Requests\Authentication;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
-use Modules\Admins\Entities\User;
-use Modules\Admins\Http\Requests\WithHashedPassword;
-use Modules\Support\Traits\ApiTrait;
+use App\Traits\ApiTrait;
 
-class ProfileRequest extends FormRequest
+class BaseVerifyRequest extends FormRequest
 {
-    use WithHashedPassword, ApiTrait;
-
+    use ApiTrait;
     /**
      * Determine if the supervisor is authorized to make this request.
      *
@@ -31,13 +28,17 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['nullable', 'email', 'unique:users,email,' . auth()->id()],
-            'phone' => ['required', 'unique:users,phone,' . auth()->id()],
-//            'old_password' => ['required_with:password', new PasswordRule(auth()->user()->password ?? 'password')],
-//            'password' => ['nullable', 'min:8', 'confirmed'],
-            'avatar' => ['nullable', 'base64_image'],
+
+            'username' => [
+                'required',
+                $this->force_verify ? "exists:$this->table,$this->auth_type" : null,
+                $this->auth_type == 'email' ? 'email' : "starts_with:$this->dial_code",
+                $this->auth_type == 'phone' ? 'min:10' : null,
+            ],
+
+            'dial_code' => [$this->auth_type == 'phone' ? 'required' : 'nullable', "max:4", "starts_with:+"],
         ];
+
     }
 
     /**
@@ -47,8 +48,9 @@ class ProfileRequest extends FormRequest
      */
     public function attributes()
     {
-        return trans('admins::admins.attributes');
+        return trans("$this->table::verification.attributes");
     }
+
 
     /**
      * @param Validator $validator

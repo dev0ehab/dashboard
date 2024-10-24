@@ -1,11 +1,11 @@
 {
-    "name": "ibrahimelmonier/admins",
+    "name": "ehab_barakat/admins",
     "type": "laravel-module",
     "description": "",
     "authors": [
         {
-            "name": "Ibrahim El-Monier",
-            "email": "elmonieribrahim@gmail.com"
+            "name": "Ehab Barakat",
+            "email": "dev.ehab.barakat@gmail.com"
         }
     ],
     "extra": {
@@ -24,9 +24,6 @@
         "classmap": [
             "Database/Seeders",
             "Database/factories"
-        ],
-        "files": [
-            "Support/helpers.php"
         ]
     }
 }

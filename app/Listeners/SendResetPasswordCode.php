@@ -8,14 +8,20 @@ use App\Events\ResetPasswordCreated;
 
 class SendResetPasswordCode
 {
+    private $auth_model;
+    private $auth_type;
+    private $code;
+
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ResetPasswordCreated $event)
     {
-        //
+        $this->auth_model = $event->resetPasswordCode->resetable;
+        $this->auth_type = request()->get('auth_type');
+        $this->code = $event->resetPasswordCode->code;
     }
 
     /**
@@ -26,14 +32,13 @@ class SendResetPasswordCode
      */
     public function handle(ResetPasswordCreated $event)
     {
-        $model = $event->resetPasswordCode->resetable;
-        $verificationType = defined(get_class($model) . '::VerificationType') ? $model::VerificationType : 'phone';
-        switch ($verificationType) {
+
+        switch ($this->auth_type) {
             case 'email':
-                $this->sendEmailNotification($model, $event->resetPasswordCode->code);
+                $this->sendEmailNotification();
                 break;
             case 'phone':
-                $this->sendSmsNotification($model, $event->resetPasswordCode->code);
+                $this->sendSmsNotification();
                 break;
             default:
                 # code...
@@ -48,13 +53,13 @@ class SendResetPasswordCode
     }
 
 
-    private function sendEmailNotification($model, $code)
+    private function sendEmailNotification()
     {
         // dd("email");
         // $model->notify(new SendResetPasswordCodeNotification($code));
     }
 
-    private function sendSmsNotification($model, $code)
+    private function sendSmsNotification()
     {
         // dd("phone");
         // $model->notify(new SendResetPasswordCodeNotification($code));

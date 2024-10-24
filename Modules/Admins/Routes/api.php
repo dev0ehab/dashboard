@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('admin')->group(
+Route::prefix('admin')->middleware('auth-type')->group(
     function () {
 
         Route::post('/register', 'Api\RegisterController@register');
@@ -29,23 +29,18 @@ Route::prefix('admin')->group(
 );
 
 
-Route::middleware('auth:sanctum')->group(
-
-
-
+Route::prefix('admin')->middleware('auth:sanctum')->group(
     function () {
+        Route::get('profile', 'Api\ProfileController@show');
+        Route::post('profile', 'Api\ProfileController@update');
 
-        //        Route::post('verify', 'Api\VerificationController@userVerify')->name('verify');
+        Route::post('preferred-locale', 'Api\ProfileController@preferredLocale');
+        Route::post('fcm', 'Api\ProfileController@fcm');
 
-        Route::get('profile', 'Api\ProfileController@show')->name('user.profile.show');
-        Route::post('profile', 'Api\ProfileController@update')
-            ->name('user.profile.update');
+        Route::post('logout', 'Api\ProfileController@logout');
 
-        Route::get('user/exist', 'Api\ProfileController@exist')->name('user.exist');
-        Route::post('user/preferred-locale', 'Api\ProfileController@preferredLocale')->name('user.preferred.locale');
+        Route::post('change-authenticable', 'Api\ChangeAuthenticable@send');
+        Route::post('change-authenticable/verify', 'Api\ChangeAuthenticable@verify');
 
-        Route::post('logout', 'Api\ProfileController@logout')->name('user.logout');
-
-        Route::get('user/check', 'Api\ProfileController@check')->name('user.check');
     }
 );

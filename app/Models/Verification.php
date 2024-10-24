@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Verification extends Model
 {
@@ -39,5 +39,13 @@ class Verification extends Model
     public function isExpired()
     {
         return $this->updated_at->addMinutes(5)->isPast();
+    }
+
+        /**
+     * Get the verifiable model .
+     */
+    public function verifiable(): MorphTo
+    {
+        return $this->morphTo();
     }
 }

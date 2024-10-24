@@ -1,15 +1,13 @@
 <?php
 
-namespace Modules\Admins\Http\Requests\Api;
+namespace App\Http\Requests\Authentication;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
-use Modules\Support\Traits\ApiTrait;
-use Illuminate\Validation\Rules\Password;
+use App\Traits\ApiTrait;
 
-
-class ResetPasswordRequest extends FormRequest
+class BaseLoginRequest extends FormRequest
 {
     use ApiTrait;
 
@@ -18,7 +16,7 @@ class ResetPasswordRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -28,11 +26,11 @@ class ResetPasswordRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'token' => ['required', 'exists:reset_password_tokens,token'],
-            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
+            'username' => 'required',
+            'password' => 'required',
         ];
     }
 
@@ -41,7 +39,7 @@ class ResetPasswordRequest extends FormRequest
      *
      * @return array
      */
-    public function attributes()
+    public function attributes(): array
     {
         return trans('admins::auth.attributes');
     }
