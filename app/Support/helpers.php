@@ -158,7 +158,7 @@ if (!function_exists('get_model_auth_type')) {
         }
 
         $model = is_object($model) ? get_class($model) : $model;
-        return defined("{$model}::VerificationType") ? $model::VerificationType : 'phone';
+        return defined("{$model}::AuthType") ? $model::AuthType : 'phone';
     }
 }
 

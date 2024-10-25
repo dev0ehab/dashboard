@@ -30,6 +30,6 @@ trait AdminHelpers
 
     public function hasVerifiedAuth(string $auth_type): bool
     {
-        return $this->{"{$auth_type}_verified_at"};
+        return (bool) $this->{"{$auth_type}_verified_at"};
     }
 }

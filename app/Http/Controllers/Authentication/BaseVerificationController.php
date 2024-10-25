@@ -6,33 +6,26 @@ use App\Events\VerificationCreated;
 use App\Http\Requests\Authentication\BaseVerificationRequest;
 use App\Http\Requests\Authentication\BaseVerifyRequest;
 use App\Models\Verification;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
 use App\Traits\ApiTrait;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 
-class BaseVerificationController extends Controller
+class BaseVerificationController extends BaseAuthenticationController
 {
-    use AuthorizesRequests, ValidatesRequests, ApiTrait;
+    use ApiTrait;
 
-    protected $class = Authenticatable::class;
+    protected $class;
 
-    public function __construct() {
-        $this->sendRequest = \Modules\Admins\Http\Requests\VerifyRequest::class;
-    }
+    protected $sendRequest = BaseVerifyRequest::class;
 
-    /**
-     * Send or resend the verification code.
-     *
-     * @param BaseVerifyRequest $request
-     * @return JsonResponse
-     * @throws \Exception
-     */
-    public function send(BaseVerifyRequest $request): JsonResponse
+    protected $verifyRequest = BaseVerificationRequest::class;
+
+    public function send(Request $request)
     {
+        $this->validationAction($this->sendRequest, $request);
+
         $auth_model_type = $request->auth_type;
+
         $auth_model = $this->class::where($auth_model_type, $request->username)->first();
 
         if (!$auth_model) {
@@ -40,17 +33,16 @@ class BaseVerificationController extends Controller
             if (request()->has('force_verify') && request()->get('force_verify') == 1) {
                 $auth_model = $this->class::forceCreate([$auth_model_type => $request->username]);
             } else {
-                return $this->sendError(trans('admins::auth.failed'));
+                return $this->sendError(trans("$this->module_name::auth.validations.failed"));
             }
-
         }
 
         $verification = Verification::updateOrCreate(
             [
                 'verifiable_id' => $auth_model->id,
                 'verifiable_type' => $this->class,
-                'verficiation_type' => get_model_auth_type($this->class),
-                'verficiation_value' => $request->username
+                'verificiation_type' => get_model_auth_type($this->class),
+                'verificiation_value' => $request->username
             ],
             [
                 'code' => $code = random_int(1000, 9999),
@@ -62,18 +54,19 @@ class BaseVerificationController extends Controller
 
         $data['code'] = $code;
 
-        return $this->sendResponse($data, trans('admins::auth.messages.forget-password-code-sent'));
-
+        return $this->sendResponse($data, trans("$this->module_name::auth.messages.verification.sent"));
     }
 
     /**
      * Verify the user's Auth Type .
      *
-     * @param BaseVerificationRequest $request
+     * @param Request $request
      * @return JsonResponse
      */
-    public function verify(BaseVerificationRequest $request): JsonResponse
+    public function verify(Request $request): JsonResponse
     {
+        $this->validationAction($this->verifyRequest, $request);
+
         $auth_model_type = $request->auth_type;
         $auth_model = $this->class::where($auth_model_type, $request->username)->first();
 
@@ -84,13 +77,15 @@ class BaseVerificationController extends Controller
         $verification = Verification::where([
             'verifiable_id' => $auth_model->id,
             'verifiable_type' => $this->class,
-            'verficiation_type' => get_model_auth_type($this->class),
-            'verficiation_value' => $request->username,
+            'verificiation_type' => get_model_auth_type($this->class),
+            'verificiation_value' => $request->username,
             'code' => $request->code,
         ])->first();
 
         if (!$verification || $verification->isExpired()) {
-            return $this->sendError(trans('admins::verification.invalid'));
+            return $this->sendError(trans("$this->module_name::auth.verifications.verification", [
+                'attribute' => trans("$this->module_name::auth.attributes.code"),
+            ]));
         }
 
         $auth_model->forceFill([
@@ -104,6 +99,6 @@ class BaseVerificationController extends Controller
 
         $data['token'] = $auth_model->createTokenForDevice($request->device_name);
 
-        return $this->sendResponse($data, trans('admins::verification.is_verified'));
+        return $this->sendResponse($data, trans("$this->module_name::auth.messages.verification.verified"));
     }
 }

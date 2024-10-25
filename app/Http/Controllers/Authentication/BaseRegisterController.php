@@ -6,23 +6,28 @@ use App\Events\VerificationCreated;
 use App\Http\Requests\Authentication\BaseRegisterRequest;
 use App\Traits\ApiTrait;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller;
+use Illuminate\Http\Request;
 
-class BaseRegisterController extends Controller
+class BaseRegisterController extends BaseAuthenticationController
 {
-    use AuthorizesRequests, ValidatesRequests, ApiTrait;
+    use  ApiTrait;
 
-    protected $class = Authenticatable::class;
+    protected $class;
 
-    /**
-     * Register a new user and return a token for the user.
-     *
-     * @param BaseRegisterRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function register(BaseRegisterRequest $request)
+    protected $registerRequest = BaseRegisterRequest::class ;
+
+/**
+ * Handle the registration of a new user.
+ *
+ * @param Request $request
+ * @return \Illuminate\Http\JsonResponse
+ *
+ * This method creates a new user based on the validated request data.
+ * If an avatar is provided in the request, it is added to the user's media collection.
+ * It triggers a Registered event and a VerificationCreated event for the new user.
+ * Returns a JSON response containing the user's resource data, an access token, and a success message.
+ */
+    public function register(Request $request)
     {
         $auth_model = $this->class::create($request->validated());
 
@@ -39,7 +44,7 @@ class BaseRegisterController extends Controller
             'success' => true,
             'data' => $auth_model->getResource(),
             'token' => $auth_model->createToken('MyApp')->plainTextToken,
-            'message' => 'success',
+            'message' => trans("$this->module_name::auth.register"),
         ];
 
         return response()->json($response);

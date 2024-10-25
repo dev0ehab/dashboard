@@ -22,7 +22,7 @@ class AdminResource extends JsonResource
             'l_name' => $this->l_name,
             'email' => $this->email,
             'phone' => $this->phone,
-            'avatar' => $this->getAvatar(),
+            'avatar' => $this->avatar,
             'created_at' => $this->created_at->toDateTimeString(),
             'created_at_formatted' => $this->created_at->diffForHumans(),
         ];

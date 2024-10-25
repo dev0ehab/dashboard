@@ -25,8 +25,8 @@ class Verification extends Model
     protected $fillable = [
         'verifiable_id',
         'verifiable_type',
-        "verficiation_type",
-        "verficiation_value",
+        "verificiation_type",
+        "verificiation_value",
         'code',
         'created_at',
     ];

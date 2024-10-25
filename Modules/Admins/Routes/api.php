@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,9 +19,10 @@ Route::prefix('admin')->middleware('auth-type')->group(
         Route::post('/register', 'Api\RegisterController@register');
         Route::post('/login', 'Api\LoginController@login');
 
-        Route::post('/password/forget', 'Api\ResetPasswordController@forget');
-        Route::post('/password/code', 'Api\ResetPasswordController@code');
-        Route::post('/password/reset', 'Api\ResetPasswordController@reset');
+        Route::post('/password-reset/send', 'Api\ResetPasswordController@send');
+        Route::post('/password-reset/resend', 'Api\ResetPasswordController@send');
+        Route::post('/password-reset/verify', 'Api\ResetPasswordController@verify');
+        Route::post('/password-reset/reset', 'Api\ResetPasswordController@reset');
 
         Route::post('verification/send', 'Api\VerificationController@send');
         Route::post('verification/resend', 'Api\VerificationController@send');
@@ -39,7 +42,7 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(
 
         Route::post('logout', 'Api\ProfileController@logout');
 
-        Route::post('change-authenticable', 'Api\ChangeAuthenticable@send');
+        Route::post('change-authenticable/send', 'Api\ChangeAuthenticable@send');
         Route::post('change-authenticable/verify', 'Api\ChangeAuthenticable@verify');
 
     }

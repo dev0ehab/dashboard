@@ -18,8 +18,8 @@ class AdminsTableSeeder extends Seeder
             'f_name' => 'Mr',
             'l_name' => 'Root',
             'email' => 'root@demo.com',
-            'phone' => '0543037411',
-            'password' => 'password',
+            'phone' => '+0543037411',
+            'password' => 'Aa@12345',
         ]);
 
 
@@ -27,8 +27,8 @@ class AdminsTableSeeder extends Seeder
             'f_name' => 'Mr',
             'l_name' => 'Admin',
             'email' => 'admin@demo.com',
-            'phone' => '0543037412',
-            'password' => 'password',
+            'phone' => '+0543037412',
+            'password' => 'Aa@12345',
         ]);
 
         $admins = [$root, $admin];

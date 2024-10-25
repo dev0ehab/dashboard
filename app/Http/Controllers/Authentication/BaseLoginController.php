@@ -5,50 +5,48 @@ namespace App\Http\Controllers\Authentication;
 use App\Http\Requests\Authentication\BaseLoginRequest;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Traits\ApiTrait;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
-class BaseLoginController extends Controller
+class BaseLoginController extends BaseAuthenticationController
 {
-    use AuthorizesRequests, ValidatesRequests, ApiTrait;
+    use ApiTrait;
 
-    protected $class = Authenticatable::class;
+    protected $loginRequest = BaseLoginRequest::class;
 
     /**
-     * Handle a login request to the application.
+     * Handle a login request for the application.
      *
-     * @param BaseLoginRequest $request
+     * @param Request $request
      * @return JsonResponse
      */
-    public function login(BaseLoginRequest $request)
+    public function login(Request $request): JsonResponse
     {
+        $this->validationAction($this->loginRequest, $request);
+
         $auth_model_type = $request->auth_type;
 
         $auth_model = $this->class::where($auth_model_type, $request->username)->first();
 
         if (!$auth_model) {
-            return $this->sendError(trans('admins::auth.failed'));
+            return $this->sendError(trans("$this->module_name::auth.validations.failed"));
         }
 
         if ($auth_model->blocked_at) {
             auth()->logout();
-            return $this->sendError(trans('admins::auth.blocked'));
+            return $this->sendError(trans("$this->module_name::auth.validations.blocked"));
         }
 
         if (!Hash::check($request->password, $auth_model->password)) {
-            return $this->sendError(trans('admins::users.messages.password'));
+            return $this->sendError(trans("$this->module_name::auth.validations.password"));
         }
 
         if (!$auth_model->hasVerifiedAuth($auth_model_type)) {
             auth()->logout();
-            // $auth_model->sendVerificationCode(request('test_mode'));
             $data = $auth_model->getResource();
-            return $this->sendResponse($data, trans('admins::users.messages.verified'));
+            return $this->sendResponse($data, trans("$this->module_name::auth.validations.$auth_model_type-not-verified"));
         }
 
         event(new Login('sanctum', $auth_model, false));
@@ -64,7 +62,7 @@ class BaseLoginController extends Controller
             'success' => true,
             'data' => $auth_model->getResource(),
             'token' => $auth_model->createToken('MyApp')->plainTextToken,
-            'message' => 'success',
+            'message' => trans("$this->module_name::auth.messages.login"),
         ];
 
         return response()->json($response);

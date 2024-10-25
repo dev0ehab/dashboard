@@ -11,6 +11,7 @@ class SendResetPasswordCode
     private $auth_model;
     private $auth_type;
     private $code;
+    private $verification_value;
 
     /**
      * Create the event listener.
@@ -22,6 +23,7 @@ class SendResetPasswordCode
         $this->auth_model = $event->resetPasswordCode->resetable;
         $this->auth_type = request()->get('auth_type');
         $this->code = $event->resetPasswordCode->code;
+        $this->verification_value = $event->resetPasswordCode->verification_value;
     }
 
     /**
@@ -48,21 +50,19 @@ class SendResetPasswordCode
         /* @deprecated */
         Storage::disk('public')->append(
             'resetPassword.txt',
-            "The reset password code for phone {$event->resetPasswordCode->username} is {$event->resetPasswordCode->code} generated at " . now()->toDateTimeString() . "\n"
+            "The reset password code for $this->auth_type {$this->verification_value} is {$this->code} generated at " . now()->toDateTimeString() . "\n"
         );
     }
 
 
     private function sendEmailNotification()
     {
-        // dd("email");
-        // $model->notify(new SendResetPasswordCodeNotification($code));
+        // $this->auth_model->notify(new SendResetPasswordCodeNotification($code));
     }
 
     private function sendSmsNotification()
     {
-        // dd("phone");
-        // $model->notify(new SendResetPasswordCodeNotification($code));
+        // $this->auth_model->notify(new SendResetPasswordCodeNotification($code));
     }
 
 

@@ -18,7 +18,7 @@ class Admin extends Authenticatable implements HasMedia, LaratrustUser
 {
     use Notifiable, AdminHelpers, HasApiTokens, InteractsWithMedia, HasRolesAndPermissions, SoftDeletes, AdminRelations;
 
-    const VerificationType = 'phone';
+    const AuthType = 'email';
 
     /**
      * The attributes that are mass assignable.

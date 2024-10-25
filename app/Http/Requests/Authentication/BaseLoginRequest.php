@@ -29,7 +29,14 @@ class BaseLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required',
+            'username' => [
+                'required',
+                "exists:$this->table,$this->auth_type",
+                $this->auth_type == 'email' ? 'email' : "starts_with:$this->dial_code",
+                $this->auth_type == 'phone' ? 'min:10' : null,
+            ],
+
+            'dial_code' => [$this->auth_type == 'phone' ? 'required' : 'nullable', "max:4", "starts_with:+"],
             'password' => 'required',
         ];
     }
@@ -41,7 +48,13 @@ class BaseLoginRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return trans('admins::auth.attributes');
+        $attributes = trans("$this->module_name::auth.attributes");
+
+        $custom_attributes = [
+            'username' => trans("$this->module_name::auth.attributes")[$this->auth_type],
+        ];
+
+        return array_merge($attributes, $custom_attributes);
     }
 
     /**
@@ -50,8 +63,7 @@ class BaseLoginRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        $response = $this->sendErrorData($validator->errors()->toArray(), 'fail');
-
+        $response = $this->sendErrorData($validator->errors()->toArray(), $validator->errors()->first());
         throw new ValidationException($validator, $response);
     }
 }

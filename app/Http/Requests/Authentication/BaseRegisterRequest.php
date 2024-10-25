@@ -45,7 +45,13 @@ class BaseRegisterRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return trans('admins::customers.attributes');
+        $attributes = trans("$this->module_name::auth.attributes");
+
+        $custom_attributes = [
+            'username' => trans("$this->module_name::auth.attributes")[$this->auth_type],
+        ];
+
+        return array_merge($attributes, $custom_attributes);
     }
 
     /**
@@ -55,6 +61,6 @@ class BaseRegisterRequest extends FormRequest
 
     protected function failedValidationResponse($validator)
     {
-        return $this->sendErrorData($validator->errors()->toArray(), 'fail');
+        $response = $this->sendErrorData($validator->errors()->toArray(), $validator->errors()->first());
     }
 }

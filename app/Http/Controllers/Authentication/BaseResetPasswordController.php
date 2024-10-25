@@ -2,43 +2,51 @@
 
 namespace App\Http\Controllers\Authentication;
 
-use App\Http\Requests\Authentication\BaseForgetPasswordRequest;
-use App\Http\Requests\Authentication\BaseResetPasswordCodeRequest;
-use App\Http\Requests\Authentication\BaseResetPasswordRequest;
 use App\Models\ResetPasswordCode;
 use App\Models\ResetPasswordToken;
-use Exception;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
 use App\Events\ResetPasswordCreated;
+use App\Http\Requests\Authentication\BaseResetPasswordRequest;
+use App\Http\Requests\Authentication\BaseResetPasswordSendRequest;
+use App\Http\Requests\Authentication\BaseResetPasswordVerifyRequest;
 use App\Traits\ApiTrait;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 
-class BaseResetPasswordController extends Controller
+class BaseResetPasswordController extends BaseAuthenticationController
 {
-    use AuthorizesRequests, ValidatesRequests, ApiTrait;
+    use ApiTrait;
 
-    protected $class = Authenticatable::class;
+    protected $class;
+
+    protected $sendRequest = BaseResetPasswordSendRequest::class;
+
+    protected $verifyRequest = BaseResetPasswordVerifyRequest::class;
+
+    protected $resetRequest = BaseResetPasswordRequest::class;
 
     /**
-     * Send forget password code to the user.
+     * Handle the process of forgetting a password by generating and sending a reset code.
      *
-     * @param BaseForgetPasswordRequest $request
-     * @return JsonResponse
-     * @throws Exception
+     * This method verifies if the user exists based on the provided authentication type and username.
+     * If the user exists, it generates a new reset password code and triggers the ResetPasswordCreated event.
+     *
+     * @param Request $request The request containing the authentication type and username.
+     * @return JsonResponse A response indicating success or failure in sending the reset password code.
      */
-    public function forget(BaseForgetPasswordRequest $request): JsonResponse
+    public function send(Request $request): JsonResponse
     {
+        $this->validationAction($this->sendRequest, $request);
+
         $auth_model_type = $request->auth_type;
         $auth_model = $this->class::where($auth_model_type, $request->username)->first();
 
         if (!$auth_model) {
-            return $this->sendError(trans('admins::auth.failed'));
+            return $this->sendError(trans("$this->module_name::auth.validations.failed"));
         }
+
+
 
         $resetPasswordCode = ResetPasswordCode::updateOrCreate([
             'resetable_id' => $auth_model->id,
@@ -54,17 +62,25 @@ class BaseResetPasswordController extends Controller
 
         $data['reset_password_code'] = $code;
 
-        return $this->sendResponse($data, trans('admins::auth.messages.forget-password-code-sent'));
+        return $this->sendResponse($data, trans("$this->module_name::auth.messages.password-reset.sent"));
+
+        trans("$this->module_name::auth.messages.password-reset.sent");
+        trans("$this->module_name::auth.messages.password-reset.verified");
+        trans("$this->module_name::auth.messages.password-reset.reset");
     }
 
+
+
     /**
-     * Get the reset password token using verification code.
+     * Validate the reset password code.
      *
-     * @param BaseResetPasswordCodeRequest $request
+     * @param Request $request
      * @return JsonResponse
      */
-    public function code(BaseResetPasswordCodeRequest $request): JsonResponse
+    public function code(Request $request): JsonResponse
     {
+        $this->validationAction($this->verifyRequest, $request);
+
         $auth_model_type = $request->auth_type;
         $auth_model = $this->class::where($auth_model_type, $request->username)->first();
 
@@ -79,11 +95,10 @@ class BaseResetPasswordController extends Controller
         $resetPasswordCode = ResetPasswordCode::where($dataReset)->first();
 
         if (!$resetPasswordCode || $resetPasswordCode->isExpired() || !$auth_model) {
-            return $this->sendError(trans('validation.exists', [
-                'attribute' => trans('admins::auth.attributes.code'),
+            return $this->sendError(trans("$this->module_name::auth.verifications.verification", [
+                'attribute' => trans("$this->module_name::auth.attributes.code"),
             ]));
         }
-
         ResetPasswordCode::where(['resetable_id' => $auth_model->id, 'resetable_type' => get_class($auth_model)])->delete();
 
         ResetPasswordToken::updateOrCreate([
@@ -98,15 +113,19 @@ class BaseResetPasswordController extends Controller
 
         $data['reset_token'] = $token;
 
-        return $this->sendResponse($data, 'success');
+        return $this->sendResponse($data, trans("$this->module_name::auth.messages.password-reset.verified"));
     }
 
     /**
-     * @param BaseResetPasswordRequest $request
+     * Reset the password for the user.
+     *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function reset(BaseResetPasswordRequest $request): JsonResponse
+    public function reset(Request $request): JsonResponse
     {
+        $this->validationAction($this->resetRequest, $request);
+
         $dataReset = [
             'resetable_type' => $this->class,
             'reset_type' => get_model_auth_type($this->class),
@@ -116,8 +135,8 @@ class BaseResetPasswordController extends Controller
         $resetPasswordToken = ResetPasswordToken::where($dataReset)->latest()->first();
 
         if (!$resetPasswordToken || $resetPasswordToken->isExpired()) {
-            return $this->sendError(trans('validation.exists', [
-                'attribute' => trans('admins::auth.attributes.token'),
+            return $this->sendError(trans("$this->module_name::auth.validations.validation-exists", [
+                'attribute' => trans("$this->module_name::auth.attributes.token"),
             ]));
         }
 
@@ -131,6 +150,6 @@ class BaseResetPasswordController extends Controller
 
         ResetPasswordToken::where(['resetable_id' => $auth_model->id, 'resetable_type' => get_class($auth_model)])->delete();
 
-        return $this->sendSuccess('success');
+        return $this->sendSuccess(trans("$this->module_name::auth.messages.password-reset.reset"));
     }
 }

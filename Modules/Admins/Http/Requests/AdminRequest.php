@@ -2,13 +2,11 @@
 
 namespace Modules\Admins\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Password;
 
 class AdminRequest extends FormRequest
 {
-    use WithHashedPassword;
 
     /**
      * Determine if the supervisor is authorized to make this request.

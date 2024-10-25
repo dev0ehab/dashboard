@@ -48,7 +48,13 @@ class BaseVerificationRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return trans("$this->table::verification.attributes");
+        $attributes = trans("$this->module_name::auth.attributes");
+
+        $custom_attributes = [
+            'username' => trans("$this->module_name::auth.attributes")[$this->auth_type],
+        ];
+
+        return array_merge($attributes, $custom_attributes);
     }
 
     /**
@@ -57,7 +63,7 @@ class BaseVerificationRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        $response = $this->sendErrorData($validator->errors()->toArray(), 'fail');
+        $response = $this->sendErrorData($validator->errors()->toArray(), $validator->errors()->first());
 
         throw new ValidationException($validator, $response);
     }

@@ -43,7 +43,7 @@ class BaseResetPasswordRequest extends FormRequest
      */
     public function attributes()
     {
-        return trans('admins::auth.attributes');
+        return trans("$this->module_name::auth.attributes");
     }
 
     /**
@@ -52,7 +52,7 @@ class BaseResetPasswordRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        $response = $this->sendErrorData($validator->errors()->toArray(), 'fail');
+        $response = $this->sendErrorData($validator->errors()->toArray(), $validator->errors()->first());
 
         throw new ValidationException($validator, $response);
     }
