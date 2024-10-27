@@ -19,10 +19,10 @@ Route::prefix('admin')->middleware('auth-type')->group(
         Route::post('/register', 'Api\RegisterController@register');
         Route::post('/login', 'Api\LoginController@login');
 
-        Route::post('/password-reset/send', 'Api\ResetPasswordController@send');
-        Route::post('/password-reset/resend', 'Api\ResetPasswordController@send');
-        Route::post('/password-reset/verify', 'Api\ResetPasswordController@verify');
-        Route::post('/password-reset/reset', 'Api\ResetPasswordController@reset');
+        Route::post('/password/reset/send', 'Api\ResetPasswordController@send');
+        Route::post('/password/reset/resend', 'Api\ResetPasswordController@send');
+        Route::post('/password/reset/verify', 'Api\ResetPasswordController@verify');
+        Route::post('/password/reset', 'Api\ResetPasswordController@reset');
 
         Route::post('verification/send', 'Api\VerificationController@send');
         Route::post('verification/resend', 'Api\VerificationController@send');
@@ -35,15 +35,16 @@ Route::prefix('admin')->middleware('auth-type')->group(
 Route::prefix('admin')->middleware('auth:sanctum')->group(
     function () {
         Route::get('profile', 'Api\ProfileController@show');
-        Route::post('profile', 'Api\ProfileController@update');
+        Route::post('profile/update', 'Api\ProfileController@update');
 
-        Route::post('preferred-locale', 'Api\ProfileController@preferredLocale');
-        Route::post('fcm', 'Api\ProfileController@fcm');
+        Route::post('password/update', 'Api\ProfileController@password');
+        Route::post('preferred-locale/update', 'Api\ProfileController@preferredLocale');
+        Route::post('fcm/update', 'Api\ProfileController@fcm');
 
         Route::post('logout', 'Api\ProfileController@logout');
 
-        Route::post('change-authenticable/send', 'Api\ChangeAuthenticable@send');
-        Route::post('change-authenticable/verify', 'Api\ChangeAuthenticable@verify');
+        Route::post('authenticable/update/send', 'Api\ChangeAuthenticable@send');
+        Route::post('authenticable/update/verify', 'Api\ChangeAuthenticable@verify');
 
     }
 );

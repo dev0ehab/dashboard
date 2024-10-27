@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Support\Traits;
+namespace App\Traits;
 
 
 use GuzzleHttp\Client;

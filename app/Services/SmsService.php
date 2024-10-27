@@ -50,7 +50,7 @@ class SmsService
     {
         $url = config('sms.dreams.sms_url');
         $phoneNumber = substr($phoneNumber, 1);
-        $phoneNumber = "966$phoneNumber";
+
         $data = [
             "user" => config('sms.dreams.sms_user_name'),
             "secret_key" => config('sms.dreams.sms_password'),

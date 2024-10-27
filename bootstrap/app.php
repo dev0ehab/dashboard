@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Middleware\AuthTypeMiddleware;
 use App\Http\Middleware\LocalesMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Modules\Accounts\Http\Middlewares\AuthTypeMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(

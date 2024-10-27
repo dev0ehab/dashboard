@@ -2,7 +2,7 @@
 
 namespace Modules\Admins\Http\Controllers\Api;
 
-use App\Http\Controllers\Authentication\BaseResetPasswordController;
+use Modules\Accounts\Http\Controllers\Api\BaseResetPasswordController;
 use Modules\Admins\Entities\Admin;
 
 

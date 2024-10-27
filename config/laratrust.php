@@ -1,5 +1,8 @@
 <?php
 
+use Modules\Accounts\Entities\Permission;
+use Modules\Accounts\Entities\Role;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -115,9 +118,9 @@ return [
     */
     'models' => [
 
-        'role' => \App\Models\Role::class,
+        'role' => Role::class,
 
-        'permission' => \App\Models\Permission::class,
+        'permission' => Permission::class,
 
         /**
          * Will be used only if the teams functionality is enabled.

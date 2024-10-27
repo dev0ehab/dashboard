@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Support\Traits;
+namespace App\Traits;
 
 use Faker\Factory as Faker;
 use File;

@@ -6,8 +6,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Permission;
-use App\Models\Role;
+use Modules\Accounts\Entities\Permission;
+use Modules\Accounts\Entities\Role;
 use Modules\Admins\Database\Seeders\AdminsTableSeeder;
 use Modules\Admins\Entities\Admin;
 

@@ -2,7 +2,7 @@
 
 namespace Modules\Admins\Http\Controllers\Api;
 
-use App\Http\Controllers\Authentication\BaseChangeAuthenticable;
+use Modules\Accounts\Http\Controllers\Api\BaseChangeAuthenticable;
 use Modules\Admins\Entities\Admin;
 
 class ChangeAuthenticable extends BaseChangeAuthenticable

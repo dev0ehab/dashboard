@@ -18,11 +18,14 @@ class AdminResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'name' => $this->name,
             'f_name' => $this->f_name,
             'l_name' => $this->l_name,
             'email' => $this->email,
             'phone' => $this->phone,
             'avatar' => $this->avatar,
+            'role' => $this->role,
+
             'created_at' => $this->created_at->toDateTimeString(),
             'created_at_formatted' => $this->created_at->diffForHumans(),
         ];
