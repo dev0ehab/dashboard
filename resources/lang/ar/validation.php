@@ -92,7 +92,7 @@ return [
     'not_in' => 'العنصر :attribute غير صحيح.',
     'not_regex' => 'صيغة :attribute غير صحيحة.',
     'numeric' => 'يجب على :attribute أن يكون رقمًا.',
-    'password' => 'كلمة المرور غير صحيحة.',
+    'wrong_password' => 'كلمة المرور غير صحيحة.',
     'present' => 'يجب تقديم :attribute.',
     'regex' => 'صيغة :attribute .غير صحيحة.',
     'required' => ':attribute مطلوب.',
@@ -117,6 +117,11 @@ return [
     'url' => 'صيغة الرابط :attribute غير صحيحة.',
     'uuid' => ':attribute يجب أن يكون بصيغة UUID سليمة.',
     'base64_image' => 'حقل :attribute يجب ان يكون صورة من نوع base64',
+    "password" => [
+        "mixed" => "يجب أن يحتوي حقل :attribute على حرف واحد كبير وحرف صغير على الأقل.",
+        "symbols" => "يجب أن يحتوي حقل :attribute على رمز واحد على الأقل.",
+        "numbers" => "يجب أن يحتوي حقل :attribute على رقم واحد على الأقل.",
+    ],
 
     /*
     |--------------------------------------------------------------------------

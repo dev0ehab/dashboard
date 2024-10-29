@@ -4,6 +4,7 @@ namespace Modules\Accounts\Http\Controllers\Api;
 
 use Modules\Accounts\Events\ChangePasswordEvent;
 use Modules\Accounts\Http\Requests\BasePasswordRequest;
+use Modules\Accounts\Http\Requests\BaseProfileDeleteRequest;
 use Modules\Accounts\Http\Requests\BaseProfileRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ class BaseProfileController extends BaseAuthenticationController
 
     protected $profileRequest = BaseProfileRequest::class;
     protected $passwordRequest = BasePasswordRequest::class;
+    protected $deleteRequest = BaseProfileDeleteRequest::class;
 
     /**
      * Display the authenticated user resource.
@@ -109,5 +111,21 @@ class BaseProfileController extends BaseAuthenticationController
         $auth_model->tokens()->delete();
 
         return $this->sendSuccess(trans("$this->module_name::auth.messages.logout"));
+    }
+
+    /**
+     * Deletes the authenticated user account.
+     *
+     * This method deletes the user permanently from the database and revokes all personal access tokens.
+     *
+     * @return JsonResponse A response indicating success or failure.
+     */
+    public function delete(Request $request): JsonResponse
+    {
+        $this->validationAction($this->deleteRequest, $request);
+
+        auth()->user()->delete();
+
+        return $this->sendSuccess(trans("$this->module_name::auth.messages.deleted"));
     }
 }

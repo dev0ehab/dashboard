@@ -93,7 +93,7 @@ return [
     'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute format is invalid.',
     'numeric' => 'The :attribute must be a number.',
-    'password' => 'The password is incorrect.',
+    'wrong_password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
     'required' => 'The :attribute field is required.',
@@ -118,6 +118,11 @@ return [
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
+    "password" => [
+    "mixed" => "The:attribute field must contain at least one uppercase and one lowercase letter.",
+    "symbols" => "The :attribute field must contain at least one symbol.",
+    "numbers" => "The:attribute field must contain at least one number.",
+    ],
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

@@ -36,6 +36,7 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(
     function () {
         Route::get('profile', 'Api\ProfileController@show');
         Route::post('profile/update', 'Api\ProfileController@update');
+        Route::post('profile/delete', 'Api\ProfileController@delete');
 
         Route::post('password/update', 'Api\ProfileController@password');
         Route::post('preferred-locale/update', 'Api\ProfileController@preferredLocale');
