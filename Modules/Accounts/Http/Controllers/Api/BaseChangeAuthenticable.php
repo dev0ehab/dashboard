@@ -26,7 +26,7 @@ class BaseChangeAuthenticable extends BaseAuthenticationController
      */
     public function send(Request $request): JsonResponse
     {
-        $this->validationAction($this->sendRequest, $request);
+        $this->validationAction($this->sendRequest);
 
         $auth_model = auth()->user();
 
@@ -47,7 +47,8 @@ class BaseChangeAuthenticable extends BaseAuthenticationController
 
         $data['code'] = $code;
 
-        return $this->sendResponse($data, trans("$this->module_name::auth.change-authenticable.$auth_type.sent"));
+
+        return $this->sendResponse($data, trans("$this->module_name::auth.messages.change-authenticable.sent-$auth_type"));
     }
 
     /**
@@ -58,7 +59,7 @@ class BaseChangeAuthenticable extends BaseAuthenticationController
      */
     public function verify(Request $request): JsonResponse
     {
-        $this->validationAction($this->verifyRequest, $request);
+        $this->validationAction($this->verifyRequest);
 
         $auth_model = auth()->user();
 
@@ -75,14 +76,13 @@ class BaseChangeAuthenticable extends BaseAuthenticationController
             ]));
         }
 
-        $auth_model_updates[$auth_type] = $verification->username;
-        $auth_model_updates['dial_code'] = $auth_type == 'phone' ? $request->dial_code : null;
+        $auth_model_updates[$auth_type] = $verification->verificiation_value;
+        $auth_model_updates['dial_code'] = $auth_type == 'phone' ? $request->dial_code : $auth_model->dial_code;
         $auth_model->forceFill($auth_model_updates)->save();
 
         $verification->delete();
 
-        $data = $auth_model->getResource();
 
-        return $this->sendResponse($data, trans("$this->module_name::auth.change-authenticable.$auth_type.verify"));
+        return $this->sendSuccess(trans("$this->module_name::auth.messages.change-authenticable.verified"));
     }
 }

@@ -48,7 +48,7 @@ class BaseRegisterRequest extends FormRequest
         $attributes = trans("accounts::auth.attributes");
 
         $custom_attributes = [
-            'username' => trans("accounts::auth.attributes")[$this->auth_type],
+            'username' => trans("accounts::auth.attributes.$this->auth_type"),
         ];
 
         return array_merge($attributes, $custom_attributes);

@@ -21,6 +21,7 @@ return new class extends Migration
 
             $table->string('email')->unique()->nullable();
             $table->string('phone')->unique()->nullable();
+            $table->string('dial_code')->nullable();
 
             $table->timestamp('phone_verified_at')->nullable();
             $table->timestamp('email_verified_at')->nullable();

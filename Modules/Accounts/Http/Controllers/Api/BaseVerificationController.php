@@ -22,7 +22,7 @@ class BaseVerificationController extends BaseAuthenticationController
 
     public function send(Request $request): JsonResponse
     {
-        $this->validationAction($this->sendRequest, $request);
+        $this->validationAction($this->sendRequest);
 
         $auth_model_type = $request->auth_type;
 
@@ -65,7 +65,7 @@ class BaseVerificationController extends BaseAuthenticationController
      */
     public function verify(Request $request): JsonResponse
     {
-        $this->validationAction($this->verifyRequest, $request);
+        $this->validationAction($this->verifyRequest);
 
         $auth_model_type = $request->auth_type;
         $auth_model = $this->class::where($auth_model_type, $request->username)->first();
@@ -89,15 +89,11 @@ class BaseVerificationController extends BaseAuthenticationController
         }
 
         $auth_model->forceFill([
-            $auth_model_type => $verification->verificiation_value,
             "{$auth_model_type}_verified_at" => now(),
         ])->save();
 
         $verification->delete();
 
-        $data = $auth_model->getResource();
-        $data['token'] = $auth_model->createToken('MyApp')->plainTextToken;
-
-        return $this->sendResponse($data, trans("$this->module_name::auth.messages.verification.verified"));
+        return $this->sendSuccess(trans("$this->module_name::auth.messages.verification.verified"));
     }
 }

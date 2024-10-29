@@ -5,7 +5,7 @@ namespace Modules\Accounts\Http\Controllers\Api;
 use Illuminate\Routing\Controller;
 use Nwidart\Modules\Facades\Module;
 
-class BaseAuthenticationController extends Controller
+class BaseAuthModelController extends Controller
 {
 
     protected $class;

@@ -7,7 +7,7 @@ trait AuthModelHelper
     // Getters & Setters
 
     /**
-     * The Admin profile image url.
+     * The auth model profile image url.
      *
      * @return string
      */
@@ -17,13 +17,38 @@ trait AuthModelHelper
     }
 
 
+    /**
+     * Get the full name attribute by concatenating the first name and last name.
+     *
+     * @return string
+     */
     public function getNameAttribute()
     {
         return $this->f_name . ' ' . $this->l_name;
     }
 
+    /**
+     * Block the auth model.
+     *
+     * @return self
+     */
+    public function block()
+    {
+        return $this->forceFill(['blocked_at' => now()]);
+    }
+
+    /**
+     * Un-block the auth model.
+     *
+     * @return self
+     */
+    public function unblock()
+    {
+        return $this->forceFill(['blocked_at' => null]);
+    }
 
     // Methods
+
     /**
      * Check if the given auth type has been verified.
      *
@@ -34,6 +59,7 @@ trait AuthModelHelper
     {
         return (bool) $this->{"{$auth_type}_verified_at"};
     }
+
 
 
 }

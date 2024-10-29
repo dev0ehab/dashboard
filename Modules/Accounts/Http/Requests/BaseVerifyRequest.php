@@ -28,7 +28,6 @@ class BaseVerifyRequest extends FormRequest
     public function rules()
     {
         return [
-
             'username' => [
                 'required',
                 $this->force_verify ? "exists:$this->table,$this->auth_type" : null,
@@ -51,7 +50,7 @@ class BaseVerifyRequest extends FormRequest
         $attributes = trans("accounts::auth.attributes");
 
         $custom_attributes = [
-            'username' => trans("accounts::auth.attributes")[$this->auth_type],
+            'username' => trans("accounts::auth.attributes.$this->auth_type"),
         ];
 
         return array_merge($attributes, $custom_attributes);

@@ -37,7 +37,7 @@ class BaseResetPasswordController extends BaseAuthenticationController
      */
     public function send(Request $request): JsonResponse
     {
-        $this->validationAction($this->sendRequest, $request);
+        $this->validationAction($this->sendRequest);
 
         $auth_model_type = $request->auth_type;
         $auth_model = $this->class::where($auth_model_type, $request->username)->first();
@@ -60,7 +60,7 @@ class BaseResetPasswordController extends BaseAuthenticationController
 
         event(new ResetPasswordEvent($resetPasswordCode));
 
-        $data['reset_password_code'] = $code;
+        $data['code'] = $code;
 
         return $this->sendResponse($data, trans("$this->module_name::auth.messages.password-reset.sent-$auth_model_type"));
     }
@@ -75,7 +75,7 @@ class BaseResetPasswordController extends BaseAuthenticationController
      */
     public function verify(Request $request): JsonResponse
     {
-        $this->validationAction($this->verifyRequest, $request);
+        $this->validationAction($this->verifyRequest);
 
         $auth_model_type = $request->auth_type;
         $auth_model = $this->class::where($auth_model_type, $request->username)->first();
@@ -120,7 +120,7 @@ class BaseResetPasswordController extends BaseAuthenticationController
      */
     public function reset(Request $request): JsonResponse
     {
-        $this->validationAction($this->resetRequest, $request);
+        $this->validationAction($this->resetRequest);
 
         $dataReset = [
             'resetable_type' => $this->class,

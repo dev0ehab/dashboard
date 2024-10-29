@@ -32,7 +32,7 @@ class BaseProfileController extends BaseAuthenticationController
 
     public function update(Request $request): JsonResponse
     {
-        $this->validationAction($this->profileRequest, $request);
+        $this->validationAction($this->profileRequest);
 
         $auth_model = auth()->user();
 
@@ -58,7 +58,7 @@ class BaseProfileController extends BaseAuthenticationController
 
         $auth_model->update($request->only('preferred_locale'));
 
-        return $this->sendSuccess($auth_model->getResource(), trans("$this->module_name::auth.messages.profile.preferred-locale"));
+        return $this->sendSuccess(trans("$this->module_name::auth.messages.profile.preferred-locale"));
     }
 
     /**
@@ -67,7 +67,7 @@ class BaseProfileController extends BaseAuthenticationController
      */
     public function password(Request $request): JsonResponse
     {
-        $this->validationAction($this->passwordRequest, $request);
+        $this->validationAction($this->passwordRequest);
 
         $auth_model = auth()->user();
 
@@ -75,7 +75,7 @@ class BaseProfileController extends BaseAuthenticationController
 
         event(new ChangePasswordEvent($auth_model, $request->password));
 
-        return $this->sendSuccess($auth_model->getResource(), trans("$this->module_name::auth.messages.profile.preferred-locale"));
+        return $this->sendSuccess(trans("$this->module_name::auth.messages.profile.preferred-locale"));
     }
 
 
@@ -91,7 +91,7 @@ class BaseProfileController extends BaseAuthenticationController
 
         $auth_model->update($request->only('device_token'));
 
-        return $this->sendSuccess($auth_model->getResource(), trans("successful request"));
+        return $this->sendSuccess(trans("$this->module_name::auth.messages.notification"));
     }
 
 
@@ -122,7 +122,7 @@ class BaseProfileController extends BaseAuthenticationController
      */
     public function delete(Request $request): JsonResponse
     {
-        $this->validationAction($this->deleteRequest, $request);
+        $this->validationAction($this->deleteRequest);
 
         auth()->user()->delete();
 

@@ -28,24 +28,25 @@ Route::prefix('admin')->middleware('auth-type')->group(
         Route::post('verification/resend', 'Api\VerificationController@send');
         Route::post('verification/verify', 'Api\VerificationController@verify');
 
-    }
-);
 
 
-Route::prefix('admin')->middleware('auth:sanctum')->group(
-    function () {
-        Route::get('profile', 'Api\ProfileController@show');
-        Route::post('profile/update', 'Api\ProfileController@update');
-        Route::post('profile/delete', 'Api\ProfileController@delete');
+        Route::middleware('auth:sanctum')->group(
+            function () {
+                Route::get('profile', 'Api\ProfileController@show');
+                Route::post('profile/update', 'Api\ProfileController@update');
+                Route::post('profile/delete', 'Api\ProfileController@delete');
 
-        Route::post('password/update', 'Api\ProfileController@password');
-        Route::post('preferred-locale/update', 'Api\ProfileController@preferredLocale');
-        Route::post('fcm/update', 'Api\ProfileController@fcm');
+                Route::post('password/update', 'Api\ProfileController@password');
+                Route::post('preferred-locale/update', 'Api\ProfileController@preferredLocale');
+                Route::post('fcm/update', 'Api\ProfileController@fcm');
 
-        Route::post('logout', 'Api\ProfileController@logout');
+                Route::post('logout', 'Api\ProfileController@logout');
 
-        Route::post('authenticable/update/send', 'Api\ChangeAuthenticable@send');
-        Route::post('authenticable/update/verify', 'Api\ChangeAuthenticable@verify');
+                Route::post('authenticable/update/send', 'Api\ChangeAuthenticable@send');
+                Route::post('authenticable/update/verify', 'Api\ChangeAuthenticable@verify');
+
+            }
+        );
 
     }
 );

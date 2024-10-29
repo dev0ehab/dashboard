@@ -24,7 +24,7 @@ class BaseLoginController extends BaseAuthenticationController
      */
     public function login(Request $request): JsonResponse
     {
-        $this->validationAction($this->loginRequest, $request);
+        $this->validationAction($this->loginRequest);
 
         $auth_model_type = $request->auth_type;
 

@@ -19,6 +19,7 @@ class AdminsTableSeeder extends Seeder
             'l_name' => 'Root',
             'email' => 'root@demo.com',
             'phone' => '+0543037411',
+            'dial_code' => '+05',
             'password' => 'Aa@12345',
         ]);
 
@@ -28,6 +29,7 @@ class AdminsTableSeeder extends Seeder
             'l_name' => 'Admin',
             'email' => 'admin@demo.com',
             'phone' => '+0543037412',
+            'dial_code' => '+05',
             'password' => 'Aa@12345',
         ]);
 

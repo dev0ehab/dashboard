@@ -35,6 +35,8 @@ return [
         'register' => 'You have registered successfully',
         'logout' => 'You have logged out successfully',
         'login' => 'You have logged in successfully',
+        'notification' => 'Notification status changed successfully',
+
 
         'profile' => [
             'change-password' => 'Password changed successfully',
@@ -54,6 +56,13 @@ return [
             'sent-phone' => 'Verification code has been sent to your phone',
             'verified' => 'Code verified successfully',
         ],
+
+        'change-authenticable' => [
+            'sent-email' => 'Verification code has been sent to your email',
+            'sent-phone' => 'Verification code has been sent to your phone',
+            'verified' => 'Code verified successfully',
+        ],
+
 
     ],
 

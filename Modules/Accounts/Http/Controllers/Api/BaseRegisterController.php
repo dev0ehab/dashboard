@@ -26,7 +26,7 @@ class BaseRegisterController extends BaseAuthenticationController
      */
     public function register(Request $request): JsonResponse
     {
-        $request_validated = $this->validationAction($this->registerRequest, $request);
+        $request_validated = $this->validationAction($this->registerRequest);
 
         $auth_model = $this->class::create($request_validated);
 
