@@ -23,13 +23,13 @@ return [
         'u' => 'update',
         'd' => 'delete',
         's' => 'show',
+        // 'dl' => 'download',
+        // 'so' => 'sort',
+        // 'rt' => 'readTrashed',
+        // 'a' => 'attach',
+        // 'st' => 'status',
         'b' => 'block',
-        'dl' => 'download',
-        'so' => 'sort',
-        'rt' => 'readTrashed',
         're' => 'restore',
         'f' => 'forceDelete',
-        'a' => 'attach',
-        'st' => 'status',
     ]
 ];
