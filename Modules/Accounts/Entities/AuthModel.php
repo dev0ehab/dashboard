@@ -2,6 +2,7 @@
 
 namespace Modules\Accounts\Entities;
 
+use App\Traits\Filterable;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Accounts\Entities\Helpers\AuthModelHelper;
 use Modules\Accounts\Entities\Relations\AuthModelRelation;
@@ -15,7 +16,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class AuthModel extends Authenticatable implements HasMedia
 {
-    use Notifiable, AuthModelHelper, AuthModelScope, HasApiTokens, InteractsWithMedia, SoftDeletes, AuthModelRelation;
+    use Notifiable, AuthModelHelper, AuthModelScope, HasApiTokens, InteractsWithMedia, SoftDeletes, AuthModelRelation , Filterable;
 
     public const AuthType = 'email';
 

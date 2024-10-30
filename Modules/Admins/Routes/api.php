@@ -47,6 +47,12 @@ Route::prefix('admin')->middleware('auth-type')->group(
 
             }
         );
-
     }
+
 );
+
+Route::apiResource('admins', 'Api\AdminController');
+Route::post('admins/{admin}/block', 'Api\AdminController@block');
+Route::post('admins/{admin}/unblock', 'Api\AdminController@unblock');
+Route::post('admins/{admin}/force-Delete', 'Api\AdminController@forceDelete');
+Route::post('admins/{admin}/restore', 'Api\AdminController@restore');

@@ -1,24 +1,23 @@
 <?php
 
-namespace App\Interfaces;
+namespace Modules\Accounts\Contracts\Interfaces;
 
-interface SoftDeleteInterface
+interface BlockInterface
 {
-
     /**
-     * forceDelete model .
+     * block model .
      *
      * @param array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function forceDelete($model);
+    public function block($model);
 
 
     /**
-     * restore model .
+     * unblock model .
      *
      * @param array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function restore($model);
+    public function unblock($model);
 }

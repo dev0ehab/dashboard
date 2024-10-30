@@ -14,6 +14,7 @@ class AuthModelFilter extends BaseFilters
     protected $filters = [
         'name',
         'email',
+        'only_trashed',
         'phone',
     ];
 
@@ -57,6 +58,21 @@ class AuthModelFilter extends BaseFilters
     {
         if ($value) {
             return $this->builder->where('phone', 'like', "%$value%");
+        }
+
+        return $this->builder;
+    }
+
+    /**
+     * Filter the query to include users by phone.
+     *
+     * @param string|int $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function only_trashed($value)
+    {
+        if ($value) {
+            return $this->builder->onlyTrashed();
         }
 
         return $this->builder;

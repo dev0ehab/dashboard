@@ -11,12 +11,10 @@ use Modules\Accounts\Events\ResetPasswordEvent;
 use Modules\Accounts\Http\Requests\BaseResetPasswordRequest;
 use Modules\Accounts\Http\Requests\BaseResetPasswordSendRequest;
 use Modules\Accounts\Http\Requests\BaseResetPasswordVerifyRequest;
-use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 
-class BaseResetPasswordController extends BaseAuthenticationController
+class BaseResetPasswordController extends BaseController
 {
-    use ApiTrait;
 
     protected $class;
 

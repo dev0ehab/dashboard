@@ -2,11 +2,13 @@
 
 namespace Modules\Accounts\Http\Controllers\Api;
 
+use App\Traits\ApiTrait;
 use Illuminate\Routing\Controller;
 use Nwidart\Modules\Facades\Module;
 
-class BaseAuthenticationController extends Controller
+class BaseController extends Controller
 {
+    use ApiTrait;
 
     protected $class;
     protected $module;

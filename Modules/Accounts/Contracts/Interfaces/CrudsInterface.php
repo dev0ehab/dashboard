@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Interfaces;
+namespace Modules\Accounts\Contracts\Interfaces;
 
 interface CrudsInterface
 {
@@ -20,12 +20,12 @@ interface CrudsInterface
     public function create(array $data);
 
     /**
-     * Display the given model instance.
+     * Display the given id instance.
      *
-     * @param mixed $model
+     * @param mixed $id
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function find($model);
+    public function show($id, $withTrashed = false);
 
     /**
      * Update the given model in the storage.

@@ -7,12 +7,10 @@ use Modules\Accounts\Http\Requests\BaseVerificationRequest;
 use Modules\Accounts\Http\Requests\BaseVerifyRequest;
 use Modules\Accounts\Entities\Verification;
 use Illuminate\Http\JsonResponse;
-use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 
-class BaseVerificationController extends BaseAuthenticationController
+class BaseVerificationController extends BaseController
 {
-    use ApiTrait;
 
     protected $class;
 

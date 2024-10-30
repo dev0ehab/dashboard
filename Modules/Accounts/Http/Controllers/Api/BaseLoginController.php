@@ -6,13 +6,11 @@ use Modules\Accounts\Http\Requests\BaseLoginRequest;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Hash;
-use App\Traits\ApiTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class BaseLoginController extends BaseAuthenticationController
+class BaseLoginController extends BaseController
 {
-    use ApiTrait;
 
     protected $loginRequest = BaseLoginRequest::class;
 

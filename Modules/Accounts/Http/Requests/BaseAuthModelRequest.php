@@ -6,8 +6,9 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use App\Traits\ApiTrait;
+use Illuminate\Validation\Rules\Password;
 
-class BaseFormRequest extends FormRequest
+class BaseAuthModelRequest extends FormRequest
 {
     use ApiTrait;
 
@@ -29,15 +30,17 @@ class BaseFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => [
-                'required',
-                "exists:$this->table,$this->auth_type",
-                $this->auth_type == 'email' ? 'email' : "starts_with:$this->dial_code",
-                $this->auth_type == 'phone' ? 'min:10' : null,
-            ],
+            'f_name' => ['required', 'string', 'max:255'],
+            'l_name' => ['required', 'string', 'max:255'],
 
-            'dial_code' => [$this->auth_type == 'phone' ? 'required' : 'nullable', "max:4", "starts_with:+"],
-            'password' => 'required',
+            'phone' => ['required', "starts_with:$this->dial_code", 'min:10', "unique:$this->table,phone"],
+            'dial_code' => ['required', "max:4", "starts_with:+"],
+            'email' => ['required', 'email', "unique:$this->table,email"],
+
+            'password' => ['sometimes', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'confirmed'],
+
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
+
         ];
     }
 

@@ -8,11 +8,9 @@ use Modules\Accounts\Http\Requests\BaseProfileDeleteRequest;
 use Modules\Accounts\Http\Requests\BaseProfileRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Traits\ApiTrait;
 
-class BaseProfileController extends BaseAuthenticationController
+class BaseProfileController extends BaseController
 {
-    use ApiTrait;
 
     protected $profileRequest = BaseProfileRequest::class;
     protected $passwordRequest = BasePasswordRequest::class;

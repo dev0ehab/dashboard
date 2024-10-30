@@ -32,7 +32,7 @@ class BasePasswordRequest extends FormRequest
     {
         return [
             'old_password' => ['required_with:password', new PasswordRule(auth()->user()->password)],
-            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
+            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'confirmed'],
         ];
     }
 

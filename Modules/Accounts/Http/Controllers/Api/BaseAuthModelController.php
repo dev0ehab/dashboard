@@ -2,34 +2,34 @@
 
 namespace Modules\Accounts\Http\Controllers\Api;
 
-use Illuminate\Routing\Controller;
-use Nwidart\Modules\Facades\Module;
+use Modules\Accounts\Contracts\Repositories\BaseAuthModelRepository;
 
-class BaseAuthModelController extends Controller
+
+class BaseAuthModelController extends BaseModelController
 {
-
     protected $class;
-    protected $module;
-    protected $module_name;
+    protected $module_name = 'accounts';
+    protected $repository = BaseAuthModelRepository::class;
 
-    public function __construct() {
-        if(is_null($this->module_name)) {
-            $this->module = Module::find((new $this->class)?->getTable());
-            $this->module_name = $this->module->getLowerName() ;
-        }
-    }
+    protected $form_request;
 
-    /**
-     * Validates the given request.
-     *
-     * @param string $requestClass The name of the request class to be validated.
-     * @param \Illuminate\Http\Request $requestObject The request object to be validated.
-     *
-     * @return array|null The validated request data.
-     */
-    public function validationAction($requestClass): array|null
+    protected $brief_resource;
+
+    protected $resource;
+
+
+    public function block($id)
     {
-        return isset($requestClass) && class_exists($requestClass) ?
-            app($requestClass)->validated() : request()->validate(app($requestClass)->rules());
+        $model = $this->repository->show($id);
+        $this->repository->block($model);
+        return $this->sendResponse($this->resource::make($model->refresh()), trans("successful request"));
     }
+
+    public function unblock($id)
+    {
+        $model = $this->repository->show($id);
+        $this->repository->unblock($model);
+        return $this->sendResponse($this->resource::make($model->refresh()), trans("successful request"));
+    }
+
 }

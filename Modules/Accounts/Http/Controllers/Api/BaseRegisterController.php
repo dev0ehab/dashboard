@@ -5,13 +5,11 @@ namespace Modules\Accounts\Http\Controllers\Api;
 use Modules\Accounts\Entities\Verification;
 use Modules\Accounts\Events\VerificationEvent;
 use Modules\Accounts\Http\Requests\BaseRegisterRequest;
-use App\Traits\ApiTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class BaseRegisterController extends BaseAuthenticationController
+class BaseRegisterController extends BaseController
 {
-    use ApiTrait;
 
     protected $class;
 

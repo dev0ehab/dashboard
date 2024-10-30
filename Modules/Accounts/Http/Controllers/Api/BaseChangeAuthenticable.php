@@ -6,13 +6,11 @@ use Modules\Accounts\Events\VerificationEvent;
 use Modules\Accounts\Http\Requests\BaseVerificationRequest;
 use Modules\Accounts\Http\Requests\BaseVerifyRequest;
 use Modules\Accounts\Entities\Verification;
-use App\Traits\ApiTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class BaseChangeAuthenticable extends BaseAuthenticationController
+class BaseChangeAuthenticable extends BaseController
 {
-    use ApiTrait;
 
     protected $sendRequest = BaseVerifyRequest::class;
 
