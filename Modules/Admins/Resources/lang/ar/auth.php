@@ -1,10 +1,7 @@
 <?php
 
 
-$translation = trans("accounts::auth");
+return array_merge(trans("accounts::auth"), [
 
-$newTranslation = [
 
-];
-
-return array_merge($translation, $newTranslation);
+]);

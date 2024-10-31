@@ -21,6 +21,8 @@ class AdminsTableSeeder extends Seeder
             'phone' => '+0543037411',
             'dial_code' => '+05',
             'password' => 'Aa@12345',
+            'email_verified_at' => now(),
+            'phone_verified_at' => now(),
         ]);
 
 
@@ -31,6 +33,8 @@ class AdminsTableSeeder extends Seeder
             'phone' => '+0543037412',
             'dial_code' => '+05',
             'password' => 'Aa@12345',
+            'email_verified_at' => now(),
+            'phone_verified_at' => now(),
         ]);
 
         $admins = [$root, $admin];

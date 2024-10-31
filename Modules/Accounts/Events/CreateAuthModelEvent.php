@@ -9,13 +9,12 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 
-class ChangePasswordEvent
+class CreateAuthModelEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $auth_model;
     public $password;
-
     /**
      * Create a new event instance.
      *

@@ -24,7 +24,7 @@ class BaseProfileController extends BaseController
     public function show(): JsonResponse
     {
         $data = auth()->user()->getResource();
-        return $this->sendResponse($data, trans("successful request"));
+        return $this->sendResponse($data, trans("messages.success"));
     }
 
 

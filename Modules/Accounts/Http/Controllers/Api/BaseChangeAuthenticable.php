@@ -11,9 +11,7 @@ use Illuminate\Http\Request;
 
 class BaseChangeAuthenticable extends BaseController
 {
-
     protected $sendRequest = BaseVerifyRequest::class;
-
     protected $verifyRequest = BaseVerificationRequest::class;
 
     /**

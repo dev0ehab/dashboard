@@ -8,7 +8,7 @@ use Modules\Accounts\Entities\AuthModel;
 use Modules\Admins\Entities\Helpers\AdminHelper;
 use Modules\Admins\Entities\Relations\AdminRelation;
 use Modules\Admins\Entities\Scopes\AdminScope;
-use Modules\Admins\Transformers\AdminResource;
+use Modules\Admins\Transformers\AdminsResource;
 
 class Admin extends AuthModel implements LaratrustUser
 {
@@ -31,7 +31,7 @@ class Admin extends AuthModel implements LaratrustUser
 
     public function getResource()
     {
-        return new AdminResource($this);
+        return new AdminsResource($this);
     }
 
 }

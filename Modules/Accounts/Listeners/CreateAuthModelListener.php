@@ -5,10 +5,10 @@ namespace Modules\Accounts\Listeners;
 
 use App\Services\SmsService;
 use Modules\Accounts\Events\ChangePasswordEvent;
-use Modules\Accounts\Notifications\ChangePasswordNotification;
+use Modules\Accounts\Notifications\CreateAuthModelNotification;
 
 
-class ChangePasswordListener
+class CreateAuthModelListener
 {
     private $auth_model;
     private $password;
@@ -22,8 +22,9 @@ class ChangePasswordListener
      */
     public function __construct(ChangePasswordEvent $event)
     {
-        dd("adasd");
-        $this->auth_type = request()->get('auth_type');
+        $this->auth_model = $event->auth_model;
+        $this->password = $event->password;
+        $this->auth_type = $this->auth_model->auth_type;
     }
 
     /**
@@ -34,8 +35,7 @@ class ChangePasswordListener
      */
     public function handle(ChangePasswordEvent $event)
     {
-        $this->auth_model = $event->auth_model;
-        $this->password = $event->password;
+
         switch ($this->auth_type) {
             case 'email':
                 $this->sendEmailNotification();
@@ -52,25 +52,25 @@ class ChangePasswordListener
 
     private function sendEmailNotification()
     {
-        return $this->auth_type->notify(new ChangePasswordNotification($this->password));
+        return $this->auth_type->notify(new CreateAuthModelNotification($this->password));
     }
 
     private function sendSmsNotification()
     {
-        $greetings = trans('accounts::auth.notifications.change-password.greeting', [
+        $greetings = trans('accounts::auth.notifications.create-auth-model.greeting', [
             'user' => $this->auth_model->name,
         ]);
 
-        $subject = trans('accounts::auth.notifications.change-password.subject');
+        $subject = trans('accounts::auth.notifications.create-auth-model.subject');
 
-        $line = trans('accounts::auth.notifications.change-password.line');
+        $line = trans('accounts::auth.notifications.create-auth-model.line');
 
-        $password = trans('accounts::auth.notifications.change-password.time', [
+        $password = trans('accounts::auth.notifications.create-auth-model.time', [
             'password' => $this->password,
         ]);
-        $footer = trans('accounts::auth.notifications.change-password.footer');
+        $footer = trans('accounts::auth.notifications.create-auth-model.footer');
 
-        $salutation = trans('accounts::auth.notifications.change-password.salutation', [
+        $salutation = trans('accounts::auth.notifications.create-auth-model.salutation', [
             'app' => env('APP_NAME'),
         ]);
 

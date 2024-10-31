@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class BaseLoginController extends BaseController
 {
-
     protected $loginRequest = BaseLoginRequest::class;
 
     /**

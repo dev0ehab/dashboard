@@ -14,6 +14,11 @@ class BaseController extends Controller
     protected $module;
     protected $module_name;
 
+    /**
+     * Initializes the controller by resolving the current module based on the class given in
+     * the $class property. The module name is then stored in the $module_name property.
+     * If the $module_name property is already set, the method does nothing.
+     */
     public function __construct() {
         if(is_null($this->module_name)) {
             $this->module = Module::find((new $this->class)?->getTable());

@@ -29,18 +29,35 @@ class BaseAuthModelRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->isMethod('POST')) {
+            return $this->createRules();
+        }
+        return $this->updateRules();
+    }
+
+    protected function createRules(): array
+    {
         return [
             'f_name' => ['required', 'string', 'max:255'],
             'l_name' => ['required', 'string', 'max:255'],
-
             'phone' => ['required', "starts_with:$this->dial_code", 'min:10', "unique:$this->table,phone"],
-            'dial_code' => ['required', "max:4", "starts_with:+"],
             'email' => ['required', 'email', "unique:$this->table,email"],
+            'dial_code' => ['required', "max:4", "starts_with:+"],
+            'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'confirmed'],
+            'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
+        ];
+    }
 
-            'password' => ['sometimes', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'confirmed'],
-
+    protected function updateRules(): array
+    {
+        return [
+            'f_name' => ['nullable', 'string', 'max:255'],
+            'l_name' => ['nullable', 'string', 'max:255'],
+            'phone' => ['nullable', "starts_with:$this->dial_code", 'min:10', "unique:$this->table,phone"],
+            'email' => ['nullable', 'email', "unique:$this->table,email"],
+            'dial_code' => ['nullable', "max:4", "starts_with:+"],
+            'password' => ['nullable', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'confirmed'],
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
-
         ];
     }
 
@@ -51,13 +68,7 @@ class BaseAuthModelRequest extends FormRequest
      */
     public function attributes(): array
     {
-        $attributes = trans("accounts::auth.attributes");
-
-        $custom_attributes = [
-            'username' => trans("accounts::auth.attributes.$this->auth_type"),
-        ];
-
-        return array_merge($attributes, $custom_attributes);
+        return trans("accounts::auth.attributes");
     }
 
     /**

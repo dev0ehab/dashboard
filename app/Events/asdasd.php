@@ -1,40 +1,36 @@
 <?php
 
-namespace Modules\Accounts\Events;
+namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-
-class ChangePasswordEvent
+class asdasd
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $auth_model;
-    public $password;
-
     /**
      * Create a new event instance.
-     *
-     * @param mixed $auth_model
      */
-    public function __construct($auth_model , $password)
+    public function __construct()
     {
-        $this->auth_model = $auth_model;
-        $this->password = $password;
+        //
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel
+     * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
-        return new PrivateChannel('channel-name');
+        return [
+            new PrivateChannel('channel-name'),
+        ];
     }
-
 }

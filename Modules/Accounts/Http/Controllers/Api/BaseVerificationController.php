@@ -18,6 +18,16 @@ class BaseVerificationController extends BaseController
 
     protected $verifyRequest = BaseVerificationRequest::class;
 
+/**
+ * Send a verification code to the user's email or phone number.
+ *
+ * This method validates the incoming request, checks for the existence of the user,
+ * and either creates a new user (if 'force_verify' is set) or sends an error response.
+ * It then creates or updates a verification entry and triggers a verification event.
+ *
+ * @param Request $request The request containing the user's authentication type and username.
+ * @return JsonResponse A response indicating the success of sending the verification code.
+ */
     public function send(Request $request): JsonResponse
     {
         $this->validationAction($this->sendRequest);

@@ -7,5 +7,4 @@ use Modules\Accounts\Http\Filters\AuthModelFilter;
 
 class AdminsFilter extends AuthModelFilter
 {
-
 }

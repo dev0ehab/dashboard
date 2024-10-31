@@ -64,7 +64,7 @@ class VerificationListener
 
     private function sendEmailNotification()
     {
-        return $this->auth_type->notify(new VerificationNotification($this->code));
+        return $this->auth_model->notify(new VerificationNotification($this->code));
     }
 
     private function sendSmsNotification()

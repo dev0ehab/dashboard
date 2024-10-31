@@ -27,7 +27,6 @@ class AdminsServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
-        $this->registerBase64Validation();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
     }
 
@@ -114,17 +113,5 @@ class AdminsServiceProvider extends ServiceProvider
         }
 
         return $paths;
-    }
-
-    /**
-     * Register base64_image rule.
-     *
-     * @return void
-     */
-    private function registerBase64Validation()
-    {
-        Validator::extend('base64_image', function ($attribute, $value, $parameters, $validator) {
-            return validate_base64($value, ['png', 'jpg', 'jpeg', 'gif']);
-        });
     }
 }

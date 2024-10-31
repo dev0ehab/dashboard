@@ -24,6 +24,11 @@ return [
         'email-not-verified' => 'Email is not verified',
     ],
     'attributes' => [
+        'f_name' => 'First name',
+        'l_name' => 'Last name',
+        'dial_code' => 'Dail code',
+        'role_id' => 'Role',
+
         'code' => 'verification code',
         'token' => 'verification token',
         'email' => 'email',
@@ -93,6 +98,14 @@ return [
             'time' => 'Valid for :minutes minutes',
             'footer' => 'Thank you for using our application!',
             'salutation' => 'Best regards, :app Team',
-        ]
+        ],
+        'create-auth-model' => [
+            'subject' => 'Your Account has been Created successfully',
+            'greeting' => 'Dear :user',
+            'line' => 'You can now login to your account',
+            'password' => 'Your password is :password',
+            'footer' => 'Thank you for using our application',
+            'salutation' => 'Best regards, :app Team',
+        ],
     ],
 ];

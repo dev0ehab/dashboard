@@ -102,7 +102,6 @@ return [
     |
     */
     'user_models' => [
-        'users' => \App\Models\User::class,
         'admins' => \Modules\Admins\Entities\Admin::class,
     ],
 
@@ -214,7 +213,7 @@ return [
              */
             'abort' => [
                 'code' => 403,
-                'message' => 'User does not have any of the necessary access rights.',
+                'message' => 'User does not have any of the necessary access rights',
             ],
 
             /**

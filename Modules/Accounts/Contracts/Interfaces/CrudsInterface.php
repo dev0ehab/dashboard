@@ -17,7 +17,7 @@ interface CrudsInterface
      * @param array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function create(array $data);
+    public function store(array $data);
 
     /**
      * Display the given id instance.

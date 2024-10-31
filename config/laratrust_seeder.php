@@ -13,7 +13,7 @@ return [
 
     'roles_structure' => [
         'super_admin' => [
-            'admins' => 'c,r,u,d,s,b',
+            'admins' => 'c,r,u,d,s,b,re,f',
         ],
     ],
 
