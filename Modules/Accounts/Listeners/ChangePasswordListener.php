@@ -10,21 +10,10 @@ use Modules\Accounts\Notifications\ChangePasswordNotification;
 
 class ChangePasswordListener
 {
-    private $auth_model;
-    private $password;
-    private $auth_type;
+    public $auth_model;
+    public $password;
+    public $auth_type;
 
-
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct(ChangePasswordEvent $event)
-    {
-        dd("adasd");
-        $this->auth_type = request()->get('auth_type');
-    }
 
     /**
      * Handle the event.
@@ -34,8 +23,12 @@ class ChangePasswordListener
      */
     public function handle(ChangePasswordEvent $event)
     {
-        $this->auth_model = $event->auth_model;
+        $class = $event->class;
+        $id = $event->id;
+        $this->auth_model = $class::find($id);
         $this->password = $event->password;
+        $this->auth_type = $class::AuthType;
+
         switch ($this->auth_type) {
             case 'email':
                 $this->sendEmailNotification();
@@ -52,7 +45,7 @@ class ChangePasswordListener
 
     private function sendEmailNotification()
     {
-        return $this->auth_type->notify(new ChangePasswordNotification($this->password));
+        return $this->auth_model->notify(new ChangePasswordNotification($this->password));
     }
 
     private function sendSmsNotification()

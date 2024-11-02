@@ -50,7 +50,7 @@ class BaseVerificationController extends BaseController
                 'verifiable_id' => $auth_model->id,
                 'verifiable_type' => $this->class,
                 'verificiation_type' => $auth_model_type,
-                'verificiation_value' => $request->username
+                'verification_value' => $request->username
             ],
             [
                 'code' => $code = random_int(1000, 9999),
@@ -86,7 +86,7 @@ class BaseVerificationController extends BaseController
             'verifiable_id' => $auth_model->id,
             'verifiable_type' => $this->class,
             'verificiation_type' => get_model_auth_type($this->class),
-            'verificiation_value' => $request->username,
+            'verification_value' => $request->username,
             'code' => $request->code,
         ])->first();
 

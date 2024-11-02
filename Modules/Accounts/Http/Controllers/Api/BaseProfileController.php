@@ -71,7 +71,7 @@ class BaseProfileController extends BaseController
 
         $auth_model->update($request->only('password'));
 
-        event(new ChangePasswordEvent($auth_model, $request->password));
+        event(new ChangePasswordEvent((string) get_class($auth_model), (string) $auth_model->id, (string) $request->password));
 
         return $this->sendSuccess(trans("$this->module_name::auth.messages.profile.preferred-locale"));
     }

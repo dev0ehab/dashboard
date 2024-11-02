@@ -13,16 +13,19 @@ class CreateAuthModelEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $auth_model;
+    public $class;
+    public $id;
     public $password;
+
     /**
      * Create a new event instance.
      *
      * @param mixed $auth_model
      */
-    public function __construct($auth_model , $password)
+    public function __construct(string $class , string $id , string $password)
     {
-        $this->auth_model = $auth_model;
+        $this->class = $class;
+        $this->id = $id;
         $this->password = $password;
     }
 

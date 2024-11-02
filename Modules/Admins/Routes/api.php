@@ -60,5 +60,4 @@ Route::middleware('auth:sanctum')->group(
         Route::post('admins/{admin}/force-Delete', 'Api\AdminController@forceDelete');
         Route::post('admins/{admin}/restore', 'Api\AdminController@restore');
     }
-
 );

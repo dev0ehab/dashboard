@@ -15,19 +15,16 @@ class ResetPasswordListener
     private $auth_model;
     private $auth_type;
     private $code;
-    private $verification_value;
+    private $reset_value;
 
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(ResetPasswordEvent $event)
+    public function __construct()
     {
-        $this->auth_model = $event->resetPasswordCode->resetable;
         $this->auth_type = request()->get('auth_type');
-        $this->code = $event->resetPasswordCode->code;
-        $this->verification_value = $event->resetPasswordCode->verification_value;
     }
 
     /**
@@ -38,6 +35,9 @@ class ResetPasswordListener
      */
     public function handle(ResetPasswordEvent $event)
     {
+        $this->auth_model = $event->resetPasswordCode->resetable;
+        $this->code = $event->resetPasswordCode->code;
+        $this->reset_value = $event->resetPasswordCode->reset_value;
 
         switch ($this->auth_type) {
             case 'email':
@@ -54,14 +54,14 @@ class ResetPasswordListener
         /* @deprecated */
         Storage::disk('public')->append(
             'resetPassword.txt',
-            "The reset password code for $this->auth_type {$this->verification_value} is {$this->code} generated at " . now()->toDateTimeString() . "\n"
+            "The reset password code for $this->auth_type {$this->reset_value} is {$this->code} generated at " . now()->toDateTimeString() . "\n"
         );
     }
 
 
     private function sendEmailNotification()
     {
-        return $this->auth_type->notify(new ResetPasswordNotification($this->code));
+        return $this->auth_model->notify(new ResetPasswordNotification($this->code));
     }
 
     private function sendSmsNotification()
@@ -91,8 +91,4 @@ class ResetPasswordListener
             return $sms_service->sendDreams($this->auth_model->phone, $this->auth_model->name, $message);
         }
     }
-
-
-
-
 }

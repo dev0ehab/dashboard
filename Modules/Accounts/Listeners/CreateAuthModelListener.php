@@ -4,37 +4,30 @@ namespace Modules\Accounts\Listeners;
 
 
 use App\Services\SmsService;
-use Modules\Accounts\Events\ChangePasswordEvent;
+use Modules\Accounts\Events\CreateAuthModelEvent;
 use Modules\Accounts\Notifications\CreateAuthModelNotification;
 
 
 class CreateAuthModelListener
 {
-    private $auth_model;
-    private $password;
-    private $auth_type;
+    public $auth_model;
+    public $password;
+    public $auth_type;
 
-
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct(ChangePasswordEvent $event)
-    {
-        $this->auth_model = $event->auth_model;
-        $this->password = $event->password;
-        $this->auth_type = $this->auth_model->auth_type;
-    }
 
     /**
      * Handle the event.
      *
-     * @param ChangePasswordEvent $event
+     * @param CreateAuthModelEvent $event
      * @return void
      */
-    public function handle(ChangePasswordEvent $event)
+    public function handle(CreateAuthModelEvent $event)
     {
+        $class = $event->class;
+        $id = $event->id;
+        $this->auth_model = $class::find($id);
+        $this->password = $event->password;
+        $this->auth_type = $class::AuthType;
 
         switch ($this->auth_type) {
             case 'email':
@@ -52,7 +45,7 @@ class CreateAuthModelListener
 
     private function sendEmailNotification()
     {
-        return $this->auth_type->notify(new CreateAuthModelNotification($this->password));
+        return $this->auth_model->notify(new CreateAuthModelNotification($this->password));
     }
 
     private function sendSmsNotification()
@@ -81,8 +74,4 @@ class CreateAuthModelListener
             return $sms_service->sendDreams($this->auth_model->phone, $this->auth_model->name, $message);
         }
     }
-
-
-
-
 }

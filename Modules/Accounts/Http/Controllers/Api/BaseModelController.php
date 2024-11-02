@@ -3,6 +3,7 @@
 namespace Modules\Accounts\Http\Controllers\Api;
 
 use DB;
+use Str;
 use Illuminate\Http\JsonResponse;
 
 
@@ -37,7 +38,14 @@ class BaseModelController extends BaseController
     public function index(): JsonResponse
     {
         $models = $this->repository->index();
-        return $this->sendResponse($this->brief_resource::collection($models)->response()->getData(true), trans("messages.success"));
+
+        $data = $this->brief_resource::collection($models)->response()->getData(true);
+
+        $data['permissions'] = auth()->user()->allPermissions()->filter(function ($item) {
+            return Str::contains(strtolower($item['name']), $this->permission);
+        })->pluck('name')->toArray();
+
+        return $this->sendResponse($data, trans("messages.success"));
     }
 
     /**
@@ -74,7 +82,6 @@ class BaseModelController extends BaseController
         }
 
         return $this->sendResponse($this->resource::make($model), trans("$this->module_name::messages.created"));
-
     }
 
     /**
@@ -158,5 +165,4 @@ class BaseModelController extends BaseController
     {
         return true;
     }
-
 }

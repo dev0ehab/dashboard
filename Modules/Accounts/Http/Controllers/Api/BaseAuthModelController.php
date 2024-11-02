@@ -15,7 +15,6 @@ class BaseAuthModelController extends BaseModelController
     protected $brief_resource;
     protected $resource;
 
-
     public function block($id)
     {
         $model = $this->repository->show($id);

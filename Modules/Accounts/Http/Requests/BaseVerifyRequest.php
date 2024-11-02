@@ -37,7 +37,6 @@ class BaseVerifyRequest extends FormRequest
 
             'dial_code' => [$this->auth_type == 'phone' ? 'required' : 'nullable', "max:4", "starts_with:+"],
         ];
-
     }
 
     /**
@@ -47,13 +46,9 @@ class BaseVerifyRequest extends FormRequest
      */
     public function attributes(): array
     {
-        $attributes = trans("accounts::auth.attributes");
-
-        $custom_attributes = [
+        return array_merge(trans("accounts::auth.attributes"), [
             'username' => trans("accounts::auth.attributes.$this->auth_type"),
-        ];
-
-        return array_merge($attributes, $custom_attributes);
+        ]);
     }
 
 

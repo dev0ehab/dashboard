@@ -11,10 +11,10 @@ use Modules\Accounts\Notifications\VerificationNotification;
 
 class VerificationListener
 {
-    private $auth_model;
-    private $auth_type;
-    private $code;
-    private $verification_value;
+    public $auth_model;
+    public $auth_type;
+    public $code;
+    public $verification_value;
 
 
     /**
@@ -22,12 +22,9 @@ class VerificationListener
      *
      * @return void
      */
-    public function __construct(VerificationEvent $event)
+    public function __construct()
     {
-        $this->auth_model = $event->verification->resetable;
         $this->auth_type = request()->get('auth_type');
-        $this->code = $event->verification->code;
-        $this->verification_value = $event->verification->verification_value;
     }
 
     /**
@@ -38,6 +35,10 @@ class VerificationListener
      */
     public function handle(VerificationEvent $event)
     {
+        $this->auth_model = $event->verification->verifiable;
+        $this->code = $event->verification->code;
+        $this->verification_value = $event->verification->verification_value;
+
         if ($this->auth_model->hasVerifiedAuth($this->auth_type)) {
             return;
         }
@@ -94,5 +95,4 @@ class VerificationListener
             return $sms_service->sendDreams($this->auth_model->phone, $this->auth_model->name, $message);
         }
     }
-
 }

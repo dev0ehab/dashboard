@@ -26,7 +26,7 @@ class Verification extends Model
         'verifiable_id',
         'verifiable_type',
         "verificiation_type",
-        "verificiation_value",
+        "verification_value",
         'code',
         'created_at',
     ];

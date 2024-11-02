@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->morphs('verifiable');
             $table->string('verificiation_type');
-            $table->string('verificiation_value');
+            $table->string('verification_value');
             $table->string('code');
             $table->timestamps();
 

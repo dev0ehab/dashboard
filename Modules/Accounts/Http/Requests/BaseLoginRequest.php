@@ -48,13 +48,9 @@ class BaseLoginRequest extends FormRequest
      */
     public function attributes(): array
     {
-        $attributes = trans("accounts::auth.attributes");
-
-        $custom_attributes = [
+        return array_merge(trans("accounts::auth.attributes"), [
             'username' => trans("accounts::auth.attributes.$this->auth_type"),
-        ];
-
-        return array_merge($attributes, $custom_attributes);
+        ]);
     }
 
     /**

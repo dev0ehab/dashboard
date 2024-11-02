@@ -31,7 +31,7 @@ class BaseChangeAuthenticable extends BaseController
                 'verifiable_id' => $auth_model->id,
                 'verifiable_type' => $this->class,
                 'verificiation_type' => $auth_type = get_model_auth_type($this->class),
-                'verificiation_value' => $request->username
+                'verification_value' => $request->username
             ],
             [
                 'code' => $code = random_int(1000, 9999),
@@ -63,7 +63,7 @@ class BaseChangeAuthenticable extends BaseController
             'verifiable_id' => $auth_model->id,
             'verifiable_type' => $this->class,
             'verificiation_type' => $auth_type = get_model_auth_type($this->class),
-            'verificiation_value' => $request->username
+            'verification_value' => $request->username
         ])->first();
 
         if (!$verification || $verification->isExpired()) {
@@ -72,7 +72,7 @@ class BaseChangeAuthenticable extends BaseController
             ]));
         }
 
-        $auth_model_updates[$auth_type] = $verification->verificiation_value;
+        $auth_model_updates[$auth_type] = $verification->verification_value;
         $auth_model_updates['dial_code'] = $auth_type == 'phone' ? $request->dial_code : $auth_model->dial_code;
         $auth_model->forceFill($auth_model_updates)->save();
 

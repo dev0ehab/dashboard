@@ -56,7 +56,7 @@ class BaseAuthModelRepository implements CrudsInterface, SoftDeleteInterface, Bl
             $model->addMediaFromRequest('avatar')->toMediaCollection('avatars');
         }
 
-        event(new CreateAuthModelEvent($model , $data['password']));
+        event(new CreateAuthModelEvent((string) get_class($model), (string) $model->id, (string) $data['password']));
 
         return $model;
     }

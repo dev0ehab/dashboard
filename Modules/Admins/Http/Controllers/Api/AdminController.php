@@ -13,6 +13,7 @@ class AdminController extends BaseAuthModelController
 {
     protected $class = Admin::class;
     protected $form_request = AdminsRequest::class;
+    protected $module_name = 'admins';
     protected $permission = 'admins';
     protected $repository = AdminsRepository::class;
     protected $resource = AdminsResource::class;
