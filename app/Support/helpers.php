@@ -4,6 +4,7 @@
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\PersonalAccessToken;
+use Spatie\LaravelSettings\Settings;
 
 if (!function_exists('app_name')) {
     /**
@@ -160,5 +161,27 @@ if (!function_exists('get_model_auth_type')) {
         $model = is_object($model) ? get_class($model) : $model;
         return defined("{$model}::AuthType") ? $model::AuthType : 'phone';
     }
+
+
+
+
+
+if (!function_exists('translations')) {
+    function translations($model, $attribute)
+    {
+        if ($model == Settings::class) {
+            return [
+                'en' => Settings::locale('en')->get($attribute),
+                'ar' => Settings::locale('ar')->get($attribute),
+            ];
+        }
+
+        return [
+            'en' => $model->translate('en')?->$attribute,
+            'ar' => $model->translate('ar')?->$attribute,
+        ];
+    }
+}
+
 }
 

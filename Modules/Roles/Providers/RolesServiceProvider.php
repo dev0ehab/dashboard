@@ -2,17 +2,18 @@
 
 namespace Modules\Roles\Providers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
 class RolesServiceProvider extends ServiceProvider
 {
     /**
-     * @var string $moduleName
+     * @var string
      */
     protected $moduleName = 'Roles';
 
     /**
-     * @var string $moduleNameLower
+     * @var string
      */
     protected $moduleNameLower = 'roles';
 
@@ -50,7 +51,8 @@ class RolesServiceProvider extends ServiceProvider
             module_path($this->moduleName, 'Config/config.php') => config_path($this->moduleNameLower . '.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            module_path($this->moduleName, 'Config/config.php'), $this->moduleNameLower
+            module_path($this->moduleName, 'Config/config.php'),
+            $this->moduleNameLower
         );
     }
 
@@ -65,9 +67,12 @@ class RolesServiceProvider extends ServiceProvider
 
         $sourcePath = module_path($this->moduleName, 'Resources/views');
 
-        $this->publishes([
-            $sourcePath => $viewPath
-        ], ['views', $this->moduleNameLower . '-module-views']);
+        $this->publishes(
+            [
+                $sourcePath => $viewPath,
+            ],
+            ['views', $this->moduleNameLower . '-module-views']
+        );
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->moduleNameLower);
     }
@@ -106,6 +111,7 @@ class RolesServiceProvider extends ServiceProvider
                 $paths[] = $path . '/modules/' . $this->moduleNameLower;
             }
         }
+
         return $paths;
     }
 }

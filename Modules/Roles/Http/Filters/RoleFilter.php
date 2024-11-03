@@ -29,4 +29,19 @@ class RoleFilter extends BaseFilters
 
         return $this->builder;
     }
+
+    /**
+     * Filter the query to include users by phone.
+     *
+     * @param string|int $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function only_trashed($value)
+    {
+        if ($value) {
+            return $this->builder->onlyTrashed();
+        }
+
+        return $this->builder;
+    }
 }

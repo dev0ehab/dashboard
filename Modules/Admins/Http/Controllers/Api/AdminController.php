@@ -4,20 +4,20 @@ namespace Modules\Admins\Http\Controllers\Api;
 
 use Modules\Accounts\Http\Controllers\Api\BaseAuthModelController;
 use Modules\Admins\Entities\Admin;
-use Modules\Admins\Http\Requests\AdminsRequest;
-use Modules\Admins\Repositories\AdminsRepository;
-use Modules\Admins\Transformers\AdminsBreifResource;
-use Modules\Admins\Transformers\AdminsResource;
+use Modules\Admins\Http\Requests\AdminRequest;
+use Modules\Admins\Repositories\AdminRepository;
+use Modules\Admins\Transformers\AdminBreifResource;
+use Modules\Admins\Transformers\AdminResource;
 
 class AdminController extends BaseAuthModelController
 {
     protected $class = Admin::class;
-    protected $form_request = AdminsRequest::class;
+    protected $form_request = AdminRequest::class;
     protected $module_name = 'admins';
     protected $permission = 'admins';
-    protected $repository = AdminsRepository::class;
-    protected $resource = AdminsResource::class;
-    protected $brief_resource = AdminsBreifResource::class;
+    protected $repository = AdminRepository::class;
+    protected $resource = AdminResource::class;
+    protected $brief_resource = AdminBreifResource::class;
 
 
     /**

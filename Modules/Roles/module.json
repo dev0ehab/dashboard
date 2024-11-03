@@ -3,7 +3,7 @@
     "alias": "roles",
     "description": "",
     "keywords": [],
-    "priority": 0,
+    "order": 0,
     "providers": [
         "Modules\\Roles\\Providers\\RolesServiceProvider"
     ],

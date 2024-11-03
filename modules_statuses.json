@@ -1,4 +1,5 @@
 {
     "Admins": true,
+    "Roles": true,
     "Accounts": true
 }

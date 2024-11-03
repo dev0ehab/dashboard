@@ -41,9 +41,11 @@ class BaseModelController extends BaseController
 
         $data = $this->brief_resource::collection($models)->response()->getData(true);
 
-        $data['permissions'] = auth()->user()->allPermissions()->filter(function ($item) {
+        $data['permissions'] = [...auth()->user()->allPermissions()->filter(function ($item) {
             return Str::contains(strtolower($item['name']), $this->permission);
-        })->pluck('name')->toArray();
+        })->map(function ($item) {
+            return str_replace( "_$this->permission", '' ,$item->name);
+        })];
 
         return $this->sendResponse($data, trans("messages.success"));
     }
@@ -68,9 +70,10 @@ class BaseModelController extends BaseController
 
     public function store(): JsonResponse
     {
+        $validated_data = $this->validationAction($this->form_request);
+
         try {
             DB::beginTransaction();
-            $validated_data = $this->validationAction($this->form_request);
             $model = $this->repository->store($validated_data);
             DB::commit();
         } catch (\Throwable $th) {
@@ -92,9 +95,10 @@ class BaseModelController extends BaseController
      */
     public function update($id): JsonResponse
     {
+        $validated_data = $this->validationAction($this->form_request);
+
         try {
             DB::beginTransaction();
-            $validated_data = $this->validationAction($this->form_request);
             $model = $this->repository->show($id);
             $this->repository->update($model, $validated_data);
             DB::commit();

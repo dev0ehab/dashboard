@@ -4,8 +4,10 @@ namespace Modules\Roles\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RoleSelectResource extends JsonResource
+/** @mixin \Modules\Roles\Entities\Role */
+class PermissionBreifResource extends JsonResource
 {
+
     /**
      * Transform the resource into an array.
      *
@@ -16,7 +18,8 @@ class RoleSelectResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'text' => $this->name,
+            'display_name' => translations($this, 'display_name'),
+            'name' => $this->name,
         ];
     }
 }

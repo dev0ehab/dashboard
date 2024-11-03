@@ -4,7 +4,7 @@ namespace Modules\Admins\Http\Requests;
 
 use Modules\Accounts\Http\Requests\BaseAuthModelRequest;
 
-class AdminsRequest extends BaseAuthModelRequest
+class AdminRequest extends BaseAuthModelRequest
 {
     protected $table = 'admins';
 

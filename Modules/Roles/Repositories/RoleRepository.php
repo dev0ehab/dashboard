@@ -2,82 +2,45 @@
 
 namespace Modules\Roles\Repositories;
 
-use Exception;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Model;
-use Modules\Contracts\CrudRepository;
+use Modules\Accounts\Contracts\Repositories\BaseModelRepository;
 use Modules\Roles\Entities\Role;
 use Modules\Roles\Http\Filters\RoleFilter;
 
-class RoleRepository implements CrudRepository
+class RoleRepository extends BaseModelRepository
 {
-    private $filter;
+    protected $class = Role::class;
+    protected $filter = RoleFilter::class;
+
 
     /**
-     * RoleRepository constructor.
-     * @param RoleFilter $filter
+     * Store a newly created role in storage.
+     *
+     * @param array $data The data for creating a new role, including permissions.
+     * @return Role The created Role instance with attached permissions.
      */
-    public function __construct(RoleFilter $filter)
+    public function store(array $data)
     {
-        $this->filter = $filter;
-    }
-
-    /**
-     * @return LengthAwarePaginator
-     */
-    public function all()
-    {
-        return Role::whereRoleNot('super_admin')->filter($this->filter)->paginate(request('perPage'));
-    }
-
-    /**
-     * @param array $data
-     * @return Model
-     */
-    public function create(array $data)
-    {
-        $role = Role::create($data);
-        $role->attachPermissions($data['permissions']);
+        $data["name"] = strtolower(str_replace(' ', '_', $data["display_name:en"]));
+        $role = $this->class::create($data);
+        $role->givePermissions($data['permissions']);
 
         return $role;
     }
 
     /**
-     * @param mixed $model
-     * @return Model|void
-     */
-    public function find($model)
-    {
-        if ($model instanceof Role) {
-            return $model;
-        }
-
-        return Role::findOrFail($model);
-    }
-
-    /**
-     * @param mixed $model
-     * @param array $data
-     * @return Model|Role|void
+     * Update the specified role in storage.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model The model instance to update.
+     * @param array $data The data to update the model with, including permissions.
+     * @return \Illuminate\Database\Eloquent\Model The updated model instance.
      */
     public function update($model, array $data)
     {
-        $role = $this->find($model);
+        $model->update($data);
+        $model->syncPermissions($data['permissions']);
 
-        if (!empty($role)) {
-            $role->update($data);
-        }
-        $role->syncPermissions($data['permissions']);
-
-        return $role;
+        return $model;
     }
 
-    /**
-     * @param mixed $model
-     * @throws Exception
-     */
-    public function delete($model)
-    {
-        $this->find($model)->delete();
-    }
+
 }

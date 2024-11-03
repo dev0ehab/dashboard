@@ -1,5 +1,12 @@
 <?php
 
 return [
-    'name' => 'Roles'
+
+    /*
+     * The module name.
+     */
+    'name' => 'Roles',
+
+
+
 ];

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\LocalesMiddleware;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -24,16 +25,19 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
 
-        $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-            if ($request->is('api/*')) {
-                return response()->json(['success' => false, 'message' => trans('messages.not found')]);
-            }
-        });
+        // $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+        //     if ($request->is('api/*') && $request->wantsJson()) {
+        //         return response()->json([
+        //             'success' => false,
+        //             'message' => trans('messages.not found')
+        //         ], 404);
+        //     }
+        // });
 
         $exceptions->render(function (HttpException $e, Request $request) {
             if ($request->is('api/*')) {
 
-                return response()->json(['success' => false, 'message' => trans('messages.'.$e->getMessage())]);
+                return response()->json(['success' => false, 'message' => trans($e->getMessage())]);
             }
         });
     })->create();

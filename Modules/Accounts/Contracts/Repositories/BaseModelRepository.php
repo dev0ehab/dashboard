@@ -90,7 +90,6 @@ class BaseModelRepository implements CrudsInterface, SoftDeleteInterface
      */
     public function update($model, array $data)
     {
-
         $model->update($data);
 
         if (isset($data['image'])) {

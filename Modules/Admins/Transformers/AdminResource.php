@@ -4,7 +4,7 @@ namespace Modules\Admins\Transformers;
 
 
 /** @mixin \Modules\Admins\Entities\Admin */
-class AdminsResource extends AdminsBreifResource
+class AdminResource extends AdminBreifResource
 {
 
     /**

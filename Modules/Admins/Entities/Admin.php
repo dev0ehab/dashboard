@@ -8,7 +8,7 @@ use Modules\Accounts\Entities\AuthModel;
 use Modules\Admins\Entities\Helpers\AdminHelper;
 use Modules\Admins\Entities\Relations\AdminRelation;
 use Modules\Admins\Entities\Scopes\AdminScope;
-use Modules\Admins\Transformers\AdminsResource;
+use Modules\Admins\Transformers\AdminResource;
 
 class Admin extends AuthModel implements LaratrustUser
 {
@@ -17,21 +17,13 @@ class Admin extends AuthModel implements LaratrustUser
     public const AuthType = 'email';
 
     /**
-     * The attributes that are mass assignable.
+     * Get the resource representation of the Admin model.
      *
-     * @var array<int, string>
+     * @return \Modules\Admins\Transformers\AdminResource
      */
-    protected $fillable = [
-        'f_name',
-        'l_name',
-        'email',
-        'phone',
-        'password',
-    ];
-
     public function getResource()
     {
-        return new AdminsResource($this);
+        return new AdminResource($this);
     }
 
 }

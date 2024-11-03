@@ -2,68 +2,36 @@
 
 namespace Modules\Roles\Http\Requests;
 
-use Astrotomic\Translatable\Validation\RuleFactory;
-use Illuminate\Foundation\Http\FormRequest;
+use Modules\Accounts\Http\Requests\BaseModelRequest;
 
-class RoleRequest extends FormRequest
+class RoleRequest extends BaseModelRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        if ($this->isMethod('POST')) {
-            return $this->createRules();
-        }
+    protected $module_name = 'roles';
+    protected $table = 'roles';
 
-        return $this->updateRules();
+
+    protected function createRules(): array
+    {
+        return [
+            'display_name:ar' => ['required', 'string', 'max:255', "unique:role_translations,display_name"],
+            'display_name:en' => ['required', 'string', 'max:255', "unique:role_translations,display_name"],
+            "permissions" => ['required', 'array'],
+        ];
     }
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    protected function updateRules(): array
     {
-        return true;
+        return [
+            'display_name:ar' => ['required', 'string', 'max:255', "unique:role_translations,display_name"],
+            'display_name:en' => ['required', 'string', 'max:255', "unique:role_translations,display_name"],
+            "permissions" => ['required', 'array'],
+        ];
     }
 
-    /**
-     * Get the create validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function createRules()
-    {
-        $this->errorBag = 'role';
 
-        return RuleFactory::make([
-            'name' => ['required', 'string', 'max:255'],
-        ]);
-    }
-
-    /**
-     * Get the update validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function updateRules()
+    protected function additionalValidation()
     {
-        return RuleFactory::make([
-            'name' => ['required', 'string', 'max:255'],
-        ]);
-    }
-
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array
-     */
-    public function attributes()
-    {
-        return RuleFactory::make(trans('roles::roles.attributes'));
+        // $message = trans("error");
+        // throw new HttpResponseException($this->sendErrorData(["error" => [$message]], $message));
     }
 }

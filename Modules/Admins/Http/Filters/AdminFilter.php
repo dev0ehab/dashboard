@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Accounts\Http\Filters;
+namespace Modules\Admins\Http\Filters;
 
 use App\Http\Filters\BaseFilters;
 
-class AuthModelFilter extends BaseFilters
+class AdminFilter extends BaseFilters
 {
     /**
      * Registered filters to operate upon.

@@ -6,25 +6,25 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Modules\Accounts\Entities\Permission;
-use Modules\Accounts\Entities\Role;
+use Modules\Roles\Entities\Permission;
+use Modules\Roles\Entities\Role;
 use Modules\Admins\Database\Seeders\AdminsTableSeeder;
 use Modules\Admins\Entities\Admin;
 
 class LaratrustSeeder extends Seeder
 {
 
-/**
- * Run the database seeds for Laratrust roles and permissions.
- *
- * This function truncates the Laratrust tables, retrieves the configuration
- * for roles and permissions, and creates roles with their associated permissions
- * based on the configuration. If the configuration is not published, it outputs
- * an error message. Additionally, it seeds the AdminsTableSeeder if configured
- * to create users.
- *
- * @return void|bool Returns false if the configuration is not published.
- */
+    /**
+     * Run the database seeds for Laratrust roles and permissions.
+     *
+     * This function truncates the Laratrust tables, retrieves the configuration
+     * for roles and permissions, and creates roles with their associated permissions
+     * based on the configuration. If the configuration is not published, it outputs
+     * an error message. Additionally, it seeds the AdminsTableSeeder if configured
+     * to create users.
+     *
+     * @return void|bool Returns false if the configuration is not published.
+     */
     public function run()
     {
         $this->truncateLaratrustTables();
@@ -42,11 +42,20 @@ class LaratrustSeeder extends Seeder
         foreach ($config as $key => $modules) {
 
             // Create a new role
-            $role = Role::firstOrCreate([
-                'name' => $key,
-                'display_name' => ucwords(str_replace('_', ' ', $key)),
-                'description' => ucwords(str_replace('_', ' ', $key))
-            ]);
+            $role = Role::whereName([
+                'name' => $key
+            ])->first();
+
+            if (!$role) {
+                $role = Role::create([
+                    'name' => $key,
+                    'display_name:ar' => trans("roles::roles.role_map.$key", [], 'ar'),
+                    'display_name:en' => trans("roles::roles.role_map.$key", [], 'en'),
+                    'description' => ucwords(str_replace('_', ' ', $key))
+                ]);
+            }
+
+
             $permissions = [];
 
             $this->command->info('Creating Role ' . strtoupper($key));
@@ -57,11 +66,11 @@ class LaratrustSeeder extends Seeder
                 foreach (explode(',', $value) as $p => $perm) {
 
                     $permissionValue = $mapPermission->get($perm);
-
-                    $permissions[] = Permission::firstOrCreate([
+                    $permissions[] = Permission::create([
                         'name' => $permissionValue . '_' . $module,
-                        'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
-                        'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
+                        'display_name:en' => trans("roles::roles.permission_map.$permissionValue", ['module' => trans("$module::$module.singular")], 'ar'),
+                        'display_name:ar' => trans("roles::roles.permission_map.$permissionValue", ['module' => trans("$module::$module.singular")], 'en'),
+                        'description' => $module,
                     ])->id;
 
                     $this->command->info('Creating Permission to ' . $permissionValue . ' for ' . $module);

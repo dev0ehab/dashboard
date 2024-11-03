@@ -5,7 +5,7 @@ namespace Modules\Admins\Transformers;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin \Modules\Admins\Entities\Admin */
-class AdminsBreifResource extends JsonResource
+class AdminBreifResource extends JsonResource
 {
 
     /**

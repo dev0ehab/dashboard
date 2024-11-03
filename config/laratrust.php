@@ -1,7 +1,7 @@
 <?php
 
-use Modules\Accounts\Entities\Permission;
-use Modules\Accounts\Entities\Role;
+use Modules\Roles\Entities\Permission;
+use Modules\Roles\Entities\Role;
 
 return [
     /*
