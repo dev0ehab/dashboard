@@ -3,8 +3,8 @@
 
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Validator;
+use Laraeast\LaravelSettings\Facades\Settings;
 use Laravel\Sanctum\PersonalAccessToken;
-use Spatie\LaravelSettings\Settings;
 
 if (!function_exists('app_name')) {
     /**

@@ -6,4 +6,5 @@ return [
     Modules\Admins\Providers\AdminsServiceProvider::class,
     Modules\Accounts\Providers\AccountsServiceProvider::class,
     Modules\Roles\Providers\RolesServiceProvider::class,
+    Modules\Settings\Providers\SettingsServiceProvider::class,
 ];

@@ -2,53 +2,53 @@
 
 namespace Modules\Settings\Repositories;
 
-use Modules\Contracts\CrudRepository;
+use Laraeast\LaravelSettings\Facades\Settings;
+use Modules\Accounts\Contracts\Repositories\BaseModelRepository;
 use Modules\Settings\Entities\Setting;
 
-class SettingRepository implements CrudRepository
+class SettingRepository extends BaseModelRepository
 {
+
+    protected $class = Setting::class;
+    private $files = [
+        'logo',
+        'favicon',
+        'loginLogo',
+        'loginBackground',
+
+    ];
+
     /**
+     * Get index models as a collection.
+     *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function all()
+    public function index()
     {
-        //
+        return $this->class::first();
     }
 
     /**
-     * @param array $data
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function create(array $data)
-    {
-        foreach ($data as $key => $value) {
-            Setting::set($key, $value);
-        }
-    }
-
-    /**
-     * @param mixed $model
-     * @return \Illuminate\Database\Eloquent\Model|void
-     */
-    public function find($model)
-    {
-        //
-    }
-
-    /**
-     * @param mixed $model
-     * @param array $data
+     * Update the specified model with the given data.
+     *
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model The model instance to be updated.
+     * @param array $data An associative array of data to update the model with.
+     * @return \Illuminate\Database\Eloquent\Model The updated model instance.
      */
     public function update($model, array $data)
     {
-        //
-    }
+        foreach (collect($data)->except(array_merge(['_token', '_method'], $this->files)) as $key => $value) {
+            Settings::set($key, $value);
+        }
 
-    /**
-     * @param mixed $model
-     */
-    public function delete($model)
-    {
-        //
+        foreach ($this->files as $file) {
+            if (isset($data[$file])) {
+                Setting::get(Settings::instance($file))->clearMediaCollection($file);
+                Setting::get(Settings::instance($file))->addMediaFromRequest($file)->toMediaCollection($file);
+            }
+        }
+
+        return $model;
     }
 }

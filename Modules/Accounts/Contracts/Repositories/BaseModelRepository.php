@@ -19,7 +19,9 @@ class BaseModelRepository implements CrudsInterface, SoftDeleteInterface
      */
     public function __construct()
     {
-        $this->filter = new $this->filter();
+        if($this->filter){
+            $this->filter = new $this->filter();
+        }
     }
 
 

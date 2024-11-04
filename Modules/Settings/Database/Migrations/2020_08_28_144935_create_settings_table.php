@@ -18,7 +18,7 @@ class CreateSettingsTable extends Migration
             $table->string('key')->index();
             $table->string('locale')->nullable()->index();
             $table->text('value')->nullable();
-            // $table->unique(['key', 'locale']);
+            $table->unique(['key', 'locale']);
             $table->timestamps();
         });
     }

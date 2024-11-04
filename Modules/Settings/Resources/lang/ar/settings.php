@@ -114,7 +114,6 @@ return [
         'about_us_title' => 'العنوان لجزء عننا',
         'about_us_sub_title' => 'العنوان الفرعي لجزء عننا',
         'about_us_desc' => 'الوصف لجزء عننا',
-        'our_vision' => 'رؤيتنا',
         'our_mission' => 'مهمتنا',
         'our_tasks' => 'مهامنا',
     ],

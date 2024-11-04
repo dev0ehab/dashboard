@@ -2,14 +2,15 @@
 
 namespace Modules\Settings\Entities;
 
-use AhmedAliraqi\LaravelMediaUploader\Entities\Concerns\HasUploader;
+use App\Traits\MediaTrait;
+use Laraeast\LaravelSettings\Facades\Settings;
 use Laraeast\LaravelSettings\Models\Setting as BaseSettingModel;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Setting extends BaseSettingModel implements HasMedia
 {
-    use InteractsWithMedia, HasUploader;
+    use InteractsWithMedia, MediaTrait;
 
     /**
      * The table associated with the model.
@@ -24,7 +25,9 @@ class Setting extends BaseSettingModel implements HasMedia
      * @var array
      */
     protected $fillable = [
-        'key', 'value', 'locale'
+        'key',
+        'value',
+        'locale'
     ];
 
     /**
@@ -42,8 +45,12 @@ class Setting extends BaseSettingModel implements HasMedia
 
         $this->addMediaCollection('loginBackground')->singleFile();
 
-        $this->addMediaCollection('slider_video')->singleFile();
+    }
 
-        $this->addMediaCollection('about_video')->singleFile();
+
+
+    public static function get($key)
+    {
+        return Settings::get($key, $default);
     }
 }
