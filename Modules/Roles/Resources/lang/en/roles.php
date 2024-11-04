@@ -7,6 +7,8 @@ return [
     'plural' => 'Roles',
     'attributes' => [
         'name' => 'Role Name',
+        'display_name:en' => 'Display Name in English',
+        'display_name:ar' => 'Display Name in Arabic',
         'permissions' => 'Permissions',
     ],
 

@@ -21,7 +21,9 @@ class RoleRepository extends BaseModelRepository
     public function store(array $data)
     {
         $data["name"] = strtolower(str_replace(' ', '_', $data["display_name:en"]));
+
         $role = $this->class::create($data);
+
         $role->givePermissions($data['permissions']);
 
         return $role;
@@ -37,7 +39,10 @@ class RoleRepository extends BaseModelRepository
     public function update($model, array $data)
     {
         $model->update($data);
-        $model->syncPermissions($data['permissions']);
+
+        if(isset($data['permissions'])) {
+            $model->syncPermissions($data['permissions']);
+        }
 
         return $model;
     }

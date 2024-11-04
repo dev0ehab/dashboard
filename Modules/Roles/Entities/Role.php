@@ -8,7 +8,7 @@ use Laratrust\Models\Role as LaratrustRole;
 
 class Role extends LaratrustRole
 {
-    use Filterable , Translatable;
+    use Filterable, Translatable;
 
     protected $fillable = [
         'name',
@@ -18,9 +18,9 @@ class Role extends LaratrustRole
         'display_name',
     ];
 
-    protected $with = ['translations' , 'permissions'];
+    protected $with = ['translations', 'permissions'];
 
-    // scopes ----------------------------
+    // Scopes --------------------------------
     public function scopeWhereRoleNot($query, $role_name)
     {
         return $query->whereNotIn('name', (array) $role_name);

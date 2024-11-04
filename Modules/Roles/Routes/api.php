@@ -16,5 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(
     function () {
         Route::apiResource('roles', 'Api\RoleController');
+        Route::apiResource('permissions', 'Api\PermissionController')->only(['index']);
     }
 );

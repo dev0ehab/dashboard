@@ -2,6 +2,7 @@
 
 namespace Modules\Roles\Http\Controllers\Api;
 
+use DB;
 use Illuminate\Http\JsonResponse;
 use Modules\Accounts\Http\Controllers\Api\BaseModelController;
 use Modules\Roles\Entities\Role;
@@ -21,7 +22,7 @@ class RoleController extends BaseModelController
     protected $brief_resource = RoleBreifResource::class;
 
 
-        /**
+    /**
      * Destroy the specified resource.
      *
      * @param  int  $id
@@ -31,13 +32,12 @@ class RoleController extends BaseModelController
     {
         $model = $this->repository->show($id);
 
-        if ($check = $this->canDelete($model)) {
+        if ($this->canDelete($model)) {
             $this->repository->forceDelete($model);
+            return $this->sendSuccess(trans("$this->module_name::messages.force_deleted"));
         }
 
-        $check = $check ? 'deleted' : 'not_deleted';
-
-        return $this->sendSuccess(trans("$this->module_name::messages.$check"));
+        return $this->sendError(trans("$this->module_name::messages.not_deleted"));
     }
 
 
@@ -49,6 +49,6 @@ class RoleController extends BaseModelController
      */
     protected function canDelete($model): bool
     {
-        return true;
+        return DB::table("role_user")->where("role_id", $model->id)->count() == 0;
     }
 }

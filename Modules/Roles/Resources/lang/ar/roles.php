@@ -7,6 +7,8 @@ return [
     'plural' => 'ادوار',
     'attributes' => [
         'name' => 'اسم الدور',
+        'display_name:en' => 'اسم الدور باللغة الانجليزية',
+        'display_name:ar' => 'اسم الدور باللغة العربية',
         'permissions' => 'الصلاحيات',
     ],
 

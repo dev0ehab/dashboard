@@ -41,11 +41,13 @@ class BaseModelController extends BaseController
 
         $data = $this->brief_resource::collection($models)->response()->getData(true);
 
-        $data['permissions'] = [...auth()->user()->allPermissions()->filter(function ($item) {
-            return Str::contains(strtolower($item['name']), $this->permission);
-        })->map(function ($item) {
-            return str_replace( "_$this->permission", '' ,$item->name);
-        })];
+        $data['permissions'] = [
+            ...auth()->user()->allPermissions()->filter(function ($item) {
+                return Str::contains(strtolower($item['name']), $this->permission);
+            })->map(function ($item) {
+                return str_replace("_$this->permission", '', $item->name);
+            })
+        ];
 
         return $this->sendResponse($data, trans("messages.success"));
     }
@@ -123,13 +125,12 @@ class BaseModelController extends BaseController
     {
         $model = $this->repository->show($id);
 
-        if ($check = $this->canDelete($model)) {
-            $this->repository->delete($model);
+        if ($this->canDelete($model)) {
+            $this->repository->forceDelete($model);
+            return $this->sendSuccess(trans("$this->module_name::messages.deleted"));
         }
 
-        $check = $check ? 'deleted' : 'not_deleted';
-
-        return $this->sendSuccess(trans("$this->module_name::messages.$check"));
+        return $this->sendError(trans("$this->module_name::messages.not_deleted"));
     }
 
     /**

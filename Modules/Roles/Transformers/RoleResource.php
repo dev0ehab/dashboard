@@ -18,11 +18,7 @@ class RoleResource extends RoleBreifResource
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [
-            'permissions' => $this->permissions->groupBy('description')->map(function ($permission) {
-                return $permission->map(function ($permission) {
-                    return new PermissionResource($permission);
-                });
-            }),
+            'permissions' => Permission::permissionMap($this->permissions),
         ]);
 
     }
