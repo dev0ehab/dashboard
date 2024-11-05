@@ -19,14 +19,14 @@ class BaseAuthModelController extends BaseModelController
     {
         $model = $this->repository->show($id);
         $this->repository->block($model);
-        return $this->sendSuccess(trans("$this->module_name::messages.blocked"));
+        return $this->sendSuccess(trans("messages.blocked", ['model' => $this->translated_module_name]));
     }
 
     public function unblock($id)
     {
         $model = $this->repository->show($id);
         $this->repository->unblock($model);
-        return $this->sendSuccess(trans("$this->module_name::messages.unblocked"));
+        return $this->sendSuccess(trans("messages.unblocked", ['model' => $this->translated_module_name]));
     }
 
 }

@@ -17,7 +17,15 @@ class Admin extends AuthModel implements LaratrustUser
     public const AuthType = 'email';
 
     protected $fillable = [
-        'password'
+        'f_name',
+        'l_name',
+        'email',
+        'phone',
+        'dial_code',
+        'preferred_locale',
+        'last_login_at',
+        'device_token',
+        'password',
     ];
     /**
      * Get the resource representation of the Admin model.

@@ -1,6 +1,6 @@
 <?php
 
 return [
-'singular' => 'مسؤول',
-'plural' => 'مسؤولين',
+    'singular' => 'مسؤول',
+    'plural' => 'مسؤولين',
 ];

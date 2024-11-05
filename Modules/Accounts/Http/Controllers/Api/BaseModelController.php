@@ -20,6 +20,7 @@ class BaseModelController extends BaseController
     public function __construct()
     {
         $this->repository = new $this->repository();
+        $this->translated_module_name = trans("$this->module_name::$this->module_name.singular");
         $this->middleware("permission:read_$this->permission")->only(['index']);
         $this->middleware("permission:show_$this->permission")->only(['show']);
         $this->middleware("permission:create_$this->permission")->only(['create', 'store']);
@@ -73,7 +74,6 @@ class BaseModelController extends BaseController
     public function store(): JsonResponse
     {
         $validated_data = $this->validationAction($this->form_request);
-
         try {
             DB::beginTransaction();
             $model = $this->repository->store($validated_data);
@@ -86,7 +86,7 @@ class BaseModelController extends BaseController
             return $this->sendError($th->getMessage(), $errorData ?? []);
         }
 
-        return $this->sendResponse($this->resource::make($model), trans("$this->module_name::messages.created"));
+        return $this->sendResponse($this->resource::make($model), trans("messages.created", ['model' => $this->translated_module_name]));
     }
 
     /**
@@ -112,7 +112,7 @@ class BaseModelController extends BaseController
             return $this->sendError($th->getMessage(), $errorData ?? []);
         }
 
-        return $this->sendResponse($this->resource::make($model->refresh()), trans("$this->module_name::messages.updated"));
+        return $this->sendResponse($this->resource::make($model->refresh()), trans("messages.updated", ['model' => $this->translated_module_name]));
     }
 
     /**
@@ -126,10 +126,10 @@ class BaseModelController extends BaseController
         $model = $this->repository->show($id);
 
         if ($this->canDelete($model)) {
-            return $this->sendSuccess(trans("$this->module_name::messages.deleted"));
+            return $this->sendSuccess(trans("messages.deleted", ['model' => $this->translated_module_name]));
         }
 
-        return $this->sendError(trans("$this->module_name::messages.not_deleted"));
+        return $this->sendError(trans("messages.not_deleted", ['model' => $this->translated_module_name]));
     }
 
     /**
@@ -142,7 +142,7 @@ class BaseModelController extends BaseController
     {
         $model = $this->repository->show($id);
         $this->repository->forceDelete($model);
-        return $this->sendSuccess(trans("$this->module_name::messages.force_deleted"));
+        return $this->sendSuccess(trans("messages.force_deleted", ['model' => $this->translated_module_name]));
     }
 
     /**
@@ -155,7 +155,7 @@ class BaseModelController extends BaseController
     {
         $model = $this->repository->show($id, true);
         $this->repository->restore($model);
-        return $this->sendSuccess(trans("$this->module_name::messages.restored"));
+        return $this->sendSuccess(trans("messages.restored", ['model' => $this->translated_module_name]));
     }
 
 

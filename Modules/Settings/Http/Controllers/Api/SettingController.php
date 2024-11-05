@@ -61,7 +61,7 @@ class SettingController extends BaseModelController
             return $this->sendError($th->getMessage(), $errorData ?? []);
         }
 
-        return $this->sendResponse($this->resource::make($model->refresh()), trans("$this->module_name::messages.updated"));
+        return $this->sendResponse($this->resource::make($model->refresh()), trans("messages.updated", ['model' => $this->translated_module_name]));
     }
 
 
