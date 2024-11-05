@@ -49,8 +49,13 @@ class Setting extends BaseSettingModel implements HasMedia
 
 
 
-    public static function get($key)
+    public static function setImage($key)
     {
-        return Settings::get($key, $default);
+        return Setting::find(Settings::set($key)->id);
+    }
+
+    public static function getImage($key)
+    {
+        return Setting::find(Settings::instance($key)->id);
     }
 }

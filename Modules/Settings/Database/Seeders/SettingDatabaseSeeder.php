@@ -86,7 +86,7 @@ class SettingDatabaseSeeder extends Seeder
 
 
         foreach ($this->images as $image) {
-            Setting::get(Settings::set($image))
+            Setting::setImage($image)
                 ->addMedia(__DIR__ . '/images/' . $image . '.png')
                 ->preservingOriginal()
                 ->toMediaCollection($image);

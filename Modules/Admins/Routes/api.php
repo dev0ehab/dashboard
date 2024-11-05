@@ -57,7 +57,7 @@ Route::middleware('auth:sanctum')->group(
         Route::apiResource('admins', 'Api\AdminController');
         Route::post('admins/{admin}/block', 'Api\AdminController@block');
         Route::post('admins/{admin}/unblock', 'Api\AdminController@unblock');
-        Route::post('admins/{admin}/force-Delete', 'Api\AdminController@forceDelete');
+        Route::delete('admins/{admin}/force-delete', 'Api\AdminController@forceDelete');
         Route::post('admins/{admin}/restore', 'Api\AdminController@restore');
     }
 );

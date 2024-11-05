@@ -38,14 +38,14 @@ class SettingRepository extends BaseModelRepository
      */
     public function update($model, array $data)
     {
-        foreach (collect($data)->except(array_merge(['_token', '_method'], $this->files)) as $key => $value) {
+        foreach (collect($data)->except(array_merge(['_method'], $this->files)) as $key => $value) {
             Settings::set($key, $value);
         }
 
         foreach ($this->files as $file) {
             if (isset($data[$file])) {
-                Setting::get(Settings::instance($file))->clearMediaCollection($file);
-                Setting::get(Settings::instance($file))->addMediaFromRequest($file)->toMediaCollection($file);
+                Setting::getImage($file)->clearMediaCollection($file);
+                Setting::getImage($file)->addMediaFromRequest($file)->toMediaCollection($file);
             }
         }
 

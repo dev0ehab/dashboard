@@ -100,7 +100,7 @@ class BaseAuthModelRepository implements CrudsInterface, SoftDeleteInterface, Bl
         }
 
         if (isset($data['password'])) {
-            ChangePasswordEvent::dispatch($model, $data['password']);
+            event(new ChangePasswordEvent((string) get_class($model), (string) $model->id, (string) $data['password']));
         }
 
         return $model;

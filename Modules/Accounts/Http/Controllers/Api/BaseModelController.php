@@ -126,7 +126,6 @@ class BaseModelController extends BaseController
         $model = $this->repository->show($id);
 
         if ($this->canDelete($model)) {
-            $this->repository->forceDelete($model);
             return $this->sendSuccess(trans("$this->module_name::messages.deleted"));
         }
 
@@ -143,7 +142,7 @@ class BaseModelController extends BaseController
     {
         $model = $this->repository->show($id);
         $this->repository->forceDelete($model);
-        return $this->sendResponse($this->resource::make($model->refresh()), trans("$this->module_name::messages.force_deleted"));
+        return $this->sendSuccess(trans("$this->module_name::messages.force_deleted"));
     }
 
     /**
@@ -156,7 +155,7 @@ class BaseModelController extends BaseController
     {
         $model = $this->repository->show($id, true);
         $this->repository->restore($model);
-        return $this->sendResponse($this->resource::make($model->refresh()), trans("$this->module_name::messages.restored"));
+        return $this->sendSuccess(trans("$this->module_name::messages.restored"));
     }
 
 
