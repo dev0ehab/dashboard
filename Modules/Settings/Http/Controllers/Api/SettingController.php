@@ -22,6 +22,12 @@ class SettingController extends BaseModelController
     protected $brief_resource = SettingResource::class;
 
 
+    public function __construct()
+    {
+        $this->repository = new $this->repository();
+        $this->translated_module_name = trans("$this->module_name::$this->module_name.singular");
+        $this->middleware("permission:update_$this->permission")->only(['update']);
+    }
 
     /**
      * Get all models.

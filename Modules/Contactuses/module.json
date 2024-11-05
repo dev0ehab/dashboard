@@ -1,0 +1,13 @@
+{
+    "name": "Contactuses",
+    "alias": "contactuses",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Contactuses\\Providers\\ContactusesServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

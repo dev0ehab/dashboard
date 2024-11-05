@@ -23,8 +23,8 @@ class BaseModelController extends BaseController
         $this->translated_module_name = trans("$this->module_name::$this->module_name.singular");
         $this->middleware("permission:read_$this->permission")->only(['index']);
         $this->middleware("permission:show_$this->permission")->only(['show']);
-        $this->middleware("permission:create_$this->permission")->only(['create', 'store']);
-        $this->middleware("permission:update_$this->permission")->only(['edit', 'update']);
+        $this->middleware("permission:create_$this->permission")->only(['store']);
+        $this->middleware("permission:update_$this->permission")->only(['update']);
         $this->middleware("permission:delete_$this->permission")->only(['destroy']);
         $this->middleware("permission:restore_$this->permission")->only(['restore']);
         $this->middleware("permission:forceDelete_$this->permission")->only(['forceDelete']);

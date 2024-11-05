@@ -34,10 +34,10 @@ class RoleController extends BaseModelController
 
         if ($this->canDelete($model)) {
             $this->repository->forceDelete($model);
-            return $this->sendSuccess(trans("$this->module_name::messages.force_deleted"));
+            return $this->sendSuccess(trans("messages.deleted", ['model' => $this->translated_module_name]));
         }
 
-        return $this->sendError(trans("$this->module_name::messages.not_deleted"));
+        return $this->sendError(trans("messages.not_deleted", ['model' => $this->translated_module_name]));
     }
 
 
