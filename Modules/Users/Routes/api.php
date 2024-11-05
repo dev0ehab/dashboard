@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('admin')->middleware('auth-type')->group(
+Route::prefix('user')->middleware('auth-type')->group(
     function () {
 
         Route::post('/register', 'Api\RegisterController@register');
@@ -30,7 +30,7 @@ Route::prefix('admin')->middleware('auth-type')->group(
 
 
 
-        Route::middleware(['auth:sanctum', 'auth-model:admin'])->group(
+        Route::middleware(['auth:sanctum', 'auth-model:user'])->group(
             function () {
                 Route::get('profile', 'Api\ProfileController@show');
                 Route::post('profile/update', 'Api\ProfileController@update');
@@ -54,10 +54,10 @@ Route::prefix('admin')->middleware('auth-type')->group(
 
 Route::middleware(['auth:sanctum', 'auth-model:admin'])->group(
     function () {
-        Route::apiResource('admins', 'Api\AdminController');
-        Route::post('admins/{admin}/block', 'Api\AdminController@block');
-        Route::post('admins/{admin}/unblock', 'Api\AdminController@unblock');
-        Route::delete('admins/{admin}/force-delete', 'Api\AdminController@forceDelete');
-        Route::post('admins/{admin}/restore', 'Api\AdminController@restore');
+        Route::apiResource('users', 'Api\UserController');
+        Route::post('users/{user}/block', 'Api\UserController@block');
+        Route::post('users/{user}/unblock', 'Api\UserController@unblock');
+        Route::delete('users/{user}/force-delete', 'Api\UserController@forceDelete');
+        Route::post('users/{user}/restore', 'Api\UserController@restore');
     }
 );

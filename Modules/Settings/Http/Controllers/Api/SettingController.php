@@ -38,13 +38,15 @@ class SettingController extends BaseModelController
     {
         $data = $this->resource::make(new $this->class());
 
-        $data['permissions'] = [
-            ...auth()->user()->allPermissions()->filter(function ($item) {
-                return Str::contains(strtolower($item['name']), $this->permission);
-            })->map(function ($item) {
-                return str_replace("_$this->permission", '', $item->name);
-            })
-        ];
+        if (auth()->user()) {
+            $data['permissions'] = [
+                ...auth()->user()->allPermissions()->filter(function ($item) {
+                    return Str::contains(strtolower($item['name']), $this->permission);
+                })->map(function ($item) {
+                    return str_replace("_$this->permission", '', $item->name);
+                })
+            ];
+        }
         return $this->sendResponse($data, trans("messages.success"));
     }
 

@@ -1,5 +1,5 @@
 {
-    "name": "ehab_barakat/settings",
+    "name": "ehab_barakat/users",
     "type": "laravel-module",
     "description": "",
     "authors": [
@@ -10,14 +10,20 @@
     ],
     "extra": {
         "laravel": {
-            "providers": [],
+            "providers": [
+                "Modules\\Users\\Providers\\UsersServiceProvider"
+            ],
             "aliases": {
             }
         }
     },
     "autoload": {
         "psr-4": {
-            "Modules\\Settings\\": ""
-        }
+            "Modules\\Users\\": ""
+        },
+        "classmap": [
+            "Database/Seeders",
+            "Database/factories"
+        ]
     }
 }

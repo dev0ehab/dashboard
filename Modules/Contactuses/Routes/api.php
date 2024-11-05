@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::apiResource('contact-us', 'Api\ContactusController')->only('store');
-Route::middleware('auth:sanctum')->group(
+Route::middleware(['auth:sanctum', 'auth-model:admin'])->group(
     function () {
         Route::apiResource('contact-us', 'Api\ContactusController')->except('store');
     }

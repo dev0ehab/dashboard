@@ -13,7 +13,9 @@
 
 Route::get('settings', 'Api\SettingController@index');
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::put('settings', 'Api\SettingController@update');
-});
+Route::middleware(['auth:sanctum', 'auth-model:admin'])->group(
+    function () {
+        Route::put('settings', 'Api\SettingController@update');
+    }
+);
 

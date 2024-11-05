@@ -24,7 +24,7 @@ class BaseAuthModelRepository implements CrudsInterface, SoftDeleteInterface, Bl
     public function __construct()
     {
         $this->filter = new $this->filter();
-        $this->has_roles = method_exists($this->class, 'roles');
+        $this->has_roles = method_exists(object_or_class: $this->class, 'roles');
     }
 
 
@@ -48,6 +48,7 @@ class BaseAuthModelRepository implements CrudsInterface, SoftDeleteInterface, Bl
     public function store(array $data)
     {
         $model = $this->class::create($data);
+
         if ($this->has_roles) {
             $model->addRoles([$data['role_id']]);
         }
