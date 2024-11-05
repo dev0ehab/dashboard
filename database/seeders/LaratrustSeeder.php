@@ -66,12 +66,20 @@ class LaratrustSeeder extends Seeder
                 foreach (explode(',', $value) as $p => $perm) {
 
                     $permissionValue = $mapPermission->get($perm);
-                    $permissions[] = Permission::create([
-                        'name' => $permissionValue . '_' . $module,
-                        'display_name:en' => trans("roles::roles.permission_map.$permissionValue", ['module' => trans("$module::$module.singular" , [], 'en')], 'en'),
-                        'display_name:ar' => trans("roles::roles.permission_map.$permissionValue", ['module' => trans("$module::$module.singular" , [], 'ar')], 'ar'),
-                        'module' => $module,
-                    ])->id;
+
+                    $permis = Permission::where('name', $permissionValue . '_' . $module)->first()?->id;
+
+                    if (!$permis) {
+                        $permis = Permission::create([
+                            'name' => $permissionValue . '_' . $module,
+                            'display_name:en' => trans("roles::roles.permission_map.$permissionValue", ['module' => trans("$module::$module.singular", [], 'en')], 'en'),
+                            'display_name:ar' => trans("roles::roles.permission_map.$permissionValue", ['module' => trans("$module::$module.singular", [], 'ar')], 'ar'),
+                            'module' => $module,
+                        ])->id;
+                    }
+
+                    $permissions[] = $permis;
+
 
                     $this->command->info('Creating Permission to ' . $permissionValue . ' for ' . $module);
                 }
