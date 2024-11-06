@@ -2,14 +2,14 @@
 
 namespace Modules\Admins\Http\Controllers\Api;
 
-use Modules\Accounts\Http\Controllers\Api\BaseAuthModelController;
+use Modules\Accounts\Http\Controllers\Api\BaseModelController;
 use Modules\Admins\Entities\Admin;
 use Modules\Admins\Http\Requests\AdminRequest;
 use Modules\Admins\Repositories\AdminRepository;
 use Modules\Admins\Transformers\AdminBreifResource;
 use Modules\Admins\Transformers\AdminResource;
 
-class AdminController extends BaseAuthModelController
+class AdminController extends BaseModelController
 {
     protected $class = Admin::class;
     protected $form_request = AdminRequest::class;

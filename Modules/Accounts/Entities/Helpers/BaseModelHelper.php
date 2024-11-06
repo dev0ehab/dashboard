@@ -13,7 +13,7 @@ trait BaseModelHelper
      */
     public function getImageAttribute()
     {
-        return $this->getFirstMediaUrl('images');
+        return $this->getMediaResource('images')->first();
     }
 
 
@@ -24,7 +24,7 @@ trait BaseModelHelper
      */
     public function getCoverAttribute()
     {
-        return $this->getFirstMediaUrl('covers');
+        return $this->getMediaResource('covers')->first();
     }
 
 
@@ -35,7 +35,7 @@ trait BaseModelHelper
      */
     public function getImagesAttribute()
     {
-        return $this->getMedia('images');
+        return $this->getMediaResource('images')->first();
     }
 
 

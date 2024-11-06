@@ -13,7 +13,7 @@ trait AuthModelHelper
      */
     public function getAvatarAttribute()
     {
-        return $this->getFirstMediaUrl('avatars');
+        return $this->getMediaResource('avatars')->first();
     }
 
 

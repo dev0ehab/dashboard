@@ -30,14 +30,14 @@ class BaseProfileController extends BaseController
 
     public function update(Request $request): JsonResponse
     {
-        $this->validationAction($this->profileRequest);
+        $data = $this->validationAction($this->profileRequest);
 
         $auth_model = auth()->user();
 
-        $auth_model->update($request->validated());
+        $auth_model->update($data);
 
         if ($request->avatar && $request->avatar != null) {
-            $auth_model->addMediaFromRequest($request->avatar)
+            $auth_model->addMedia($request->avatar)
                 ->usingFileName('avatar.png')
                 ->toMediaCollection('avatars');
         }

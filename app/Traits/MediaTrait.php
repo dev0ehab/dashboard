@@ -3,7 +3,7 @@
 
 namespace App\Traits;
 
-use Modules\Dashboard\Transformers\MediaResource;
+use App\Http\Resources\MediaResource;
 use Illuminate\Support\Arr;
 trait MediaTrait
 {

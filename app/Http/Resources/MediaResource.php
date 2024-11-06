@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Dashboard\Transformers;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\MediaLibrary\Conversions\Conversion;
@@ -30,12 +30,12 @@ class MediaResource extends JsonResource
             'status' => $this->mediaStatus(),
             'progress' => $this->when($this->mediaStatus() == 'processing', $this->getCustomProperty('progress')),
             'conversions' => $this->when(
-                ($this->isImage() || $this->isVideo()) && ! empty($this->getConversions()),
+                ($this->isImage() || $this->isVideo()) && !empty($this->getConversions()),
                 $this->getConversions()
             ),
             'links' => [
                 'delete' => [
-                    'href' => url('api/uploader/media/'.$this->getRouteKey()),
+                    'href' => url('api/uploader/media/' . $this->getRouteKey()),
                     'method' => 'DELETE',
                 ],
             ],
@@ -53,7 +53,7 @@ class MediaResource extends JsonResource
 
         foreach (array_keys($this->getGeneratedConversions()->toArray()) as $conversionName) {
             $conversion = ConversionCollection::createForMedia($this->resource)
-                ->first(fn (Conversion $conversion) => $conversion->getName() === $conversionName);
+                ->first(fn(Conversion $conversion) => $conversion->getName() === $conversionName);
 
             if ($conversion) {
                 $results[$conversionName] = $this->getFullUrl($conversionName);

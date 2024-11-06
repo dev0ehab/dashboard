@@ -29,10 +29,10 @@ class BaseProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            // 'name' => ['required', 'string', 'max:255'],
             //            'old_password' => ['required_with:password', new PasswordRule(auth()->user()->password ?? 'password')],
             //            'password' => ['nullable', 'min:8', 'confirmed'],
-            'avatar' => ['nullable', 'base64_image'],
+            'avatar' => ['nullable', 'image', 'max:10000'],
         ];
     }
 
