@@ -36,5 +36,4 @@ class Admin extends AuthModel implements LaratrustUser
     {
         return new AdminResource($this);
     }
-
 }

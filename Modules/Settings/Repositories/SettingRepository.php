@@ -23,7 +23,7 @@ class SettingRepository extends BaseModelRepository
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index()
+    public function index($paginated)
     {
         return $this->class::first();
     }

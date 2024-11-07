@@ -49,7 +49,7 @@ class BaseVerificationController extends BaseController
             [
                 'verifiable_id' => $auth_model->id,
                 'verifiable_type' => $this->class,
-                'verificiation_type' => $auth_model_type,
+                'verification_type' => $auth_model_type,
                 'verification_value' => $request->username
             ],
             [
@@ -85,7 +85,7 @@ class BaseVerificationController extends BaseController
         $verification = Verification::where([
             'verifiable_id' => $auth_model->id,
             'verifiable_type' => $this->class,
-            'verificiation_type' => get_model_auth_type($this->class),
+            'verification_type' => get_model_auth_type($this->class),
             'verification_value' => $request->username,
             'code' => $request->code,
         ])->first();

@@ -88,6 +88,7 @@ class LaratrustSeeder extends Seeder
             // Attach all permissions to the role
             $role->permissions()->sync($permissions);
         }
+
         if (Config::get('laratrust_seeder.create_users')) {
             $this->call(AdminsTableSeeder::class);
         }

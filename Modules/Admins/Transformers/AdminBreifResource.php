@@ -21,8 +21,8 @@ class AdminBreifResource extends JsonResource
             'name' => $this->name,
             'f_name' => $this->f_name,
             'l_name' => $this->l_name,
-            'email' => $this->email,
-            'phone' => $this->phone,
+            'email' => (string) $this->email,
+            'phone' => (string) $this->phone,
             'avatar' => $this->avatar,
             'role' => $this->role,
 

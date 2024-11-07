@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('verifications', function (Blueprint $table) {
             $table->id();
             $table->morphs('verifiable');
-            $table->string('verificiation_type');
+            $table->string('verification_type');
             $table->string('verification_value');
             $table->string('code');
             $table->timestamps();

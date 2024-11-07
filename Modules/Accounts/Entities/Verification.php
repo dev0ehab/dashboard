@@ -25,7 +25,7 @@ class Verification extends Model
     protected $fillable = [
         'verifiable_id',
         'verifiable_type',
-        "verificiation_type",
+        "verification_type",
         "verification_value",
         'code',
         'created_at',
@@ -41,7 +41,7 @@ class Verification extends Model
         return $this->updated_at->addMinutes(5)->isPast();
     }
 
-        /**
+    /**
      * Get the verifiable model .
      */
     public function verifiable(): MorphTo

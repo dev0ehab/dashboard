@@ -2,14 +2,16 @@
 
 namespace Modules\Accounts\Http\Controllers\Api;
 
+use App\Traits\CacheTrait;
 use DB;
 use Modules\Roles\Entities\Permission;
-use Str;
 use Illuminate\Http\JsonResponse;
 
 
 class BaseModelController extends BaseController
 {
+    use CacheTrait;
+
     protected $class;
     protected $module_name = 'accounts';
     protected $has_roles;
@@ -41,11 +43,10 @@ class BaseModelController extends BaseController
      *
      * @return JsonResponse
      */
-    public function index($paginated = true): JsonResponse
+    public function index($paginated = true)
     {
         $models = $this->repository->index($paginated);
-
-        $data = $this->brief_resource::collection($models)->when($paginated, fn($q) => $q->response()->getData(true));
+        $data = $this->brief_resource::collection($models)->response()->getData($paginated);
 
         if ($this->has_roles) {
             $data['permissions'] = Permission::getUserPermissions(auth()->user(), $this->permission);
@@ -62,7 +63,14 @@ class BaseModelController extends BaseController
      */
     public function show($id): JsonResponse
     {
+        if ($this->hasCache("$this->class::show-$id")) {
+            return $this->sendResponse($this->getCache("$this->class::show-$id"), trans("messages.success"));
+        }
+
         $model = $this->repository->show($id);
+
+        $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
+
         return $this->sendResponse($this->resource::make($model), trans("messages.success"));
     }
 
@@ -79,6 +87,9 @@ class BaseModelController extends BaseController
             DB::beginTransaction();
             $model = $this->repository->store($validated_data);
             DB::commit();
+
+            $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
+
         } catch (\Throwable $th) {
             DB::rollBack();
             if (method_exists($th, 'errors')) {
@@ -105,6 +116,9 @@ class BaseModelController extends BaseController
             $model = $this->repository->show($id);
             $this->repository->update($model, $validated_data);
             DB::commit();
+
+            $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
+
         } catch (\Throwable $th) {
             DB::rollBack();
             if (method_exists($th, 'errors')) {
@@ -144,6 +158,10 @@ class BaseModelController extends BaseController
     {
         $model = $this->repository->show($id);
         $this->repository->forceDelete($model);
+
+        $this->removeModelCache($this->class, $model->id);
+
+
         return $this->sendSuccess(trans("messages.force_deleted", ['model' => $this->translated_module_name]));
     }
 
@@ -157,6 +175,9 @@ class BaseModelController extends BaseController
     {
         $model = $this->repository->show($id, true);
         $this->repository->restore($model);
+
+        $this->removeModelCache($this->class, $model->id);
+
         return $this->sendSuccess(trans("messages.restored", ['model' => $this->translated_module_name]));
     }
 
