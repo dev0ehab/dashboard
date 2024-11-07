@@ -22,7 +22,7 @@ class PermissionController extends BaseModelController
      *
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index($paginated = false): JsonResponse
     {
         $models = $this->class::get();
 

@@ -19,7 +19,7 @@ class BaseModelRepository implements CrudsInterface, SoftDeleteInterface
      */
     public function __construct()
     {
-        if($this->filter){
+        if ($this->filter) {
             $this->filter = new $this->filter();
         }
     }
@@ -30,9 +30,11 @@ class BaseModelRepository implements CrudsInterface, SoftDeleteInterface
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index()
+    public function index($paginated = true)
     {
-        return $this->class::filter($this->filter)->paginate(request('perPage'));
+        return $this->class::filter($this->filter)
+            ->when($paginated, fn($q) => $q->paginate(request('perPage')))
+            ->when(!$paginated, fn($q) => $q->get());
     }
 
     /**

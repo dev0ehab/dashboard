@@ -5,6 +5,7 @@ namespace Modules\Roles\Entities;
 use Astrotomic\Translatable\Translatable;
 use Laratrust\Models\Permission as LaratrustPermission;
 use Modules\Roles\Transformers\PermissionResource;
+use Str;
 
 class Permission extends LaratrustPermission
 {
@@ -26,5 +27,16 @@ class Permission extends LaratrustPermission
                 return new PermissionResource($permission);
             });
         });
+    }
+
+    public static function getUserPermissions($user, $permission)
+    {
+        return [
+            ...$user->allPermissions()->filter(function ($item) use ($permission) {
+                return Str::contains(strtolower($item['name']), $permission);
+            })->map(function ($item) use ($permission) {
+                return str_replace("_$permission", '', $item->name);
+            })
+        ];
     }
 }

@@ -3,6 +3,7 @@
 namespace Modules\Accounts\Http\Controllers\Api;
 
 use DB;
+use Modules\Roles\Entities\Permission;
 use Str;
 use Illuminate\Http\JsonResponse;
 
@@ -11,6 +12,8 @@ class BaseModelController extends BaseController
 {
     protected $class;
     protected $module_name = 'accounts';
+    protected $has_roles;
+    protected $additional_module_name;
     protected $repository;
     protected $permission;
     protected $form_request;
@@ -20,7 +23,9 @@ class BaseModelController extends BaseController
     public function __construct()
     {
         $this->repository = new $this->repository();
-        $this->translated_module_name = trans("$this->module_name::$this->module_name.singular");
+        $this->additional_module_name = $this->additional_module_name ?: $this->module_name;
+        $this->translated_module_name = trans("$this->module_name::$this->additional_module_name.singular");
+        $this->has_roles = user() ? method_exists(get_class(user()), 'roles') : false;
         $this->middleware("permission:read_$this->permission")->only(['index']);
         $this->middleware("permission:show_$this->permission")->only(['show']);
         $this->middleware("permission:create_$this->permission")->only(['store']);
@@ -36,19 +41,15 @@ class BaseModelController extends BaseController
      *
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index($paginated = true): JsonResponse
     {
-        $models = $this->repository->index();
+        $models = $this->repository->index($paginated);
 
-        $data = $this->brief_resource::collection($models)->response()->getData(true);
+        $data = $this->brief_resource::collection($models)->when($paginated, fn($q) => $q->response()->getData(true));
 
-        $data['permissions'] = [
-            ...auth()->user()->allPermissions()->filter(function ($item) {
-                return Str::contains(strtolower($item['name']), $this->permission);
-            })->map(function ($item) {
-                return str_replace("_$this->permission", '', $item->name);
-            })
-        ];
+        if ($this->has_roles) {
+            $data['permissions'] = Permission::getUserPermissions(auth()->user(), $this->permission);
+        }
 
         return $this->sendResponse($data, trans("messages.success"));
     }
@@ -126,6 +127,7 @@ class BaseModelController extends BaseController
         $model = $this->repository->show($id);
 
         if ($this->canDelete($model)) {
+            $this->repository->delete($model);
             return $this->sendSuccess(trans("messages.deleted", ['model' => $this->translated_module_name]));
         }
 

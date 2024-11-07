@@ -5,6 +5,7 @@ namespace Modules\Settings\Http\Controllers\Api;
 use DB;
 use Illuminate\Http\JsonResponse;
 use Modules\Accounts\Http\Controllers\Api\BaseModelController;
+use Modules\Roles\Entities\Permission;
 use Modules\Settings\Entities\Setting;
 use Modules\Settings\Repositories\SettingRepository;
 use Modules\Settings\Http\Requests\SettingRequest;
@@ -34,19 +35,14 @@ class SettingController extends BaseModelController
      *
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index($paginated = true): JsonResponse
     {
         $data = $this->resource::make(new $this->class());
 
         if (auth()->user()) {
-            $data['permissions'] = [
-                ...auth()->user()->allPermissions()->filter(function ($item) {
-                    return Str::contains(strtolower($item['name']), $this->permission);
-                })->map(function ($item) {
-                    return str_replace("_$this->permission", '', $item->name);
-                })
-            ];
+            $data['permissions'] = Permission::getUserPermissions(auth()->user(), $this->permission);
         }
+
         return $this->sendResponse($data, trans("messages.success"));
     }
 
