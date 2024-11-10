@@ -45,8 +45,21 @@ class BaseModelController extends BaseController
      */
     public function index($paginated = true)
     {
+        $query = json_encode(request()->query());
+
+        if ($this->hasCache("$this->class::index-$paginated-$query")) {
+            $data = $this->getCache("$this->class::index-$paginated-$query");
+
+            if ($this->has_roles) {
+                $data->permissions = Permission::getUserPermissions(auth()->user(), $this->permission);
+            }
+
+            return $this->sendResponse($data, trans("messages.success"));
+        }
+
         $models = $this->repository->index($paginated);
         $data = $this->brief_resource::collection($models)->response()->getData($paginated);
+        $this->setCache("$this->class::index-$paginated-$query", $data);
 
         if ($this->has_roles) {
             $data['permissions'] = Permission::getUserPermissions(auth()->user(), $this->permission);
@@ -66,7 +79,6 @@ class BaseModelController extends BaseController
         if ($this->hasCache("$this->class::show-$id")) {
             return $this->sendResponse($this->getCache("$this->class::show-$id"), trans("messages.success"));
         }
-
         $model = $this->repository->show($id);
 
         $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
@@ -88,6 +100,7 @@ class BaseModelController extends BaseController
             $model = $this->repository->store($validated_data);
             DB::commit();
 
+            $this->removeModelCache($this->class);
             $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
 
         } catch (\Throwable $th) {
@@ -115,6 +128,9 @@ class BaseModelController extends BaseController
             DB::beginTransaction();
             $model = $this->repository->show($id);
             $this->repository->update($model, $validated_data);
+
+            $this->removeModelCache($this->class);
+
             DB::commit();
 
             $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
@@ -142,6 +158,7 @@ class BaseModelController extends BaseController
 
         if ($this->canDelete($model)) {
             $this->repository->delete($model);
+            $this->removeModelCache($this->class, $model->id);
             return $this->sendSuccess(trans("messages.deleted", ['model' => $this->translated_module_name]));
         }
 
@@ -157,6 +174,7 @@ class BaseModelController extends BaseController
     public function forceDelete($id): JsonResponse
     {
         $model = $this->repository->show($id);
+
         $this->repository->forceDelete($model);
 
         $this->removeModelCache($this->class, $model->id);

@@ -3,7 +3,9 @@
 
 namespace App\Traits;
 
-use Cache;
+use Illuminate\Support\Facades\Redis;
+use Str;
+
 
 
 
@@ -17,9 +19,9 @@ trait CacheTrait
      * @param int $minutes
      * @return mixed
      */
-    public function setCache($key, $value, $minutes = null)
+    public function setCache($key, $value)
     {
-        return Cache::put($key, $value, $minutes);
+        return Redis::set($key, json_encode($value));
     }
 
 
@@ -29,7 +31,7 @@ trait CacheTrait
      */
     public function getCache($key)
     {
-        return Cache::get($key);
+        return json_decode(Redis::get($key));
     }
 
 
@@ -39,7 +41,7 @@ trait CacheTrait
      */
     public function forgetCache($key)
     {
-        return Cache::forget($key);
+        return Redis::forget($key);
     }
 
 
@@ -49,7 +51,7 @@ trait CacheTrait
      */
     public function flushCache($key)
     {
-        return Cache::flush();
+        return Redis::flush();
     }
 
 
@@ -59,7 +61,29 @@ trait CacheTrait
      */
     public function hasCache($key)
     {
-        return Cache::has($key);
+        return Redis::exists($key);
+    }
+
+
+    /**
+     * @param $key
+     * @return mixed
+     */
+    public function removeModelCache($class, $id = null)
+    {
+        $generated_class = Str::replace('\\', '\\\\', $class);
+        $keys = Redis::keys("$generated_class::index*");
+
+        foreach ($keys as $key) {
+            preg_match('/::(.*)$/', $key, $matches);
+            if (isset($matches[1])) {
+                Redis::del("$class::$matches[1]");
+            }
+        }
+
+        if ($id) {
+            Redis::del("$class::show-$id");
+        }
     }
 
 }
