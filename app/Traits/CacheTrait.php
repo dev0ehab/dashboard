@@ -6,9 +6,6 @@ namespace App\Traits;
 use Illuminate\Support\Facades\Redis;
 use Str;
 
-
-
-
 trait CacheTrait
 {
 
@@ -20,6 +17,10 @@ trait CacheTrait
      */
     public function setCache($key, $value)
     {
+        if (env('CACHE_STORE') != 'redis') {
+            return false;
+        }
+
         return Redis::set($key, json_encode($value));
     }
 
@@ -30,6 +31,10 @@ trait CacheTrait
      */
     public function getCache($key)
     {
+        if (env('CACHE_STORE') != 'redis') {
+            return false;
+        }
+
         return json_decode(Redis::get($key));
     }
 
@@ -40,6 +45,10 @@ trait CacheTrait
      */
     public function hasCache($key)
     {
+        if (env('CACHE_STORE') != 'redis') {
+            return false;
+        }
+
         return Redis::exists($key);
     }
 
@@ -50,6 +59,10 @@ trait CacheTrait
      */
     public function removeModelCache($class, $id = null)
     {
+        if (env('CACHE_STORE') != 'redis') {
+            return false;
+        }
+
         $generated_class = Str::replace('\\', '\\\\', $class);
         $keys = Redis::keys("$generated_class::index*");
 
