@@ -97,19 +97,19 @@ class BaseModelController extends BaseController
         $validated_data = $this->validationAction($this->form_request);
         try {
             DB::beginTransaction();
+
             $model = $this->repository->store($validated_data);
+
             DB::commit();
-
-            $this->removeModelCache($this->class);
-            $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
-
         } catch (\Throwable $th) {
             DB::rollBack();
-            if (method_exists($th, 'errors')) {
-                $errorData = $th->errors();
-            }
-            return $this->sendError($th->getMessage(), $errorData ?? []);
+            $errorData = method_exists($th, 'errors') ? $th->errors() : [];
+            return $this->sendError($th->getMessage(), $errorData);
         }
+
+
+        $this->removeModelCache($this->class);
+        $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
 
         return $this->sendResponse($this->resource::make($model), trans("messages.created", ['model' => $this->translated_module_name]));
     }
@@ -126,22 +126,20 @@ class BaseModelController extends BaseController
 
         try {
             DB::beginTransaction();
+
             $model = $this->repository->show($id);
             $this->repository->update($model, $validated_data);
 
-            $this->removeModelCache($this->class);
-
             DB::commit();
-
-            $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
-
         } catch (\Throwable $th) {
             DB::rollBack();
-            if (method_exists($th, 'errors')) {
-                $errorData = $th->errors();
-            }
-            return $this->sendError($th->getMessage(), $errorData ?? []);
+
+            $errorData = method_exists($th, 'errors') ? $th->errors() : [];
+            return $this->sendError($th->getMessage(), $errorData);
         }
+
+        $this->removeModelCache($this->class);
+        $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
 
         return $this->sendResponse($this->resource::make($model->refresh()), trans("messages.updated", ['model' => $this->translated_module_name]));
     }
@@ -192,9 +190,11 @@ class BaseModelController extends BaseController
     public function restore($id): JsonResponse
     {
         $model = $this->repository->show($id, true);
+
         $this->repository->restore($model);
 
         $this->removeModelCache($this->class, $model->id);
+        $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
 
         return $this->sendSuccess(trans("messages.restored", ['model' => $this->translated_module_name]));
     }

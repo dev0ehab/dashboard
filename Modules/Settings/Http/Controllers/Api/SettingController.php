@@ -35,9 +35,22 @@ class SettingController extends BaseModelController
      *
      * @return JsonResponse
      */
-    public function index($paginated = true): JsonResponse
+    public function index($paginated = false): JsonResponse
     {
+
+        if ($this->hasCache("$this->class::index")) {
+            $data = $this->getCache("$this->class::index");
+
+            if (auth()->user()) {
+                $data->permissions = Permission::getUserPermissions(auth()->user(), $this->permission);
+            }
+
+            return $this->sendResponse($data, trans("messages.success"));
+        }
+
         $data = $this->resource::make(new $this->class());
+
+        $this->setCache("$this->class::index", $data);
 
         if (auth()->user()) {
             $data['permissions'] = Permission::getUserPermissions(auth()->user(), $this->permission);
@@ -64,6 +77,8 @@ class SettingController extends BaseModelController
             }
             return $this->sendError($th->getMessage(), $errorData ?? []);
         }
+
+        $this->setCache("$this->class::index", $this->resource::make($model));
 
         return $this->sendResponse($this->resource::make($model->refresh()), trans("messages.updated", ['model' => $this->translated_module_name]));
     }

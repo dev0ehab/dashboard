@@ -34,5 +34,4 @@ class User extends AuthModel
     {
         return new UserResource($this);
     }
-
 }

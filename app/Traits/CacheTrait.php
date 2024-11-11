@@ -12,7 +12,6 @@ use Str;
 trait CacheTrait
 {
 
-
     /**
      * @param $key
      * @param $value
@@ -32,26 +31,6 @@ trait CacheTrait
     public function getCache($key)
     {
         return json_decode(Redis::get($key));
-    }
-
-
-    /**
-     * @param $key
-     * @return mixed
-     */
-    public function forgetCache($key)
-    {
-        return Redis::forget($key);
-    }
-
-
-    /**
-     * @param $key
-     * @return mixed
-     */
-    public function flushCache($key)
-    {
-        return Redis::flush();
     }
 
 

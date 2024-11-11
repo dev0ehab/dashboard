@@ -25,8 +25,8 @@ class UserBreifResource extends JsonResource
             'phone' => $this->phone,
             'avatar' => $this->avatar,
 
-            'created_at' => $this->created_at->toDateTimeString(),
-            'created_at_formatted' => $this->created_at->diffForHumans(),
+            // 'created_at' => $this->created_at->toDateTimeString(),
+            // 'created_at_formatted' => $this->created_at->diffForHumans(),
         ];
     }
 }
