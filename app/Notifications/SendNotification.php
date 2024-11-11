@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Notifications\Notifications;
+namespace App\Notifications;
 
 use dev0ehab\FcmHttpV1\FcmNotification;
 use Illuminate\Bus\Queueable;
