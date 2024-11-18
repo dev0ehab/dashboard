@@ -78,6 +78,7 @@ class BaseChangeAuthenticable extends BaseController
 
         $verification->delete();
 
+        $this->removeModelCache($this->class, $auth_model->id);
 
         return $this->sendSuccess(trans("$this->module_name::auth.messages.change-authenticable.verified"));
     }

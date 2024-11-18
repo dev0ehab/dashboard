@@ -36,7 +36,7 @@ class BaseRegisterRequest extends FormRequest
             'email' => ['required', 'email', "unique:$this->table,email"],
             'dial_code' => ['required', "max:4", "starts_with:+"],
             'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'confirmed'],
-            'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
+            // 'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
             'device_token' => ['required' , 'string', 'max:255'],
             'preferred_locale' => ['required' , 'string', 'max:255'],
         ];

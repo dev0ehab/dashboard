@@ -2,6 +2,7 @@
 
 namespace Modules\Accounts\Http\Controllers\Api;
 
+use App\Traits\CacheTrait;
 use Modules\Accounts\Events\ChangePasswordEvent;
 use Modules\Accounts\Http\Requests\BasePasswordRequest;
 use Modules\Accounts\Http\Requests\BaseProfileDeleteRequest;
@@ -11,7 +12,8 @@ use Illuminate\Http\Request;
 
 class BaseProfileController extends BaseController
 {
-
+    use CacheTrait;
+    protected $class;
     protected $profileRequest = BaseProfileRequest::class;
     protected $passwordRequest = BasePasswordRequest::class;
     protected $deleteRequest = BaseProfileDeleteRequest::class;
@@ -42,8 +44,10 @@ class BaseProfileController extends BaseController
                 ->toMediaCollection('avatars');
         }
 
-        $data = $auth_model->getResource();
-        return $this->sendResponse($data, trans("$this->module_name::auth.messages.profile.update"));
+        $this->removeModelCache($this->class, $auth_model->id);
+
+        $data = $auth_model->refresh()->getResource();
+        return $this->sendResponse($data, trans("$this->module_name::auth.messages.profile.updated"));
     }
 
     /**
@@ -121,6 +125,8 @@ class BaseProfileController extends BaseController
     public function delete(Request $request): JsonResponse
     {
         $this->validationAction($this->deleteRequest);
+
+        $this->removeModelCache($this->class, auth()->user()->id);
 
         auth()->user()->delete();
 

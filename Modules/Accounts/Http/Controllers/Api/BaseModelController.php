@@ -171,7 +171,7 @@ class BaseModelController extends BaseController
      */
     public function forceDelete($id): JsonResponse
     {
-        $model = $this->repository->show($id);
+        $model = $this->repository->show($id, true);
 
         $this->repository->forceDelete($model);
 

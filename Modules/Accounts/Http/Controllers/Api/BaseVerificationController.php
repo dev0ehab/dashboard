@@ -2,6 +2,7 @@
 
 namespace Modules\Accounts\Http\Controllers\Api;
 
+use App\Traits\CacheTrait;
 use Modules\Accounts\Events\VerificationEvent;
 use Modules\Accounts\Http\Requests\BaseVerificationRequest;
 use Modules\Accounts\Http\Requests\BaseVerifyRequest;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 
 class BaseVerificationController extends BaseController
 {
+    use CacheTrait;
 
     protected $class;
 
@@ -18,16 +20,16 @@ class BaseVerificationController extends BaseController
 
     protected $verifyRequest = BaseVerificationRequest::class;
 
-/**
- * Send a verification code to the user's email or phone number.
- *
- * This method validates the incoming request, checks for the existence of the user,
- * and either creates a new user (if 'force_verify' is set) or sends an error response.
- * It then creates or updates a verification entry and triggers a verification event.
- *
- * @param Request $request The request containing the user's authentication type and username.
- * @return JsonResponse A response indicating the success of sending the verification code.
- */
+    /**
+     * Send a verification code to the user's email or phone number.
+     *
+     * This method validates the incoming request, checks for the existence of the user,
+     * and either creates a new user (if 'force_verify' is set) or sends an error response.
+     * It then creates or updates a verification entry and triggers a verification event.
+     *
+     * @param Request $request The request containing the user's authentication type and username.
+     * @return JsonResponse A response indicating the success of sending the verification code.
+     */
     public function send(Request $request): JsonResponse
     {
         $this->validationAction($this->sendRequest);
@@ -53,16 +55,14 @@ class BaseVerificationController extends BaseController
                 'verification_value' => $request->username
             ],
             [
-                'code' => $code = random_int(1000, 9999),
+                'code' => $code = env('SMS_TEST_MODE') ? '1234' : random_int(1000, 9999),
                 'created_at' => now(),
             ]
         );
 
         event(new VerificationEvent($verification));
 
-        $data['code'] = $code;
-
-        return $this->sendResponse($data, trans("$this->module_name::auth.messages.verification.sent-$auth_model_type"));
+        return $this->sendSuccess(trans("$this->module_name::auth.messages.verification.sent-$auth_model_type"));
     }
 
     /**
@@ -101,6 +101,8 @@ class BaseVerificationController extends BaseController
         ])->save();
 
         $verification->delete();
+
+        $this->removeModelCache($this->class, $auth_model->id);
 
         return $this->sendSuccess(trans("$this->module_name::auth.messages.verification.verified"));
     }

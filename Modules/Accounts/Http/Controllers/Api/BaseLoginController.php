@@ -62,6 +62,10 @@ class BaseLoginController extends BaseController
             'message' => trans("$this->module_name::auth.messages.login"),
         ];
 
+        if (method_exists(get_class($auth_model), 'roles')) {
+            $response['permissions'] = $auth_model->permissions;
+        }
+
         return response()->json($response);
     }
 }

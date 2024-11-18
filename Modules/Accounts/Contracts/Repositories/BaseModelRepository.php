@@ -59,7 +59,7 @@ class BaseModelRepository implements CrudsInterface, SoftDeleteInterface
 
         if (isset($data['images'])) {
             foreach ($data['images'] as $image) {
-                $model->addMediaFromRequest($image)->toMediaCollection('covers');
+                $model->addMediaFromRequest($image)->toMediaCollection('images');
             }
         }
 

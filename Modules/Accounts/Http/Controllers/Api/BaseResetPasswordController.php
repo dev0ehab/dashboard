@@ -52,15 +52,13 @@ class BaseResetPasswordController extends BaseController
             'reset_type' => $auth_model_type,
             'reset_value' => $request->username,
         ], [
-            'code' => $code = random_int(1000, 9999),
+            'code' => $code = env('SMS_TEST_MODE') ? '1234' :random_int(1000, 9999),
             'created_at' => now(),
         ]);
 
         event(new ResetPasswordEvent($resetPasswordCode));
 
-        $data['code'] = $code;
-
-        return $this->sendResponse($data, trans("$this->module_name::auth.messages.password-reset.sent-$auth_model_type"));
+        return $this->sendSuccess(trans("$this->module_name::auth.messages.password-reset.sent-$auth_model_type"));
     }
 
 

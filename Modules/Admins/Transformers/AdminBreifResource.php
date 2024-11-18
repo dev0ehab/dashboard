@@ -24,10 +24,10 @@ class AdminBreifResource extends JsonResource
             'email' => (string) $this->email,
             'phone' => (string) $this->phone,
             'avatar' => $this->avatar,
-            'role' => $this->role,
-
-            'created_at' => $this->created_at->toDateTimeString(),
-            'created_at_formatted' => $this->created_at->diffForHumans(),
+            // 'preferred_locale' => $this->preferred_locale,
+            // 'device_token' => $this->device_token,
+            'role' => $this->role?->name,
+            'created_at' => $this->created_at,
         ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Modules\Accounts\Http\Controllers\Api;
 
+use App\Traits\CacheTrait;
+use DB;
 use Modules\Accounts\Entities\Verification;
 use Modules\Accounts\Events\VerificationEvent;
 use Modules\Accounts\Http\Requests\BaseRegisterRequest;
@@ -10,6 +12,7 @@ use Illuminate\Http\Request;
 
 class BaseRegisterController extends BaseController
 {
+    use CacheTrait;
 
     protected $class;
 
@@ -26,34 +29,47 @@ class BaseRegisterController extends BaseController
     {
         $request_validated = $this->validationAction($this->registerRequest);
 
-        $auth_model = $this->class::create($request_validated);
+        try {
+            DB::beginTransaction();
+            $auth_model = $this->class::create($request_validated);
 
-        if ($request->avatar) {
-            $auth_model->addMediaFromRequest($request->avatar)
-                ->usingFileName('avatar.png')
-                ->toMediaCollection('avatars');
+            // if ($request_validated['avatar']) {
+            //     $auth_model->addMediaFromRequest($request_validated['avatar'])
+            //         ->usingFileName('avatar.png')
+            //         ->toMediaCollection('avatars');
+            // }
+
+            $verification = Verification::create(
+                [
+                    'verifiable_id' => $auth_model->id,
+                    'verifiable_type' => $this->class,
+                    'verification_type' => get_model_auth_type($this->class),
+                    'verification_value' => $request->auth_type,
+                    'code' => $code = random_int(1000, 9999),
+                    'created_at' => now(),
+                ]
+            );
+
+            event(new VerificationEvent($verification));
+
+            $response = [
+                'success' => true,
+                'data' => $auth_model->getResource(),
+                'token' => $auth_model->createToken('MyApp')->plainTextToken,
+                'message' => trans("$this->module_name::auth.register"),
+            ];
+
+            $response['data']['code'] = $code;
+
+            $this->removeModelCache($this->class, $auth_model->id);
+
+            DB::commit();
+            return response()->json($response);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $errorData = method_exists($th, 'errors') ? $th->errors() : [];
+            return $this->sendError($th->getMessage(), $errorData);
         }
 
-        $verification = Verification::create(
-            [
-                'verifiable_id' => $auth_model->id,
-                'verifiable_type' => $this->class,
-                'verification_type' => get_model_auth_type($this->class),
-                'verification_value' => $request->username,
-                'code' => $code = random_int(1000, 9999),
-                'created_at' => now(),
-            ]
-        );
-
-        event(new VerificationEvent($verification));
-
-        $response = [
-            'success' => true,
-            'data' => $auth_model->getResource(),
-            'token' => $auth_model->createToken('MyApp')->plainTextToken,
-            'message' => trans("$this->module_name::auth.register"),
-        ];
-        $response['data']['code'] = $code;
-        return response()->json($response);
     }
 }

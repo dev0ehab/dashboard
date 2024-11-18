@@ -2,6 +2,7 @@
 
 namespace Modules\Accounts\Entities;
 
+use App\Casts\DateTimeCast;
 use App\Traits\Filterable;
 use App\Traits\MediaTrait;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -17,7 +18,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class AuthModel extends Authenticatable implements HasMedia
 {
-    use Notifiable, AuthModelHelper, AuthModelScope, HasApiTokens, InteractsWithMedia, SoftDeletes, AuthModelRelation , Filterable , MediaTrait;
+    use Notifiable, AuthModelHelper, AuthModelScope, HasApiTokens, InteractsWithMedia, SoftDeletes, AuthModelRelation, Filterable, MediaTrait;
 
     public const AuthType = 'email';
 
@@ -39,6 +40,18 @@ class AuthModel extends Authenticatable implements HasMedia
     ];
 
     /**
+     * Define the media collections.
+     *
+     * @return void
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatars')
+            ->useFallbackUrl('https://www.gravatar.com/avatar/' . md5($this->email) . '?d=mm')
+            ->singleFile();
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -46,8 +59,8 @@ class AuthModel extends Authenticatable implements HasMedia
     protected function casts(): array
     {
         return [
-            'phone_verified_at' => 'datetime',
-            'email_verified_at' => 'datetime',
+            'created_at' => DateTimeCast::class,
+            'updated_at' => DateTimeCast::class,
             'password' => 'hashed',
         ];
     }

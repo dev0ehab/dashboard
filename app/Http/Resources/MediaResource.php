@@ -19,26 +19,26 @@ class MediaResource extends JsonResource
         return [
             'id' => $this->id,
             'url' => $this->getFullUrl(),
-            'preview' => $this->getPreviewUrl(),
-            'name' => $this->name,
-            'file_name' => $this->file_name,
-            'type' => $this->getType(),
-            'mime_type' => $this->mime_type,
-            'size' => $this->size,
-            'human_readable_size' => $this->human_readable_size,
-            'details' => $this->mediaDetails(),
-            'status' => $this->mediaStatus(),
-            'progress' => $this->when($this->mediaStatus() == 'processing', $this->getCustomProperty('progress')),
-            'conversions' => $this->when(
-                ($this->isImage() || $this->isVideo()) && !empty($this->getConversions()),
-                $this->getConversions()
-            ),
-            'links' => [
-                'delete' => [
-                    'href' => url('api/uploader/media/' . $this->getRouteKey()),
-                    'method' => 'DELETE',
-                ],
-            ],
+            // 'preview' => $this->getPreviewUrl(),
+            // 'name' => $this->name,
+            // 'file_name' => $this->file_name,
+            // 'type' => $this->getType(),
+            // 'mime_type' => $this->mime_type,
+            // 'size' => $this->size,
+            // 'human_readable_size' => $this->human_readable_size,
+            // 'details' => $this->mediaDetails(),
+            // 'status' => $this->mediaStatus(),
+            // 'progress' => $this->when($this->mediaStatus() == 'processing', $this->getCustomProperty('progress')),
+            // 'conversions' => $this->when(
+            //     ($this->isImage() || $this->isVideo()) && !empty($this->getConversions()),
+            //     $this->getConversions()
+            // ),
+            // 'links' => [
+            //     'delete' => [
+            //         'href' => url('api/uploader/media/' . $this->getRouteKey()),
+            //         'method' => 'DELETE',
+            //     ],
+            // ],
         ];
     }
 
