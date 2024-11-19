@@ -69,7 +69,7 @@ class UserFilter extends BaseFilters
      * @param string|int $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function only_trashed($value)
+    protected function onlyTrashed($value)
     {
         if ($value) {
             return $this->builder->onlyTrashed();

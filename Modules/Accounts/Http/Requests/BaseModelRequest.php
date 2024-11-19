@@ -14,6 +14,7 @@ class BaseModelRequest extends FormRequest
     use ApiTrait;
 
     protected $module_name;
+    protected $additional_module_name;
 
     /**
      * Determine if the supervisor is authorized to make this request.
@@ -90,8 +91,8 @@ class BaseModelRequest extends FormRequest
      */
     public function attributes(): array
     {
-        
-        return trans("$this->module_name::$this->module_name.attributes");
+
+        return trans("$this->module_name::$this->additional_module_name.attributes");
     }
 
     /**

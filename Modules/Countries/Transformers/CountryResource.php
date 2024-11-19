@@ -1,10 +1,11 @@
 <?php
 
-namespace Modules\Users\Transformers;
+namespace Modules\Countries\Transformers;
 
 
-/** @mixin \Modules\Users\Entities\User */
-class UserResource extends UserBreifResource
+
+/** @mixin \Modules\Countries\Entities\Country */
+class CountryResource extends CountryBreifResource
 {
 
     /**

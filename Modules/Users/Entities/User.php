@@ -22,6 +22,8 @@ class User extends AuthModel
         'dial_code',
         'preferred_locale',
         'last_login_at',
+        'email_verified_at',
+        'phone_verified_at',
         'device_token',
         'password',
     ];

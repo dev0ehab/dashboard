@@ -10,4 +10,15 @@ class AdminRepository extends BaseAuthModelRepository
 {
     protected $class = Admin::class;
     protected $filter = AdminFilter::class;
+
+
+    protected function storeAddition($model, $data)
+    {
+
+    }
+
+    protected function updateAddition($model, $data)
+    {
+
+    }
 }
