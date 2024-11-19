@@ -8,7 +8,7 @@ git add .
 git commit -m "server updates"
 git pull origin main --rebase
 
-php artisan migrate
+php artisan migrate:fresh --seed
 
 # php artisan migrate:fresh --seed
 
