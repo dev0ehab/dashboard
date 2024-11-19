@@ -47,11 +47,20 @@ class BaseAuthModelRepository implements CrudsInterface, SoftDeleteInterface, Bl
 
     public function store(array $data)
     {
+        if (isset($data['email'])) {
+            $data['email_verified_at'] = now();
+        }
+
+        if (isset($data['phone'])) {
+            $data['phone_verified_at'] = now();
+        }
+
         $model = $this->class::create($data);
 
         if ($this->has_roles) {
             $model->addRoles([$data['role_id']]);
         }
+
 
         if (isset($data['avatar'])) {
             $model->addMediaFromRequest('avatar')->toMediaCollection('avatars');
@@ -89,9 +98,17 @@ class BaseAuthModelRepository implements CrudsInterface, SoftDeleteInterface, Bl
      */
     public function update($model, array $data)
     {
+        if (isset($data['email']) && $data['email'] != $model->email) {
+            $data['email_verified_at'] = now();
+        }
+
+        if (isset($data['phone']) && $data['phone'] != $model->phone) {
+            $data['phone_verified_at'] = now();
+        }
+
         $model->update($data);
 
-        if ($this->has_roles) {
+        if ($this->has_roles && isset($data['role_id'])) {
             $model->syncRoles([$data['role_id']]);
         }
 
@@ -119,10 +136,10 @@ class BaseAuthModelRepository implements CrudsInterface, SoftDeleteInterface, Bl
      */
     public function delete($model)
     {
-        $model->forceFill([
-            "email" => null,
-            "phone" => null
-        ])->save();
+        // $model->forceFill([
+        //     "email" => null,
+        //     "phone" => null
+        // ])->save();
 
         $model->delete();
     }

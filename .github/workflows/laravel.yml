@@ -1,0 +1,22 @@
+name: Laravel
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy On Server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        username: ${{vars.USERNAME}}
+        password: ${{vars.PASSWORD}}
+        host: ${{vars.HOST}}
+        port: ${{vars.PORT}}
+        script: 'cd domains/mediumblue-salamander-199248.hostingersite.com/public_html/ &&  ./deploy.sh'

@@ -36,6 +36,14 @@ class BaseProfileController extends BaseController
 
         $auth_model = auth()->user();
 
+        if ($data['email'] != $auth_model->email) {
+            $data["email_verified_at"] = null;
+        }
+
+        if ($data['phone'] != $auth_model->phone) {
+            $data["phone_verified_at"] = null;
+        }
+
         $auth_model->update($data);
 
         if ($request->avatar && $request->avatar != null) {
@@ -43,6 +51,8 @@ class BaseProfileController extends BaseController
                 ->usingFileName('avatar.png')
                 ->toMediaCollection('avatars');
         }
+
+
 
         $this->removeModelCache($this->class, $auth_model->id);
 

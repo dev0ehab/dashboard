@@ -12,7 +12,7 @@ class User extends AuthModel
 {
     use UserHelper, UserRelation, UserScope;
 
-    public const AuthType = 'email';
+    public const AuthType = 'phone';
 
     protected $fillable = [
         'f_name',

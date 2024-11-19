@@ -15,7 +15,7 @@ return [
         'super_admin' => [
             'admins' => 'c,r,u,d,s,b,re,f',
             'users' => 'c,r,u,d,s,b,re,f',
-            'roles' => 'c,r,u,d,s',
+            'roles' => 'c,r,u,d,s,b',
             'settings' => 'r,u',
             'contact-us' => 'r,d,s',
         ],

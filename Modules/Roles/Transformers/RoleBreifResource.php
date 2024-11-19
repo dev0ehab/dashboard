@@ -18,9 +18,8 @@ class RoleBreifResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'display_name' => translations($this, 'display_name'),
+            'name' => translations($this, 'display_name'),
             'created_at' => $this->created_at->toDateTimeString(),
-            'created_at_formatted' => $this->created_at->diffForHumans(),
         ];
     }
 }

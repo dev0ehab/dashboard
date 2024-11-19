@@ -16,10 +16,6 @@ class PermissionResource extends PermissionBreifResource
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [
-
-
-
-
         ]);
 
     }

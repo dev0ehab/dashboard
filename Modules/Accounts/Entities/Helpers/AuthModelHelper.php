@@ -59,6 +59,4 @@ trait AuthModelHelper
     {
         return (bool) $this->{"{$auth_type}_verified_at"};
     }
-
-
 }

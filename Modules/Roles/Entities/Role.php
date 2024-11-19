@@ -12,6 +12,7 @@ class Role extends LaratrustRole
 
     protected $fillable = [
         'name',
+        'blocked_at',
     ];
 
     public $translatedAttributes = [
@@ -30,4 +31,25 @@ class Role extends LaratrustRole
     {
         return $query->whereIn('name', (array) $role_name);
     }
+
+    /**
+     * Block the auth model.
+     *
+     * @return self
+     */
+    public function block()
+    {
+        return $this->forceFill(['blocked_at' => now()]);
+    }
+
+    /**
+     * Un-block the auth model.
+     *
+     * @return self
+     */
+    public function unblock()
+    {
+        return $this->forceFill(['blocked_at' => null]);
+    }
+
 }

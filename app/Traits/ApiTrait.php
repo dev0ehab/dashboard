@@ -29,7 +29,7 @@ trait ApiTrait
      * @param int $code
      * @return JsonResponse
      */
-    public function sendError($error, array $errorMessage = [], int $code = 200): JsonResponse
+    public function sendError($error, array $errorMessage = [], int $code = 400): JsonResponse
     {
         $response = [
             'success' => false,
@@ -65,6 +65,6 @@ trait ApiTrait
             'data' => $result,
             'message' => $message,
         ];
-        return response()->json($response, 200);
+        return response()->json($response, 400);
     }
 }

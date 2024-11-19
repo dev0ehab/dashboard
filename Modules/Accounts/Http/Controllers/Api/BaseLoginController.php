@@ -25,15 +25,22 @@ class BaseLoginController extends BaseController
 
         $auth_model_type = $request->auth_type;
 
-        $auth_model = $this->class::where($auth_model_type, $request->username)->first();
+        $auth_model = $this->class::withTrashed()->where($auth_model_type, $request->username)->first();
 
         if (!$auth_model) {
             return $this->sendError(trans("$this->module_name::auth.validations.failed"));
         }
 
         if ($auth_model->blocked_at) {
-            auth()->logout();
             return $this->sendError(trans("$this->module_name::auth.validations.blocked"));
+        }
+
+        if (method_exists($auth_model, 'roles') && $auth_model->role->blocked_at) {
+            return $this->sendError(trans("$this->module_name::auth.validations.blocked"));
+        }
+
+        if ($auth_model->deleted_at) {
+            return $this->sendError(trans("$this->module_name::auth.validations.deleted"));
         }
 
         if (!Hash::check($request->password, $auth_model->password)) {
@@ -41,7 +48,6 @@ class BaseLoginController extends BaseController
         }
 
         if (!$auth_model->hasVerifiedAuth($auth_model_type)) {
-            auth()->logout();
             $data = $auth_model->getResource();
             return $this->sendResponse($data, trans("$this->module_name::auth.validations.$auth_model_type-not-verified"));
         }
@@ -51,7 +57,6 @@ class BaseLoginController extends BaseController
         $auth_model->last_login_at = Carbon::now()->toDateTimeString();
         $auth_model->preferred_locale = $request->preferred_locale ?? app()->getLocale();
         $auth_model->device_token = $request->device_token;
-
 
         $auth_model->push();
 

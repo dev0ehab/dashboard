@@ -18,8 +18,7 @@ class PermissionBreifResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'display_name' => translations($this, 'display_name'),
-            'name' => $this->name,
+            'name' => translations($this, 'display_name'),
         ];
     }
 }

@@ -2,11 +2,14 @@
 
 namespace Modules\Accounts\Http\Requests;
 
+use DB;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 use App\Traits\ApiTrait;
 use Illuminate\Validation\Rules\Password;
+use Modules\Accounts\Rules\PasswordRule;
+use Str;
 
 class BaseAuthModelRequest extends FormRequest
 {
@@ -50,14 +53,17 @@ class BaseAuthModelRequest extends FormRequest
 
     protected function updateRules(): array
     {
+        $user = DB::table($this->table)->where('id', $this->route(Str::singular($this->table)))->first();
+
         return [
-            'f_name' => ['nullable', 'string', 'max:255'],
-            'l_name' => ['nullable', 'string', 'max:255'],
-            'phone' => ['nullable', "starts_with:$this->dial_code", 'min:10', "unique:$this->table,phone"],
-            'email' => ['nullable', 'email', "unique:$this->table,email"],
-            'dial_code' => ['nullable', "max:4", "starts_with:+"],
-            'password' => ['nullable', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'confirmed'],
-            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
+            'f_name' => ['sometimes', 'string', 'max:255'],
+            'l_name' => ['sometimes', 'string', 'max:255'],
+            'phone' => ['sometimes', "starts_with:$this->dial_code", 'min:10', "unique:$this->table,phone,$user->id"],
+            'email' => ['sometimes', 'email', "unique:$this->table,email,$user->id"],
+            'dial_code' => ['sometimes', "max:4", "starts_with:+"],
+            'old_password' => ['required_with:password', new PasswordRule($user->password)],
+            'password' => ['sometimes', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'confirmed'],
+            'avatar' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
         ];
     }
 

@@ -61,6 +61,8 @@ class AuthModel extends Authenticatable implements HasMedia
         return [
             'created_at' => DateTimeCast::class,
             'updated_at' => DateTimeCast::class,
+            'phone_verified_at' => DateTimeCast::class,
+            'email_verified_at' => DateTimeCast::class,
             'password' => 'hashed',
         ];
     }

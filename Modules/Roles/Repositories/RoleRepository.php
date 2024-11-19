@@ -40,9 +40,41 @@ class RoleRepository extends BaseModelRepository
     {
         $model->update($data);
 
-        if(isset($data['permissions'])) {
+        if (isset($data['permissions'])) {
             $model->syncPermissions($data['permissions']);
         }
+
+        return $model;
+    }
+
+
+    /**
+     * Block the specified model.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model The model instance to block.
+     * @return \Illuminate\Database\Eloquent\Model The blocked model instance.
+     *
+     * This method sets the model's blocked status and saves the changes.
+     */
+    public function block($model)
+    {
+        $model->block()->save();
+
+        return $model;
+    }
+
+
+    /**
+     * Unblock the specified model.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model The model instance to unblock.
+     * @return \Illuminate\Database\Eloquent\Model The unblocked model instance.
+     *
+     * This method sets the model's blocked status to false and saves the changes.
+     */
+    public function unblock($model)
+    {
+        $model->unblock()->save();
 
         return $model;
     }

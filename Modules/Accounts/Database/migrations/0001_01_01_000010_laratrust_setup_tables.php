@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->unique();
+            $table->timestamp('blocked_at')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
         });

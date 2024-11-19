@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum', 'auth-model:admin'])->group(
     function () {
         Route::apiResource('roles', 'Api\RoleController');
+        Route::post('roles/{admin}/block', 'Api\RoleController@block');
+        Route::post('roles/{admin}/unblock', 'Api\RoleController@unblock');
         Route::apiResource('permissions', 'Api\PermissionController')->only(['index']);
     }
 );

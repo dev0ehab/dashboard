@@ -16,7 +16,7 @@ class AdminRequest extends BaseAuthModelRequest
     public function rules(): array
     {
         return array_merge(parent::rules(), [
-            'role_id' => ['required', 'exists:roles,id'],
+            'role_id' => ['sometimes', 'exists:roles,id'],
         ]);
     }
 }

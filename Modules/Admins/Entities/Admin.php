@@ -25,6 +25,8 @@ class Admin extends AuthModel implements LaratrustUser
         'preferred_locale',
         'last_login_at',
         'device_token',
+        'email_verified_at',
+        'phone_verified_at',
         'password',
     ];
     /**

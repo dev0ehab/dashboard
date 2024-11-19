@@ -15,8 +15,8 @@ return [
 
     'validations' => [
         'failed' => 'These credentials do not match our records.',
-        'deleted' => 'This account has been deleted.',
-        'blocked' => 'This account has been blocked.',
+        'deleted' => 'This account has been deleted , please contact admin.',
+        'blocked' => 'This account has been blocked , please contact admin.',
         'password' => 'The password you entered is incorrect!',
         'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
         'verification' => 'This :attribute is invalid',
