@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('message');
             $table->string('senderable_type')->nullable();
             $table->string('senderable_id')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

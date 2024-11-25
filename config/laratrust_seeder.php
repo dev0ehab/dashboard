@@ -16,6 +16,7 @@ return [
             'admins' => 'c,r,u,d,s,b,re,f',
             'users' => 'c,r,u,d,s,b,re,f',
             'roles' => 'c,r,u,d,s,b',
+            'countries' => 'c,r,u,d,s',
             'settings' => 'r,u',
             'contact-us' => 'r,d,s',
         ],

@@ -8,13 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Accounts\Entities\Helpers\BaseModelHelper;
 use Modules\Accounts\Entities\Relations\BaseModelRelation;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class BaseModel extends Model implements HasMedia
 {
-    use BaseModelHelper, InteractsWithMedia, SoftDeletes, BaseModelRelation , Filterable , MediaTrait;
+    use BaseModelHelper, InteractsWithMedia, BaseModelRelation , Filterable , MediaTrait;
 
     /**
      * The attributes that are mass assignable.

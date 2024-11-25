@@ -20,8 +20,12 @@ class CountryRequest extends BaseModelRequest
         return [
             'name:ar' => ['required', 'string', 'max:255', "unique:country_translations,name"],
             'name:en' => ['required', 'string', 'max:255', "unique:country_translations,name"],
+            'currency:ar' => ['required', 'string', 'max:255'],
+            'currency:en' => ['required', 'string', 'max:255'],
             "dial_code" => ['required', "max:4", "starts_with:+", "unique:$this->table,dial_code"],
+            "country_code" => ['required', "string", "unique:$this->table,country_code"],
             'image' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:10000'],
+            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 
@@ -35,10 +39,13 @@ class CountryRequest extends BaseModelRequest
         $en_id = $country_translations->where('locale', 'en')->first()?->id;
 
         return [
-            'name:ar' => ['required', 'string', 'max:255', "unique:country_translations,name,$ar_id"],
-            'name:en' => ['required', 'string', 'max:255', "unique:country_translations,name,$en_id"],
-            "dial_code" => ['required', "max:4", "starts_with:+", "unique:$this->table,dial_code,$this->country"],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:10000'],
+            'name:ar' => ['sometimes', 'string', 'max:255', "unique:country_translations,name,$ar_id"],
+            'name:en' => ['sometimes', 'string', 'max:255', "unique:country_translations,name,$en_id"],
+            '%currency%' => ['sometimes', 'string', 'max:255'],
+            "dial_code" => ['sometimes', "max:4", "starts_with:+", "unique:$this->table,dial_code,$this->country"],
+            "country_code" => ['sometimes', "string", "unique:$this->table,country_code,$this->country"],
+            'image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg', 'max:10000'],
+            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 

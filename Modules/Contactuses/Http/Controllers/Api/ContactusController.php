@@ -30,21 +30,21 @@ class ContactusController extends BaseModelController
         $this->middleware("permission:delete_$this->permission")->only(['destroy']);
     }
 
-    /**
-     * Destroy the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id): JsonResponse
-    {
-        $model = $this->repository->show($id);
+    // /**
+    //  * Destroy the specified resource.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function destroy($id): JsonResponse
+    // {
+    //     $model = $this->repository->show($id);
 
-        if ($this->canDelete($model)) {
-            $this->repository->forceDelete($model);
-            return $this->sendSuccess(trans("messages.force_deleted", ['model' => $this->translated_module_name]));
-        }
+    //     if ($this->canDelete($model)) {
+    //         $this->repository->forceDelete($model);
+    //         return $this->sendSuccess(trans("messages.force_deleted", ['model' => $this->translated_module_name]));
+    //     }
 
-        return $this->sendError(trans("messages.not_deleted", ['model' => $this->translated_module_name]));
-    }
+    //     return $this->sendError(trans("messages.not_deleted", ['model' => $this->translated_module_name]));
+    // }
 }

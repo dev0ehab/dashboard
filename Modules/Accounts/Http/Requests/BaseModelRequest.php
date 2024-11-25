@@ -91,7 +91,6 @@ class BaseModelRequest extends FormRequest
      */
     public function attributes(): array
     {
-
         return trans("$this->module_name::$this->additional_module_name.attributes");
     }
 

@@ -11,15 +11,19 @@ class Country extends BaseModel
     use Filterable, Translatable ;
 
     protected $fillable = [
-        'name',
+        'dial_code',
+        'country_code',
         'is_active',
     ];
 
     public $translatedAttributes = [
         'name',
+        'currency',
     ];
 
     protected $with = ['translations'];
+
+    protected $casts = ['is_active' => 'boolean'];
 
 
 }

@@ -8,6 +8,7 @@ use Modules\Accounts\Http\Requests\BaseModelRequest;
 class RoleRequest extends BaseModelRequest
 {
     protected $module_name = 'roles';
+    protected $additional_module_name = 'roles';
     protected $table = 'roles';
 
 

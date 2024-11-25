@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class CountryTranslation extends Model
 {
     protected $fillable = [
-        'display_name',
+        'name',
+        'currency',
     ];
     protected $table = 'country_translations';
 

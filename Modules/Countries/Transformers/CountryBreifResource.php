@@ -18,8 +18,12 @@ class CountryBreifResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => translations($this, 'display_name'),
-            'created_at' => $this->created_at->toDateTimeString(),
+            'name' => translations($this, 'name'),
+            'currency' => translations($this, 'currency'),
+            'country_code' => $this->country_code,
+            'dial_code' => $this->dial_code,
+            'is_active' => $this->is_active,
+            'image' => $this->image,
         ];
     }
 }

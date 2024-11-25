@@ -8,8 +8,12 @@ return [
     'attributes' => [
         'name:en' => 'Name in English',
         'name:ar' => 'Name in Arabic',
-        "dial_code" => "Dial Code",
-        "flag" => "Flag",
+        'currency:en' => 'Currency in English',
+        'currency:ar' => 'Currency in Arabic',
+        'dial_code' => 'Dialing Code',
+        'country_code' => 'Country Code',
+        'image' => 'Flag Image',
+        'is_active' => 'Status',
     ],
 ];
 

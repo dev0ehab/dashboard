@@ -10,8 +10,9 @@ return new class extends Migration
     {
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('dial_code');
+            $table->string('country_code');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
 
@@ -19,6 +20,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('country_id')->constrained()->cascadeOnDelete();
             $table->string('name');
+            $table->string('currency');
             $table->string('locale')->index();
             $table->unique(['country_id', 'locale']);
         });
