@@ -32,9 +32,10 @@ class BaseModelRepository implements CrudsInterface, SoftDeleteInterface
      */
     public function index($paginated = true)
     {
-        return $this->class::filter($this->filter)
-            ->when($paginated, fn($q) => $q->paginate(request('perPage')))
-            ->when(!$paginated, fn($q) => $q->get());
+        if ($paginated) {
+            return $this->class::filter($this->filter)->paginate(request('per_page'));
+        }
+        return $this->class::filter($this->filter)->get();
     }
 
     /**

@@ -28,8 +28,7 @@ class CountryController extends BaseModelController
      */
     protected function canDelete($model): bool
     {
-        return DB::table("admins")->where("country_id", $model->id)->count() == 0 &&
-            DB::table("users")->where("country_id", $model->id)->count() == 0;
+        return DB::table("branches")->where("country_id", $model->id)->count() == 0;
     }
 
 

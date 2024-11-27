@@ -33,9 +33,12 @@ class BaseAuthModelRepository implements CrudsInterface, SoftDeleteInterface, Bl
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index()
+    public function index($paginated = true)
     {
-        return $this->class::filter($this->filter)->paginate(request('perPage'));
+        if ($paginated) {
+            return $this->class::filter($this->filter)->paginate(request('per_page'));
+        }
+        return $this->class::filter($this->filter)->get();
     }
 
     /**

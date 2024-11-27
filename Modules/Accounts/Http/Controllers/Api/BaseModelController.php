@@ -43,8 +43,10 @@ class BaseModelController extends BaseController
      *
      * @return JsonResponse
      */
-    public function index($paginated = true)
+    public function index()
     {
+        $paginated = (bool) request('is_paginated', true);
+
         $query = json_encode(request()->query());
 
         if ($this->hasCache("$this->class::index-$paginated-$query")) {
@@ -58,7 +60,9 @@ class BaseModelController extends BaseController
         }
 
         $models = $this->repository->index($paginated);
-        $data = $this->brief_resource::collection($models)->response()->getData($paginated);
+
+        $data = $this->brief_resource::collection($models)->response()->getData(true);
+
         $this->setCache("$this->class::index-$paginated-$query", $data);
 
         if ($this->has_roles) {

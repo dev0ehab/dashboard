@@ -19,7 +19,10 @@ class CountryBreifResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => translations($this, 'name'),
+            'localized_name' => $this->name,
             'currency' => translations($this, 'currency'),
+            'localized_currency' => $this->currency,
+
             'country_code' => $this->country_code,
             'dial_code' => $this->dial_code,
             'is_active' => $this->is_active,
