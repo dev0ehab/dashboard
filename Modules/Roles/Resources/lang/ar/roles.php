@@ -13,14 +13,15 @@ return [
     ],
 
     'permission_map' => [
-        'create' => 'انشاء :module',
-        'read' => 'قراءة :module',
-        'update' => 'تعديل :module',
-        'delete' => 'حذف نهائي :module',
+        'index' => 'قراءة :module',
         'show' => 'عرض :module',
+        'store' => 'انشاء :module',
+        'update' => 'تعديل :module',
+        'destroy' => 'حذف نهائي :module',
         'forceDelete' => 'حذف مؤقت :module',
         'restore' => 'استعاده :module',
         'block' => 'حظر :module',
+        'unblock' => 'الغاء حظر :module',
     ],
 
 

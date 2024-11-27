@@ -2,6 +2,7 @@
 
 namespace Modules\Countries\Http\Controllers\Api;
 
+use App\Traits\CrudTraits\StatusTrait;
 use DB;
 use Modules\Accounts\Http\Controllers\Api\BaseModelController;
 use Modules\Countries\Entities\Country;
@@ -12,6 +13,7 @@ use Modules\Countries\Transformers\CountryResource;
 
 class CountryController extends BaseModelController
 {
+    use StatusTrait;
     protected $class = Country::class;
     protected $form_request = CountryRequest::class;
     protected $module_name = 'countries';
@@ -19,6 +21,12 @@ class CountryController extends BaseModelController
     protected $repository = CountryRepository::class;
     protected $resource = CountryResource::class;
     protected $brief_resource = CountryBreifResource::class;
+
+    protected $un_active_middlewares = [
+        'index',
+        'show',
+    ];
+
 
     /**
      * Determine if the specified model can be deleted.
@@ -30,6 +38,5 @@ class CountryController extends BaseModelController
     {
         return DB::table("branches")->where("country_id", $model->id)->count() == 0;
     }
-
 
 }

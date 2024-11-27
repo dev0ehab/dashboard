@@ -13,8 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum', 'auth-model:admin'])->group(
-    function () {
-        Route::apiResource('countries', 'Api\CountryController');
-    }
-);
+Route::post('countries/{country}/status', 'Api\CountryController@status');
+Route::apiResource('countries', 'Api\CountryController');

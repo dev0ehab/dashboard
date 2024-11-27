@@ -12,12 +12,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('branches/{branch}/status', 'Api\BranchController@status');
 
-Route::apiResource('contact-us', 'Api\ContactusController')->only('store');
-
-Route::middleware(['auth:sanctum', 'auth-model:admin'])->group(
-    function () {
-        Route::apiResource('contact-us', 'Api\ContactusController')->except('store');
-    }
-);
-
+Route::apiResource('branches', 'Api\BranchController');

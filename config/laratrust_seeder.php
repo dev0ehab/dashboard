@@ -13,27 +13,29 @@ return [
 
     'roles_structure' => [
         'super_admin' => [
-            'admins' => 'c,r,u,d,s,b,re,f',
-            'users' => 'c,r,u,d,s,b,re,f',
-            'roles' => 'c,r,u,d,s,b',
-            'countries' => 'c,r,u,d,s',
+            'admins' => 'c,r,u,d,s,b,ub,re,f',
+            'users' => 'c,r,u,d,s,b,ub,re,f',
+            'roles' => 'c,r,u,d,s,b,ub,st',
+            'countries' => 'c,r,u,d,s,st',
+            'branches' => 'c,r,u,d,s,st',
             'settings' => 'r,u',
             'contact-us' => 'r,d,s',
         ],
     ],
 
     'permissions_map' => [
-        'c' => 'create',
-        'r' => 'read',
+        'c' => 'store',
+        'r' => 'index',
         'u' => 'update',
-        'd' => 'delete',
+        'd' => 'destroy',
         's' => 'show',
         // 'dl' => 'download',
         // 'so' => 'sort',
         // 'rt' => 'readTrashed',
         // 'a' => 'attach',
-        // 'st' => 'status',
+        'st' => 'status',
         'b' => 'block',
+        'ub' => 'unblock',
         're' => 'restore',
         'f' => 'forceDelete',
     ]

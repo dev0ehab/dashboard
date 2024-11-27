@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Countries\Transformers;
+namespace Modules\Branches\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \Modules\Countries\Entities\Country */
-class CountryBreifResource extends JsonResource
+/** @mixin \Modules\Branches\Entities\Branch */
+class BranchBreifResource extends JsonResource
 {
 
     /**
@@ -20,12 +20,10 @@ class CountryBreifResource extends JsonResource
             'id' => $this->id,
             'name' => translations($this, 'name'),
             'localized_name' => $this->name,
-            'currency' => translations($this, 'currency'),
-            'localized_currency' => $this->currency,
+            'address' => $this->address,
+            'lat' => $this->lat,
+            'long' => $this->long,
             'is_active' => $this->is_active,
-            'country_code' => $this->country_code,
-            'dial_code' => $this->dial_code,
-            'image' => $this->image,
         ];
     }
 }

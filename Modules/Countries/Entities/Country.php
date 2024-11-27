@@ -8,7 +8,7 @@ use Modules\Accounts\Entities\BaseModel;
 
 class Country extends BaseModel
 {
-    use Filterable, Translatable ;
+    use Filterable, Translatable;
 
     protected $fillable = [
         'dial_code',

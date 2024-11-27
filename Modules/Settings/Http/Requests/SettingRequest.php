@@ -6,6 +6,7 @@ use Modules\Accounts\Http\Requests\BaseModelRequest;
 
 class SettingRequest extends BaseModelRequest
 {
+    protected $additional_module_name = 'settings';
     protected $module_name = 'settings';
     protected $table = 'settings';
 

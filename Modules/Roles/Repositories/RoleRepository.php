@@ -2,7 +2,10 @@
 
 namespace Modules\Roles\Repositories;
 
+use DB;
 use Modules\Accounts\Contracts\Repositories\BaseModelRepository;
+use Modules\Accounts\Entities\PersonalAccessToken;
+use Modules\Admins\Entities\Admin;
 use Modules\Roles\Entities\Role;
 use Modules\Roles\Http\Filters\RoleFilter;
 
@@ -59,6 +62,14 @@ class RoleRepository extends BaseModelRepository
     public function block($model)
     {
         $model->block()->save();
+
+        PersonalAccessToken::whereHasMorph(
+            'tokenable',
+            [Admin::class],
+            function ($q) use ($model) {
+                $q->whereHas('roles', fn($qu) => $qu->whereRoleId($model->id));
+            }
+        )->delete();
 
         return $model;
     }

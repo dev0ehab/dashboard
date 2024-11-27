@@ -25,4 +25,6 @@ return [
     "blocked" => "تم حظر :model بنجاح.",
     "unblocked" => "تم إلغاء حظر :model بنجاح.",
     "restored" => "تم استعادة :model بنجاح.",
+    "status-1" => "تم تفعيل :model بنجاح.",
+    "status-" => "تم تعطيل :model بنجاح.",
 ];

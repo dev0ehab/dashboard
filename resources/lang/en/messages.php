@@ -25,4 +25,6 @@ return [
     "blocked" => "The :model has been blocked successfully.",
     "unblocked" => "The :model has been unblocked successfully.",
     "restored" => "The :model has been restored successfully.",
+    "status-1" => "The :model has been activated successfully.",
+    "status-" => "The :model has been deactivated successfully.",
 ];

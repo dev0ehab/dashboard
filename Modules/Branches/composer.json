@@ -1,0 +1,29 @@
+{
+    "name": "ehab_barakat/branches",
+    "type": "laravel-module",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ehab Barakat",
+            "email": "dev.ehab.barakat@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Branches\\Providers\\BranchesServiceProvider"
+            ],
+            "aliases": {
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Branches\\": ""
+        },
+        "classmap": [
+            "Database/Seeders",
+            "Database/factories"
+        ]
+    }
+}

@@ -8,6 +8,8 @@ use Modules\Accounts\Http\Requests\BaseModelRequest;
 class ContactusRequest extends BaseModelRequest
 {
     protected $module_name = 'contactuses';
+    protected $additional_module_name = 'contactuses';
+
     protected $table = 'contact_us';
 
 

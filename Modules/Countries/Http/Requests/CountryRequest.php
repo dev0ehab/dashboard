@@ -45,7 +45,6 @@ class CountryRequest extends BaseModelRequest
             "dial_code" => ['sometimes', "max:4", "starts_with:+", "unique:$this->table,dial_code,$this->country"],
             "country_code" => ['sometimes', "string", "unique:$this->table,country_code,$this->country"],
             'image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg', 'max:10000'],
-            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 

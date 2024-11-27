@@ -13,14 +13,15 @@ return [
     ],
 
     'permission_map' => [
-        'create' => 'Create :module',
-        'read' => 'Read :module',
+        'index' => 'Read :module',
+        'show' => 'Show :module',
+        'store' => 'Create :module',
         'update' => 'Update :module',
         'delete' => 'Permanently Delete :module',
-        'show' => 'Show :module',
         'forceDelete' => 'Soft Delete :module',
         'restore' => 'Restore :module',
         'block' => 'Block :module',
+        'unblock' => 'unBlock :module',
     ],
 
     'role_map' => [

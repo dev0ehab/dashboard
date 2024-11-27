@@ -21,14 +21,12 @@ class ContactusController extends BaseModelController
     protected $resource = ContactusResource::class;
     protected $brief_resource = ContactusBreifResource::class;
 
-    public function __construct()
-    {
-        $this->repository = new $this->repository();
-        $this->translated_module_name = trans("$this->module_name::$this->module_name.singular");
-        $this->middleware("permission:read_$this->permission")->only(['index']);
-        $this->middleware("permission:show_$this->permission")->only(['show']);
-        $this->middleware("permission:delete_$this->permission")->only(['destroy']);
-    }
+    protected $active_middlewares = [
+        'index',
+        'show',
+        'destroy',
+    ];
+
 
     // /**
     //  * Destroy the specified resource.

@@ -2,6 +2,9 @@
 
 namespace Modules\Accounts\Entities\Helpers;
 
+use BackedEnum;
+use Illuminate\Http\Exceptions\HttpResponseException;
+
 trait AuthModelHelper
 {
     // Getters & Setters
@@ -58,5 +61,21 @@ trait AuthModelHelper
     public function hasVerifiedAuth(string $auth_type): bool
     {
         return (bool) $this->{"{$auth_type}_verified_at"};
+    }
+
+    public function hasPermission(
+        string|array|BackedEnum $permission,
+        mixed $team = null,
+        bool $requireAll = false
+    ): bool {
+        $response = [
+            'success' => false,
+            'data' => [],
+            'message' => trans("messages.User does not have any of the necessary access rights"),
+        ];
+        throw new HttpResponseException(response()->json(
+            $response
+        ));
+
     }
 }

@@ -3,6 +3,7 @@
 namespace Modules\Accounts\Http\Controllers\Api;
 
 use App\Traits\CacheTrait;
+use App\Traits\MiddlewareTrait;
 use DB;
 use Modules\Roles\Entities\Permission;
 use Illuminate\Http\JsonResponse;
@@ -10,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 
 class BaseModelController extends BaseController
 {
-    use CacheTrait;
+    use CacheTrait, MiddlewareTrait;
 
     protected $class;
     protected $module_name = 'accounts';
@@ -28,14 +29,7 @@ class BaseModelController extends BaseController
         $this->additional_module_name = $this->additional_module_name ?: $this->module_name;
         $this->translated_module_name = trans("$this->module_name::$this->additional_module_name.singular");
         $this->has_roles = user() ? method_exists(get_class(user()), 'roles') : false;
-        $this->middleware("permission:read_$this->permission")->only(['index']);
-        $this->middleware("permission:show_$this->permission")->only(['show']);
-        $this->middleware("permission:create_$this->permission")->only(['store']);
-        $this->middleware("permission:update_$this->permission")->only(['update']);
-        $this->middleware("permission:delete_$this->permission")->only(['destroy']);
-        $this->middleware("permission:restore_$this->permission")->only(['restore']);
-        $this->middleware("permission:forceDelete_$this->permission")->only(['forceDelete']);
-        $this->middleware("permission:block_$this->permission")->only(['block', 'unblock']);
+        $this->getMiddlewares();
     }
 
     /**
@@ -50,9 +44,11 @@ class BaseModelController extends BaseController
         $query = json_encode(request()->query());
 
         if ($this->hasCache("$this->class::index-$paginated-$query")) {
+
             $data = $this->getCache("$this->class::index-$paginated-$query");
 
             if ($this->has_roles) {
+
                 $data->permissions = Permission::getUserPermissions(auth()->user(), $this->permission);
             }
 
@@ -66,6 +62,7 @@ class BaseModelController extends BaseController
         $this->setCache("$this->class::index-$paginated-$query", $data);
 
         if ($this->has_roles) {
+
             $data['permissions'] = Permission::getUserPermissions(auth()->user(), $this->permission);
         }
 
@@ -81,8 +78,10 @@ class BaseModelController extends BaseController
     public function show($id): JsonResponse
     {
         if ($this->hasCache("$this->class::show-$id")) {
+
             return $this->sendResponse($this->getCache("$this->class::show-$id"), trans("messages.success"));
         }
+
         $model = $this->repository->show($id);
 
         $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
@@ -107,12 +106,15 @@ class BaseModelController extends BaseController
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
+
             $errorData = method_exists($th, 'errors') ? $th->errors() : [];
+
             return $this->sendError($th->getMessage(), $errorData);
         }
 
 
         $this->removeModelCache($this->class);
+
         $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
 
         return $this->sendResponse($this->resource::make($model), trans("messages.created", ['model' => $this->translated_module_name]));
@@ -132,6 +134,7 @@ class BaseModelController extends BaseController
             DB::beginTransaction();
 
             $model = $this->repository->show($id);
+
             $this->repository->update($model, $validated_data);
 
             DB::commit();
@@ -139,10 +142,12 @@ class BaseModelController extends BaseController
             DB::rollBack();
 
             $errorData = method_exists($th, 'errors') ? $th->errors() : [];
+
             return $this->sendError($th->getMessage(), $errorData);
         }
 
         $this->removeModelCache($this->class);
+
         $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
 
         return $this->sendResponse($this->resource::make($model->refresh()), trans("messages.updated", ['model' => $this->translated_module_name]));
@@ -159,8 +164,11 @@ class BaseModelController extends BaseController
         $model = $this->repository->show($id);
 
         if ($this->canDelete($model)) {
+
             $this->repository->delete($model);
+
             $this->removeModelCache($this->class, $model->id);
+
             return $this->sendSuccess(trans("messages.deleted", ['model' => $this->translated_module_name]));
         }
 
@@ -181,7 +189,6 @@ class BaseModelController extends BaseController
 
         $this->removeModelCache($this->class, $model->id);
 
-
         return $this->sendSuccess(trans("messages.force_deleted", ['model' => $this->translated_module_name]));
     }
 
@@ -198,6 +205,7 @@ class BaseModelController extends BaseController
         $this->repository->restore($model);
 
         $this->removeModelCache($this->class, $model->id);
+
         $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
 
         return $this->sendSuccess(trans("messages.restored", ['model' => $this->translated_module_name]));

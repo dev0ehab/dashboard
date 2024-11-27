@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,11 +11,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('contact-us', 'Api\ContactusController')->only('store');
-
-Route::middleware(['auth:sanctum', 'auth-model:admin'])->group(
-    function () {
-        Route::apiResource('contact-us', 'Api\ContactusController')->except('store');
-    }
-);
 
