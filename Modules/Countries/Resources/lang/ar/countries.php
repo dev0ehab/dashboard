@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'singular' => 'دولة',
-    'plural' => 'دول',
+    'singular' => 'الدولة',
+    'plural' => 'الدول',
     'attributes' => [
         'name:en' => 'الاسم بالإنجليزية',
         'name:ar' => 'الاسم بالعربية',

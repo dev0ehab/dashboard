@@ -30,8 +30,6 @@ class BranchController extends BaseModelController
      */
     protected function canDelete($model): bool
     {
-        return DB::table("branches")->where("branch_id", $model->id)->count() == 0;
+        return DB::table("admins")->where("branch_id", $model->id)->count() == 0;
     }
-
-
 }

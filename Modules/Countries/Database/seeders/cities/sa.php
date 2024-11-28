@@ -2,68 +2,57 @@
 
 return [
     [
-        'name:ar' => 'الرياض',
-        'name:en' => 'Ar Riyad',
-        'name:tr' => 'Ar Riyad',
+        'name:ar' => 'أبو ظبي',
+        'name:en' => 'Abu Dhabi',
+        'cities' => [
+            ['name:ar' => 'مدينة أبو ظبي', 'name:en' => 'Abu Dhabi City'],
+            ['name:ar' => 'العين', 'name:en' => 'Al Ain'],
+            ['name:ar' => 'الظفرة', 'name:en' => 'Al Dhafra'],
+        ],
     ],
     [
-        'name:ar' => 'عسير',
-        'name:en' => 'Asir',
-        'name:tr' => 'Asir',
+        'name:ar' => 'دبي',
+        'name:en' => 'Dubai',
+        'cities' => [
+            ['name:ar' => 'مدينة دبي', 'name:en' => 'Dubai City'],
+        ],
     ],
     [
-        'name:ar' => 'وايل',
-        'name:en' => 'Hai\'l',
-        'name:tr' => 'Hai\'l',
+        'name:ar' => 'الشارقة',
+        'name:en' => 'Sharjah',
+        'cities' => [
+            ['name:ar' => 'مدينة الشارقة', 'name:en' => 'Sharjah City'],
+            ['name:ar' => 'خورفكان', 'name:en' => 'Khor Fakkan'],
+            ['name:ar' => 'الذيد', 'name:en' => 'Al Dhaid'],
+        ],
     ],
     [
-        'name:ar' => 'مكه',
-        'name:en' => 'Makkah',
-        'name:tr' => 'Makkah',
+        'name:ar' => 'عجمان',
+        'name:en' => 'Ajman',
+        'cities' => [
+            ['name:ar' => 'مدينة عجمان', 'name:en' => 'Ajman City'],
+        ],
     ],
     [
-        'name:ar' => 'الحدود الشمالية',
-        'name:en' => 'Northern Borders',
-        'name:tr' => 'Northern Borders',
+        'name:ar' => 'أم القيوين',
+        'name:en' => 'Umm Al Quwain',
+        'cities' => [
+            ['name:ar' => 'مدينة أم القيوين', 'name:en' => 'Umm Al Quwain City'],
+        ],
     ],
     [
-        'name:ar' => 'نجران',
-        'name:en' => 'Najran',
-        'name:tr' => 'Najran',
+        'name:ar' => 'رأس الخيمة',
+        'name:en' => 'Ras Al Khaimah',
+        'cities' => [
+            ['name:ar' => 'مدينة رأس الخيمة', 'name:en' => 'Ras Al Khaimah City'],
+        ],
     ],
     [
-        'name:ar' => 'جازان',
-        'name:en' => 'Jizan',
-        'name:tr' => 'Jizan',
-    ],
-    [
-        'name:ar' => 'تبوك',
-        'name:en' => 'Tabuk',
-        'name:tr' => 'Tabuk',
-    ],
-    [
-        'name:ar' => 'الباحة',
-        'name:en' => 'Al Bahah',
-        'name:tr' => 'Al Bahah',
-    ],
-    [
-        'name:ar' => 'الجوف',
-        'name:en' => 'Al Jawf',
-        'name:tr' => 'Al Jawf',
-    ],
-    [
-        'name:ar' => 'المدينة المنورة',
-        'name:en' => 'Al Madinah al Munawwarah',
-        'name:tr' => 'Al Madinah al Munawwarah',
-    ],
-    [
-        'name:ar' => 'المنطقة الشرقية',
-        'name:en' => 'Eastern Province',
-        'name:tr' => 'Eastern Province',
-    ],
-    [
-        'name:ar' => 'القصيم',
-        'name:en' => 'Al-Qassim',
-        'name:tr' => 'Al-Qassim',
+        'name:ar' => 'الفجيرة',
+        'name:en' => 'Fujairah',
+        'cities' => [
+            ['name:ar' => 'مدينة الفجيرة', 'name:en' => 'Fujairah City'],
+            ['name:ar' => 'دبا الفجيرة', 'name:en' => 'Dibba Al Fujairah'],
+        ],
     ],
 ];

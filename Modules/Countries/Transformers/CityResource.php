@@ -4,8 +4,8 @@ namespace Modules\Countries\Transformers;
 
 
 
-/** @mixin \Modules\Countries\Entities\Country */
-class CountryResource extends CountryBreifResource
+/** @mixin \Modules\Countries\Entities\City */
+class CityResource extends CityBreifResource
 {
 
     /**
@@ -17,7 +17,7 @@ class CountryResource extends CountryBreifResource
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [
-            'states' => CityBreifResource::collection($this->states),
+            'state' => StateBreifResource::make($this->state),
         ]);
 
     }

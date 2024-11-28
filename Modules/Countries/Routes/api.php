@@ -15,3 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('countries/{country}/status', 'Api\CountryController@status');
 Route::apiResource('countries', 'Api\CountryController');
+
+
+Route::post('cities/{country}/status', 'Api\CityController@status');
+Route::apiResource('cities', 'Api\CityController');
+
+
+Route::post('states/{country}/status', 'Api\StateController@status');
+Route::apiResource('states', 'Api\StateController');

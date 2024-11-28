@@ -4,39 +4,37 @@ namespace Modules\Countries\Entities;
 
 use App\Traits\Filterable;
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Accounts\Entities\BaseModel;
 
-class Country extends BaseModel
+class City extends BaseModel
 {
     use Filterable, Translatable;
 
     protected $fillable = [
-        'dial_code',
-        'country_code',
+        'state_id',
         'is_active',
     ];
 
     public $translatedAttributes = [
         'name',
-        'currency',
     ];
 
     protected $with = [
         'translations',
-        'media',
     ];
 
     protected $casts = ['is_active' => 'boolean'];
 
 
     /**
-     * Get all of the states for the Country
+     * Get the state that owns the City
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function states(): HasMany
+    public function state(): BelongsTo
     {
-        return $this->hasMany(State::class);
+        return $this->belongsTo(State::class);
     }
+
 }

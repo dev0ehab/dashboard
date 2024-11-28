@@ -117,7 +117,7 @@ class BaseModelController extends BaseController
 
         $this->setCache("$this->class::show-$model->id", $this->resource::make($model));
 
-        return $this->sendResponse($this->resource::make($model), trans("messages.created", ['model' => $this->translated_module_name]));
+        return $this->sendResponse($this->resource::make($model->refresh()), trans("messages.created", ['model' => $this->translated_module_name]));
     }
 
     /**
