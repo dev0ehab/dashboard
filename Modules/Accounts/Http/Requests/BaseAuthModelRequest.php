@@ -15,6 +15,9 @@ class BaseAuthModelRequest extends FormRequest
 {
     use ApiTrait;
 
+    protected $module_name;
+    protected $additional_module_name;
+
     /**
      * Determine if the supervisor is authorized to make this request.
      *
@@ -32,15 +35,13 @@ class BaseAuthModelRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->isMethod('POST')) {
-            return $this->createRules();
-        }
-        return $this->updateRules();
+        return  $this->isMethod('POST') ? $this->createRules() : $this->updateRules();
     }
 
     protected function createRules(): array
     {
         return [
+            'asdasdasd' => ['required', 'string', 'max:255'],
             'f_name' => ['required', 'string', 'max:255'],
             'l_name' => ['required', 'string', 'max:255'],
             'phone' => ['required', "starts_with:$this->dial_code", 'min:10', "unique:$this->table,phone"],
@@ -53,8 +54,7 @@ class BaseAuthModelRequest extends FormRequest
 
     protected function updateRules(): array
     {
-        $user = DB::table($this->table)->where('id', $this->route(Str::singular($this->table)))->first();
-
+        $user = DB::table($this->table)->where('id', $this->route(Str::singular($this->table)))->firstOrFail();
         return [
             'f_name' => ['sometimes', 'string', 'max:255'],
             'l_name' => ['sometimes', 'string', 'max:255'],
@@ -74,7 +74,7 @@ class BaseAuthModelRequest extends FormRequest
      */
     public function attributes(): array
     {
-        return trans("accounts::auth.attributes");
+        return trans("$this->module_name::$this->additional_module_name.attributes");
     }
 
     /**

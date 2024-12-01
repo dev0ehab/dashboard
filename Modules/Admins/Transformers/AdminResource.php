@@ -2,6 +2,7 @@
 
 namespace Modules\Admins\Transformers;
 
+use Modules\Branches\Transformers\BranchBreifResource;
 
 /** @mixin \Modules\Admins\Entities\Admin */
 class AdminResource extends AdminBreifResource
@@ -18,7 +19,7 @@ class AdminResource extends AdminBreifResource
         return array_merge(parent::toArray($request), [
             'phone_verified_at' => $this->phone_verified_at,
             'email_verified_at' => $this->email_verified_at,
+            'permitted_branches' => BranchBreifResource::collection($this->permittedBranches),
         ]);
-
     }
 }

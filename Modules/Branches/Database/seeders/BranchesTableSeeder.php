@@ -25,23 +25,7 @@ class BranchesTableSeeder extends Seeder
         $bar->start();
 
         foreach ($this->branches() as $branch) {
-
-            $branchModel = Branch::create(
-                collect($branch)->except(['flag'])->toArray()
-            );
-
-            if (isset($branch['flag'])) {
-                $branchModel->addMedia(__DIR__ . $branch['flag'])
-                    ->preservingOriginal()
-                    ->toMediaCollection('images');
-            }
-
-
-            // foreach ($branch['cities'] as $city) {
-            //     $branchModel->cities()->create($city);
-
-            //     $bar->advance();
-            // }
+            Branch::create($branch);
         }
         $bar->finish();
         $this->command->info("\n");
@@ -49,6 +33,26 @@ class BranchesTableSeeder extends Seeder
 
     private function branches()
     {
-        return [] ;
+        return [
+            [
+                'city_id' => 1,
+                'address' => 'riyad , saudi arabia',
+                'name:ar' => "فرع الرياض الرئيسي",
+                'name:en' => 'Riyadh Main Branch',
+                'lat' => '23.88',
+                'long' => '45.07',
+                'is_active' => true
+            ],
+            [
+                'city_id' => 20,
+                'address' => 'abu dhabi , united arab emirates',
+                'name:ar' => "فرع ابوظبي الرئيسي",
+                'name:en' => 'Abu Dhabi Main Branch',
+                'lat' => '23.42',
+                'long' => '53.84',
+                'is_active' => true
+            ],
+
+        ];
     }
 }

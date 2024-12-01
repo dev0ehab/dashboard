@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Modules\Branches\Entities\Branch;
 
 return new class extends Migration
 {
@@ -16,6 +17,7 @@ return new class extends Migration
         Schema::create('admins', function (Blueprint $table) {
             $table->bigIncrements('id');
 
+            $table->foreignIdFor(Branch::class)->constrained()->cascadeOnDelete();
             $table->string('f_name')->nullable();
             $table->string('l_name')->nullable();
 

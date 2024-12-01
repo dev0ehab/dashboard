@@ -20,11 +20,10 @@ class BranchRequest extends BaseModelRequest
         return [
             'name:ar' => ['required', 'string', 'max:255', "unique:branch_translations,name"],
             'name:en' => ['required', 'string', 'max:255', "unique:branch_translations,name"],
-            'country_id' => ['required', 'exists:countries,id,is_active,1'],
+            'city_id' => ['required', 'exists:countries,id'],
             'address' => ['required', 'string', 'max:255'],
             'lat' => ['required', 'numeric', 'string', 'max:255'],
             'long' => ['required', 'numeric', 'string', 'max:255'],
-
             'is_active' => ['sometimes', 'boolean'],
         ];
     }
@@ -46,7 +45,7 @@ class BranchRequest extends BaseModelRequest
             'lat' => ['sometimes', 'numeric', 'string', 'max:255'],
             'long' => ['sometimes', 'numeric', 'string', 'max:255'],
 
-            'country_id' => ['sometimes', 'exists:countries,id,is_active,1' ],
+            'city_id' => ['sometimes', 'exists:countries,id' ],
 
             'is_active' => ['sometimes', 'boolean'],
         ];

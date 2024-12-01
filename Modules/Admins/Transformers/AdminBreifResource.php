@@ -26,7 +26,8 @@ class AdminBreifResource extends JsonResource
             'avatar' => $this->avatar,
             // 'preferred_locale' => $this->preferred_locale,
             // 'device_token' => $this->device_token,
-            'role' => $this->role?->name,
+            'role' => $this->role->name,
+            'branch' => $this->branch->name,
             'created_at' => $this->created_at,
         ];
     }

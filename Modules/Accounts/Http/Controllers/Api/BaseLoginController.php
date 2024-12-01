@@ -26,7 +26,6 @@ class BaseLoginController extends BaseController
         $auth_model_type = $request->auth_type;
 
         $auth_model = $this->class::withTrashed()->where($auth_model_type, $request->username)->first();
-
         if (!$auth_model) {
             return $this->sendError(trans("$this->module_name::auth.validations.failed"));
         }

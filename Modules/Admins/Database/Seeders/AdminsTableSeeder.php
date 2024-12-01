@@ -21,6 +21,7 @@ class AdminsTableSeeder extends Seeder
             'phone' => '+0543037411',
             'dial_code' => '+05',
             'password' => 'Aa@12345',
+            'branch_id' => 1,
             'email_verified_at' => now(),
             'phone_verified_at' => now(),
         ]);
@@ -33,6 +34,7 @@ class AdminsTableSeeder extends Seeder
             'phone' => '+0543037412',
             'dial_code' => '+05',
             'password' => 'Aa@12345',
+            'branch_id' => 1,
             'email_verified_at' => now(),
             'phone_verified_at' => now(),
         ]);
@@ -44,6 +46,7 @@ class AdminsTableSeeder extends Seeder
 
         foreach ($admins as $admin) {
             $admin->addRole('super_admin');
+            $admin->permittedBranches()->sync([1,2]);
             $bar->advance();
         }
 

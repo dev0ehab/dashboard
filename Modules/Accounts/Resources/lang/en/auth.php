@@ -35,6 +35,7 @@ return [
         'phone' => 'phone number',
         'username' => 'email or phone number',
         'password' => 'password',
+        'avatar' => 'Avatar',
     ],
     'messages' => [
         'register' => 'You have registered successfully',

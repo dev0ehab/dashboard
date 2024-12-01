@@ -102,6 +102,6 @@ class BaseModelRequest extends FormRequest
     {
         $response = $this->sendErrorData($validator->errors()->toArray(), $validator->errors()->first());
 
-        return throw new ValidationException($validator, $response);
+        throw new ValidationException($validator, $response);
     }
 }

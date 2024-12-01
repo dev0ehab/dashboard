@@ -28,7 +28,14 @@ class Admin extends AuthModel implements LaratrustUser
         'email_verified_at',
         'phone_verified_at',
         'password',
+        'branch_id',
     ];
+
+    protected $with = [
+        'branch',
+    ];
+
+
     /**
      * Get the resource representation of the Admin model.
      *

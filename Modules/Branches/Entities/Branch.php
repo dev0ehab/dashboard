@@ -6,14 +6,14 @@ use App\Traits\Filterable;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Accounts\Entities\BaseModel;
-use Modules\Countries\Entities\Country;
+use Modules\Countries\Entities\City;
 
 class Branch extends BaseModel
 {
-    use Filterable, Translatable ;
+    use Filterable, Translatable;
 
     protected $fillable = [
-        'country_id',
+        'city_id',
         'address',
         'lat',
         'long',
@@ -23,15 +23,12 @@ class Branch extends BaseModel
         'name',
     ];
 
-    protected $with = ['translations' , 'country'] ;
+    protected $with = ['translations', 'city'];
 
     protected $casts = ['is_active' => 'boolean'];
 
-
-
-    public function country(): BelongsTo
+    public function city(): BelongsTo
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(City::class);
     }
-
 }

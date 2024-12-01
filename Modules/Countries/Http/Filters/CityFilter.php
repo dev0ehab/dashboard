@@ -41,7 +41,7 @@ class CityFilter extends BaseFilters
     protected function stateId($value)
     {
         if ($value) {
-            return $this->builder->where('country_id', $value);
+            return $this->builder->where('state_id', $value);
         }
 
         return $this->builder;

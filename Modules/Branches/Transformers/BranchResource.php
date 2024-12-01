@@ -2,7 +2,7 @@
 
 namespace Modules\Branches\Transformers;
 
-use Modules\Countries\Transformers\CountryResource;
+use Modules\Countries\Transformers\CityBreifResource;
 
 
 
@@ -20,8 +20,9 @@ class BranchResource extends BranchBreifResource
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [
-
-            'country' => CountryResource::make($this->country),
+            'city' => CityBreifResource::make($this->city),
+            'state' => CityBreifResource::make($this->city->state),
+            'country' => CityBreifResource::make($this->city->state->country),
         ]);
 
     }

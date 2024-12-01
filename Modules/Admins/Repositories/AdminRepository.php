@@ -14,11 +14,11 @@ class AdminRepository extends BaseAuthModelRepository
 
     protected function storeAddition($model, $data)
     {
-
+        $model->permittedBranches()->sync($data['permitted_branches']);
     }
 
     protected function updateAddition($model, $data)
     {
-
+        $model->permittedBranches()->sync($data['permitted_branches']);
     }
 }
