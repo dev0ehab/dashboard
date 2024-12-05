@@ -40,12 +40,12 @@ class CloneModuleStructureCommand extends Command
         File::copyDirectory($sourcePath, $targetPath);
 
         // Replace class names and file names in the copied files
-        $this->replaceClassNames($sourceModule, $newClassName, $targetPath);
+        $this->replaceClassNames($sourceModule, $targetModule, $newClassName, $targetPath);
 
         $this->info("The module structure of [{$sourceModule}] has been cloned into [{$targetModule}], with class names changed to [{$newClassName}].");
     }
 
-    protected function replaceClassNames($sourceModule, $newClassName, $path)
+    protected function replaceClassNames($sourceModule, $targetModule, $newClassName, $path)
     {
         $files = File::allFiles($path);
 
@@ -53,6 +53,10 @@ class CloneModuleStructureCommand extends Command
             $contents = File::get($file);
 
             // Replace class names in the file content
+            $contents = preg_replace_callback('/\s+' . preg_quote($sourceModule, '/') . '(\w+)/', function ($matches) use ($newClassName) {
+                return ' ' . $newClassName . $matches[1];
+            }, $contents);
+
             $contents = preg_replace_callback('/class\s+' . preg_quote($sourceModule, '/') . '(\w+)/', function ($matches) use ($newClassName) {
                 return 'class ' . $newClassName . $matches[1];
             }, $contents);
@@ -60,12 +64,12 @@ class CloneModuleStructureCommand extends Command
             // Replace the source module name with the new class name (in namespaces, etc.)
             $contents = str_replace(
                 $sourceModule,
-                $newClassName,
+                $targetModule,
                 $contents
             );
 
             // Rename the file based on the new class name
-            $newFileName = str_replace($sourceModule, $newClassName, $file->getFilename());
+            $newFileName = str_replace($sourceModule, $targetModule, $file->getFilename());
             if ($file->getFilename() !== $newFileName) {
                 File::move($file->getRealPath(), $file->getPath() . DIRECTORY_SEPARATOR . $newFileName);
             }
@@ -73,5 +77,42 @@ class CloneModuleStructureCommand extends Command
             // Write the updated contents back to the file
             File::put($file, $contents);
         }
+    }
+
+
+
+    protected function replace($from, $to, &$str)
+    {
+        $str = Str::of($str)->replace(
+            Str::of($from)->studly()->plural(),
+            Str::of($to)->studly()->plural()
+        );
+
+        $str = Str::of($str)->replace(
+            Str::of($from)->studly()->singular(),
+            Str::of($to)->studly()->singular()
+        );
+
+        $str = Str::of($str)->replace(
+            Str::of($from)->camel()->plural()->prepend('$'),
+            Str::of($to)->snake()->plural()->prepend('$')
+        );
+
+        $str = Str::of($str)->replace(
+            Str::of($from)->camel()->singular()->prepend('$'),
+            Str::of($to)->snake()->singular()->prepend('$')
+        );
+
+        $str = Str::of($str)->replace(
+            Str::of($from)->snake()->lower()->plural(),
+            Str::of($to)->snake()->lower()->plural()
+        );
+
+        $str = Str::of($str)->replace(
+            Str::of($from)->snake()->lower()->singular(),
+            Str::of($to)->snake()->lower()->singular()
+        );
+
+        $str = (string)$str;
     }
 }
