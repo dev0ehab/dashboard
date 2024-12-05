@@ -17,6 +17,7 @@ class BranchController extends BaseModelController
     protected $class = Branch::class;
     protected $form_request = BranchRequest::class;
     protected $module_name = 'branches';
+    protected $additional_module_name = 'branches';
     protected $permission = 'branches';
     protected $repository = BranchRepository::class;
     protected $resource = BranchResource::class;
