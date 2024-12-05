@@ -1,11 +1,9 @@
 <?php
 
-namespace Modules\Contactuses\Transformers;
-
-use Modules\Contactuses\Entities\Permission;
+namespace Modules\Settings\Transformers;
 
 
-/** @mixin \Modules\Contactuses\Entities\Contactus */
+/** @mixin \Modules\Settings\Entities\Contactus */
 class ContactusResource extends ContactusBreifResource
 {
 

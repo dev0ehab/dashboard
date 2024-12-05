@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Contactuses\Repositories;
+namespace Modules\Settings\Repositories;
 
 use Modules\Accounts\Contracts\Repositories\BaseModelRepository;
-use Modules\Contactuses\Entities\Contactus;
-use Modules\Contactuses\Http\Filters\ContactusFilter;
+use Modules\Settings\Entities\Contactus;
+use Modules\Settings\Http\Filters\ContactusFilter;
 
 class ContactusRepository extends BaseModelRepository
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Contactuses\Transformers;
+namespace Modules\Settings\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \Modules\Contactuses\Entities\Contactus */
+/** @mixin \Modules\Settings\Entities\Contactus */
 class ContactusBreifResource extends JsonResource
 {
 

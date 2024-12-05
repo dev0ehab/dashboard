@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Contactuses\Http\Filters;
+namespace Modules\Settings\Http\Filters;
 
 use App\Http\Filters\BaseFilters;
 

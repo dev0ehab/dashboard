@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Contactuses\Http\Requests;
+namespace Modules\Settings\Http\Requests;
 
-use DB;
 use Modules\Accounts\Http\Requests\BaseModelRequest;
 
 class ContactusRequest extends BaseModelRequest
 {
-    protected $module_name = 'contactuses';
+    protected $module_name = 'settings';
+
     protected $additional_module_name = 'contactuses';
 
     protected $table = 'contact_us';
