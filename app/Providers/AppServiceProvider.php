@@ -23,7 +23,6 @@ class AppServiceProvider extends ServiceProvider
         // Scan for modules if the directory exists
         if (File::exists($modulesPath)) {
             $modules = File::directories($modulesPath);
-
             // Loop through each module and load its service provider
             foreach ($modules as $modulePath) {
                 $moduleName = basename($modulePath);
