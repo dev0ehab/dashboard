@@ -4,7 +4,7 @@ namespace Modules\Menus\Http\Filters;
 
 use App\Http\Filters\BaseFilters;
 
-class MenuFilter extends BaseFilters
+class MealCategoryFilter extends BaseFilters
 {
     /**
      * Registered filters to operate upon.

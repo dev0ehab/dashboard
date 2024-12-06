@@ -13,5 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('menus/{menu}/status', 'Api\MenuController@status');
-
 Route::apiResource('menus', 'Api\MenuController');
+
+
+Route::post('allergens/{allergens}/status', 'Api\AllergenController@status');
+Route::apiResource('allergens', 'Api\AllergenController');
+
+
+Route::post('meal-categories/{meal_categories}/status', 'Api\MealCategoryController@status');
+Route::apiResource('meal-categories', 'Api\MealCategoryController');
+
+
+
+

@@ -4,31 +4,22 @@ namespace Modules\Menus\Entities;
 
 use App\Traits\Filterable;
 use Astrotomic\Translatable\Translatable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Accounts\Entities\BaseModel;
-use Modules\Countries\Entities\City;
 
-class Menu extends BaseModel
+class MealCategory extends BaseModel
 {
     use Filterable, Translatable;
 
     protected $fillable = [
-        'city_id',
-        'address',
-        'lat',
-        'long',
+        'is_active'
     ];
 
     public $translatedAttributes = [
         'name',
     ];
 
-    protected $with = ['translations', 'city'];
+    protected $with = ['translations'];
 
     protected $casts = ['is_active' => 'boolean'];
 
-    public function city(): BelongsTo
-    {
-        return $this->belongsTo(City::class);
-    }
 }

@@ -3,8 +3,8 @@
 namespace Modules\Menus\Transformers;
 
 
-/** @mixin \Modules\Menus\Entities\Allergen */
-class AllergenResource extends AllergenBreifResource
+/** @mixin \Modules\Menus\Entities\MealCategory */
+class MealCategoryResource extends MealCategoryBreifResource
 {
 
     /**

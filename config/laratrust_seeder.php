@@ -18,6 +18,8 @@ return [
             'roles' => 'c,r,u,d,s,b,ub,st',
             'countries' => 'c,r,u,d,s,st',
             'branches' => 'c,r,u,d,s,st',
+            'allergens' => 'c,r,u,d,s,st',
+            'meal_categories' => 'c,r,u,d,s,st',
             'settings' => 'r,u',
             'contact-us' => 'r,d,s',
         ],

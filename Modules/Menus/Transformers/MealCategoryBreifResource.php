@@ -4,8 +4,8 @@ namespace Modules\Menus\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \Modules\Menus\Entities\Menu */
-class MenuBreifResource extends JsonResource
+/** @mixin \Modules\Menus\Entities\MealCategory */
+class MealCategoryBreifResource extends JsonResource
 {
 
     /**
@@ -19,10 +19,6 @@ class MenuBreifResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => translations($this, 'name'),
-            'localized_name' => $this->name,
-            'address' => $this->address,
-            'lat' => $this->lat,
-            'long' => $this->long,
             'is_active' => $this->is_active,
         ];
     }

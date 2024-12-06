@@ -14,14 +14,18 @@ use Modules\Menus\Transformers\AllergenResource;
 class AllergenController extends BaseModelController
 {
     use StatusTrait;
+
     protected $class = Allergen::class;
     protected $form_request = AllergenRequest::class;
-    protected $module_name = 'meuus';
+    protected $module_name = 'menus';
     protected $additional_module_name = 'allergens';
     protected $permission = 'allergens';
     protected $repository = AllergenRepository::class;
     protected $resource = AllergenResource::class;
     protected $brief_resource = AllergenBreifResource::class;
+
+
+    protected $un_active_middlewares = ['index'];
 
     /**
      * Determine if the specified model can be deleted.
@@ -31,6 +35,6 @@ class AllergenController extends BaseModelController
      */
     protected function canDelete($model): bool
     {
-        return DB::table("admins")->where("allergen_id", $model->id)->count() == 0;
+        return DB::table("meal_allergens")->where("allergen_id", $model->id)->count() == 0;
     }
 }
