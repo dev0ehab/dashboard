@@ -114,7 +114,7 @@ class BaseModelRepository implements CrudsInterface, SoftDeleteInterface
             }
         }
 
-        return $this->class;
+        return $model;
     }
 
     /**

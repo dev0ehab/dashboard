@@ -20,6 +20,8 @@ return [
             'branches' => 'c,r,u,d,s,st',
             'allergens' => 'c,r,u,d,s,st',
             'meal_categories' => 'c,r,u,d,s,st',
+            'plan_categories' => 'c,r,u,d,s,st',
+            'plans' => 'c,r,u,d,s,st',
             'settings' => 'r,u',
             'contact-us' => 'r,d,s',
         ],

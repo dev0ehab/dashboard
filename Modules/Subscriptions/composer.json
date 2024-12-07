@@ -1,0 +1,29 @@
+{
+    "name": "ehab_barakat/subscriptions",
+    "type": "laravel-module",
+    "description": "",
+    "authors": [
+        {
+            "name": "Ehab Barakat",
+            "email": "dev.ehab.barakat@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Subscriptions\\Providers\\SubscriptionsServiceProvider"
+            ],
+            "aliases": {
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Subscriptions\\": ""
+        },
+        "classmap": [
+            "Database/Seeders",
+            "Database/factories"
+        ]
+    }
+}

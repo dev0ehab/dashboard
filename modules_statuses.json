@@ -3,5 +3,6 @@
     "Roles": true,
     "Accounts": true,
     "Settings": true,
-    "Users": true
+    "Users": true,
+    "Subscriptions": true
 }
