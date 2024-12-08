@@ -56,7 +56,7 @@ class BaseRegisterController extends BaseController
                 'success' => true,
                 'data' => $auth_model->getResource(),
                 'token' => $auth_model->createToken('MyApp')->plainTextToken,
-                'message' => trans("$this->module_name::auth.register"),
+                'message' => trans("$this->module_name::auth.messages.register"),
             ];
 
             $response['data']['code'] = $code;

@@ -69,7 +69,7 @@ class CreateAuthModelListener
 
         $message = $greetings . ' ' . $subject . ' ' . $password . ' ' . $line . ' ' . $footer . ' ' . $salutation . ' ' . env('APP_NAME');
 
-        if (!env('SMS_TEST_MODE')) {
+        if (env('IS_SMS_LIVE')) {
             $sms_service = app(SmsService::class);
             return $sms_service->sendDreams($this->auth_model->phone, $this->auth_model->name, $message);
         }
