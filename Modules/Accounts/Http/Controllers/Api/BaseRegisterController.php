@@ -45,7 +45,7 @@ class BaseRegisterController extends BaseController
                     'verifiable_type' => $this->class,
                     'verification_type' => get_model_auth_type($this->class),
                     'verification_value' => $request->auth_type,
-                    'code' => $code = random_int(1000, 9999),
+                    'code' => $code =env('TEST_MODE') ? '1234' : random_int(1000, 9999),
                     'created_at' => now(),
                 ]
             );

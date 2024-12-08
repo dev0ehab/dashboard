@@ -34,7 +34,7 @@ class BaseChangeAuthenticable extends BaseController
                 'verification_value' => $request->username
             ],
             [
-                'code' => $code = random_int(1000, 9999),
+                'code' => $code = env('TEST_MODE') ? '1234' : random_int(1000, 9999),
                 'created_at' => now(),
             ]
         );
