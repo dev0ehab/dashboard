@@ -23,6 +23,7 @@ class UserBreifResource extends JsonResource
             'l_name' => $this->l_name,
             'email' => $this->email,
             'phone' => $this->phone,
+            'dial_code' => $this->dial_code,
             'avatar' => $this->avatar,
             "phone_verified_at" => $this->phone_verified_at,
             "email_verified_at" => $this->email_verified_at,
