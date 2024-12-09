@@ -1,6 +1,11 @@
 <?php
 
 return [
-'singular' => 'User',
-'plural' => 'Users',
+    'singular' => 'User',
+    'plural' => 'Users',
+
+
+    'attributes' => [
+        ...trans("accounts::auth.attributes"),
+    ]
 ];

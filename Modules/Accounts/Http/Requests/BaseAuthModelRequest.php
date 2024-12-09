@@ -41,7 +41,6 @@ class BaseAuthModelRequest extends FormRequest
     protected function createRules(): array
     {
         return [
-            'asdasdasd' => ['required', 'string', 'max:255'],
             'f_name' => ['required', 'string', 'max:255'],
             'l_name' => ['required', 'string', 'max:255'],
             'phone' => ['required', "starts_with:$this->dial_code", 'min:10', "unique:$this->table,phone"],
