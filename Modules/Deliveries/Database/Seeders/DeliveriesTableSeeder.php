@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Users\Database\Seeders;
+namespace Modules\Deliveries\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Users\Entities\User;
+use Modules\Deliveries\Entities\Delivery;
 
-class UsersTableSeeder extends Seeder
+class DeliveriesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $root = User::Create([
+        $root = Delivery::Create([
             'f_name' => 'Mr',
             'l_name' => 'Root',
             'email' => 'root@demo.com',
@@ -26,17 +26,17 @@ class UsersTableSeeder extends Seeder
         ]);
 
 
-        $user = User::firstOrCreate([
+        $delivery = Delivery::firstOrCreate([
             'f_name' => 'Mr',
-            'l_name' => 'User',
-            'email' => 'user@demo.com',
+            'l_name' => 'Delivery',
+            'email' => 'delivery@demo.com',
             'phone' => '+96643037412',
             'dial_code' => '+966',
             'password' => 'Aa@12345',
             'email_verified_at' => now(),
             'phone_verified_at' => now(),
         ]);
-        $this->command->info("users created successfully");
+        $this->command->info("deliveries created successfully");
 
     }
 }

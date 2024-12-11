@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Users\Database\Seeders;
+namespace Modules\Deliveries\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Users\Entities\User;
+use Modules\Deliveries\Entities\Delivery;
 
 use Faker\Factory as Faker;
 
-class UsersTableRegSeeder extends Seeder
+class DeliveriesTableRegSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -20,7 +20,7 @@ class UsersTableRegSeeder extends Seeder
 
         for ($i = 0; $i < 1500; $i++) {
 
-            $users[] = [
+            $deliveries[] = [
                 'f_name' => $faker->firstName(),
                 'l_name' => $faker->lastName(),
                 'email' => $faker->unique()->safeEmail,
@@ -32,8 +32,8 @@ class UsersTableRegSeeder extends Seeder
             ];
         };
 
-        User::insert($users);
-        $this->command->info("users created successfully");
+        Delivery::insert($deliveries);
+        $this->command->info("deliveries created successfully");
 
     }
 }
