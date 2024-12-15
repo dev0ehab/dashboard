@@ -3,8 +3,8 @@
 namespace Modules\Deliveries\Transformers;
 
 
-/** @mixin \Modules\Deliveries\Entities\Delivery */
-class DeliveryResource extends DeliveryBreifResource
+/** @mixin \Modules\Deliveries\Entities\Zone */
+class ZoneResource extends ZoneBreifResource
 {
 
     /**
@@ -16,9 +16,8 @@ class DeliveryResource extends DeliveryBreifResource
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [
-            "zone" => new ZoneResource($this->zone),
-            "shift" => new ShiftResource($this->shift),
-        ]);
+            'waypoints' => $this->waypoints,
 
+        ]);
     }
 }

@@ -8,7 +8,7 @@ class ContactusRequest extends BaseModelRequest
 {
     protected $module_name = 'settings';
 
-    protected $additional_module_name = 'contactuses';
+    protected $additional_module_name = 'contact-us';
 
     protected $table = 'contact_us';
 

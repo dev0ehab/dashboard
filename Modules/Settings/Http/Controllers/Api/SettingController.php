@@ -30,12 +30,13 @@ class SettingController extends BaseModelController
      */
     public function index($paginated = false): JsonResponse
     {
+        $has_roles = user() ? method_exists(get_class(user()), 'roles') : false;
 
         if ($this->hasCache("$this->class::index")) {
             $data = $this->getCache("$this->class::index");
 
-            if (auth()->user()) {
-                $data->permissions = Permission::getUserPermissions(auth()->user(), $this->permission);
+            if ($has_roles) {
+                $data->permissions = Permission::getUserPermissions(user(), $this->permission);
             }
 
             return $this->sendResponse($data, trans("messages.success"));
@@ -45,10 +46,10 @@ class SettingController extends BaseModelController
 
         $this->setCache("$this->class::index", $data);
 
-        if (auth()->user()) {
-            $data['permissions'] = Permission::getUserPermissions(auth()->user(), $this->permission);
+        if ($has_roles) {
+            $data = $data->resolve();
+            $data['permissions'] = Permission::getUserPermissions(user(), $this->permission);
         }
-
         return $this->sendResponse($data, trans("messages.success"));
     }
 

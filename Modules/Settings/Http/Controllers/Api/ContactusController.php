@@ -15,7 +15,7 @@ class ContactusController extends BaseModelController
     protected $class = Contactus::class;
     protected $form_request = ContactusRequest::class;
     protected $module_name = 'settings';
-    protected $additional_module_name = 'contactuses';
+    protected $additional_module_name = 'contact-us';
     protected $permission = 'contact-us';
     protected $repository = ContactusRepository::class;
     protected $resource = ContactusResource::class;

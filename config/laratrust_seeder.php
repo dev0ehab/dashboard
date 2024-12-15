@@ -11,6 +11,16 @@ return [
      */
     'truncate_tables' => false,
 
+    'modules' => [
+        'allergens' => 'menus',
+        'meal_categories' => 'menus',
+        'plan_categories' => 'subscriptions',
+        'plans' => 'subscriptions',
+        'contact-us' => 'settings',
+        'zones' => 'deliveries',
+        'shifts' => 'deliveries',
+    ],
+
     'roles_structure' => [
         'super_admin' => [
             'admins' => 'c,r,u,d,s,b,ub,re,f',
@@ -24,6 +34,9 @@ return [
             'plans' => 'c,r,u,d,s,st',
             'settings' => 'r,u',
             'contact-us' => 'r,d,s',
+            'deliveries' => 'c,r,u,d,s,b,ub,re,f',
+            'shifts' => 'c,r,u,d,s,st',
+            'zones' => 'c,r,u,d,s,st',
         ],
     ],
 

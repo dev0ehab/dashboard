@@ -38,13 +38,15 @@ class LaratrustSeeder extends Seeder
         }
 
         $mapPermission = collect(config('laratrust_seeder.permissions_map'));
+        $cutomModules = collect(config('laratrust_seeder.modules'));
 
         foreach ($config as $key => $modules) {
+
 
             // Create a new role
             $role = Role::whereName([
                 'name' => $key
-            ])->first();
+                ])->first();
 
             if (!$role) {
                 $role = Role::create([
@@ -63,6 +65,8 @@ class LaratrustSeeder extends Seeder
             // Reading role permission modules
             foreach ($modules as $module => $value) {
 
+                $baseModule = $cutomModules->get($module) ?: $module;
+
                 foreach (explode(',', $value) as $p => $perm) {
 
                     $permissionValue = $mapPermission->get($perm);
@@ -72,8 +76,8 @@ class LaratrustSeeder extends Seeder
                     if (!$permis) {
                         $permis = Permission::create([
                             'name' => $permissionValue . '_' . $module,
-                            'display_name:en' => trans("roles::roles.permission_map.$permissionValue", ['module' => trans("$module::$module.singular", [], 'en')], 'en'),
-                            'display_name:ar' => trans("roles::roles.permission_map.$permissionValue", ['module' => trans("$module::$module.singular", [], 'ar')], 'ar'),
+                            'display_name:en' => trans("roles::roles.permission_map.$permissionValue", ['module' => trans("$baseModule::$module.singular", [], 'en')], 'en'),
+                            'display_name:ar' => trans("roles::roles.permission_map.$permissionValue", ['module' => trans("$baseModule::$module.singular", [], 'ar')], 'ar'),
                             'module' => $module,
                         ])->id;
                     }

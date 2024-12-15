@@ -22,6 +22,7 @@ return [
         'restore' => 'استعاده :module',
         'block' => 'حظر :module',
         'unblock' => 'الغاء حظر :module',
+        'status' => 'الحالة :module',
     ],
 
 

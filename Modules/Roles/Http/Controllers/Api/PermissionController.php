@@ -14,7 +14,7 @@ class PermissionController extends BaseModelController
 
     public function __construct()
     {
-        $this->middleware("permission:read_$this->permission")->only(['index']);
+        $this->middleware("permission:index_$this->permission")->only(['index']);
     }
 
     /**

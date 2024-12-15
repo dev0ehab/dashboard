@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('menus/{menu}/status', 'Api\MenuController@status');
-Route::apiResource('menus', 'Api\MenuController');
+// Route::post('menus/{menu}/status', 'Api\MenuController@status');
+// Route::apiResource('menus', 'Api\MenuController');
 
 
 Route::post('allergens/{allergens}/status', 'Api\AllergenController@status');

@@ -49,7 +49,7 @@ class BaseModelController extends BaseController
 
             if ($this->has_roles) {
 
-                $data->permissions = Permission::getUserPermissions(auth()->user(), $this->permission);
+                $data->permissions = Permission::getUserPermissions(user(), $this->permission);
             }
 
             return $this->sendResponse($data, trans("messages.success"));
@@ -63,7 +63,7 @@ class BaseModelController extends BaseController
 
         if ($this->has_roles) {
 
-            $data['permissions'] = Permission::getUserPermissions(auth()->user(), $this->permission);
+            $data['permissions'] = Permission::getUserPermissions(user(), $this->permission);
         }
 
         return $this->sendResponse($data, trans("messages.success"));

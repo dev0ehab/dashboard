@@ -17,11 +17,12 @@ return [
         'show' => 'Show :module',
         'store' => 'Create :module',
         'update' => 'Update :module',
-        'delete' => 'Permanently Delete :module',
+        'destroy' => 'Permanently Delete :module',
         'forceDelete' => 'Soft Delete :module',
         'restore' => 'Restore :module',
         'block' => 'Block :module',
         'unblock' => 'unBlock :module',
+        'status' => 'Status :module',
     ],
 
     'role_map' => [

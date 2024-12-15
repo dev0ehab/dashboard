@@ -36,11 +36,11 @@ class BaseProfileController extends BaseController
 
         $auth_model = auth()->user();
 
-        if ($data['email'] != $auth_model->email) {
+        if (isset($data['email']) && $data['email'] != $auth_model->email) {
             $data["email_verified_at"] = null;
         }
 
-        if ($data['phone'] != $auth_model->phone) {
+        if (isset($data['phone']) && $data['phone'] != $auth_model->phone) {
             $data["phone_verified_at"] = null;
         }
 
@@ -87,7 +87,7 @@ class BaseProfileController extends BaseController
 
         event(new ChangePasswordEvent((string) get_class($auth_model), (string) $auth_model->id, (string) $request->password));
 
-        return $this->sendSuccess(trans("$this->module_name::auth.messages.profile.preferred-locale"));
+        return $this->sendSuccess(trans("$this->module_name::auth.messages.profile.change-password"));
     }
 
 

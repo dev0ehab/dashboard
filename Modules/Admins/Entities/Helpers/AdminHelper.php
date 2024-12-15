@@ -15,7 +15,7 @@ trait AdminHelper
 
     public function getPermissionsAttribute()
     {
-        return $this->role->permissions()->where('name', 'like', 'create_%')->orWhere('name', 'like', 'read_%')->pluck('name')->toArray();
+        return $this->role->permissions()->where('name', 'like', 'create_%')->orWhere('name', 'like', 'index_%')->pluck('name')->toArray();
     }
 
 }

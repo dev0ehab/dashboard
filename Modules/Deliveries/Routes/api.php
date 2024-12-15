@@ -59,5 +59,11 @@ Route::middleware(['auth:sanctum', 'auth-model:admin'])->group(
         Route::post('deliveries/{delivery}/unblock', 'Api\DeliveryController@unblock');
         Route::delete('deliveries/{delivery}/force-delete', 'Api\DeliveryController@forceDelete');
         Route::post('deliveries/{delivery}/restore', 'Api\DeliveryController@restore');
+
+        Route::post('zones/{zone}/status', 'Api\ZoneController@status');
+        Route::apiResource('zones', 'Api\ZoneController');
+
+        Route::post('shifts/{shift}/status', 'Api\ShiftController@status');
+        Route::apiResource('shifts', 'Api\ShiftController');
     }
 );

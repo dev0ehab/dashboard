@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Modules\Deliveries\Entities\Shift;
+use Modules\Deliveries\Entities\Zone;
 
 return new class extends Migration
 {
@@ -15,6 +17,9 @@ return new class extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->bigIncrements('id');
+
+            $table->foreignIdFor(Zone::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Shift::class)->constrained()->cascadeOnDelete();
 
             $table->string('f_name')->nullable();
             $table->string('l_name')->nullable();

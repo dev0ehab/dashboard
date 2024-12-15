@@ -26,7 +26,15 @@ class Delivery extends AuthModel
         'phone_verified_at',
         'device_token',
         'password',
+        'zone_id',
+        'shift_id',
     ];
+
+    protected $with = [
+        "zone",
+        "shift",
+    ];
+
     /**
      * Get the resource representation of the Delivery model.
      *
