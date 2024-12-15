@@ -10,7 +10,7 @@ git pull origin main --rebase
 
 php artisan migrate
 
-# php artisan migrate:fresh --seed
+php artisan migrate:fresh --seed
 
 # update PHP dependencies
 #composer install --no-interaction --prefer-dist
