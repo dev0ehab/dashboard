@@ -2,6 +2,7 @@
 
 namespace Modules\Accounts\Http\Controllers\Api;
 
+use App\Traits\CacheTrait;
 use Modules\Accounts\Events\VerificationEvent;
 use Modules\Accounts\Http\Requests\BaseVerificationRequest;
 use Modules\Accounts\Http\Requests\BaseVerifyRequest;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 
 class BaseChangeAuthenticable extends BaseController
 {
+    use CacheTrait;
     protected $sendRequest = BaseVerifyRequest::class;
     protected $verifyRequest = BaseVerificationRequest::class;
 
@@ -41,10 +43,8 @@ class BaseChangeAuthenticable extends BaseController
 
         event(new VerificationEvent($verification));
 
-        $data['code'] = $code;
 
-
-        return $this->sendResponse($data, trans("$this->module_name::auth.messages.change-authenticable.sent-$auth_type"));
+        return $this->sendSuccess(trans("$this->module_name::auth.messages.change-authenticable.sent-$auth_type"));
     }
 
     /**
