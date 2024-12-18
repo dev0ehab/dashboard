@@ -3,6 +3,7 @@
 namespace Modules\Admins\Http\Requests;
 
 use Modules\Accounts\Http\Requests\BaseAuthModelRequest;
+use Modules\Admins\Entities\Admin;
 
 class AdminRequest extends BaseAuthModelRequest
 {
@@ -40,10 +41,12 @@ class AdminRequest extends BaseAuthModelRequest
      */
     protected function updateRules(): array
     {
+        $admin = Admin::findOrFail($this->route('admin'));
+
         return array_merge(parent::updateRules(), [
-            'role_id' => ['sometimes', 'exists:roles,id'],
-            'branch_id' => ['sometimes', 'exists:branches,id'],
-            'permitted_branches' => ['sometimes', 'exists:branches,id'],
+            'role_id' => [$admin->roles()->exists() ? 'sometimes' : 'required', 'exists:roles,id'],
+            'branch_id' => [$admin->branch_id ? 'sometimes' : 'required', 'exists:branches,id'],
+            'permitted_branches' => [$admin->permittedBranches()->exists() ? 'sometimes' : 'required', 'exists:branches,id'],
         ]);
     }
 }

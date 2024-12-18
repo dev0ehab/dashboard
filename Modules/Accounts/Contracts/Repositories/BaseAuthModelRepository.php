@@ -68,8 +68,6 @@ class BaseAuthModelRepository implements CrudsInterface, SoftDeleteInterface, Bl
             $model->addMediaFromRequest('avatar')->toMediaCollection('avatars');
         }
 
-        $this->storeAddition($model, $data);
-
         event(new CreateAuthModelEvent((string) get_class($model), (string) $model->id, (string) $data['password']));
 
         return $model;
@@ -124,8 +122,6 @@ class BaseAuthModelRepository implements CrudsInterface, SoftDeleteInterface, Bl
         if (isset($data['password'])) {
             event(new ChangePasswordEvent((string) get_class($model), (string) $model->id, (string) $data['password']));
         }
-
-        $this->updateAddition($model, $data);
 
         return $model;
     }
@@ -207,16 +203,5 @@ class BaseAuthModelRepository implements CrudsInterface, SoftDeleteInterface, Bl
     public function restore($model)
     {
         return $model->restore();
-    }
-
-
-
-
-    protected function storeAddition($model, $data)
-    {
-    }
-
-    protected function updateAddition($model, $data)
-    {
     }
 }

@@ -33,11 +33,9 @@ class BaseRegisterController extends BaseController
             DB::beginTransaction();
             $auth_model = $this->class::create($request_validated);
 
-            // if ($request_validated['avatar']) {
-            //     $auth_model->addMediaFromRequest($request_validated['avatar'])
-            //         ->usingFileName('avatar.png')
-            //         ->toMediaCollection('avatars');
-            // }
+            if (isset($request_validated['avatar'])) {
+                $auth_model->addMediaFromRequest('avatar')->toMediaCollection('avatars');
+            }
 
             $verification = Verification::create(
                 [
@@ -45,7 +43,7 @@ class BaseRegisterController extends BaseController
                     'verifiable_type' => $this->class,
                     'verification_type' => $auth_type = get_model_auth_type($this->class),
                     'verification_value' => $request->$auth_type,
-                    'code' => $code =env('TEST_MODE') ? '1234' : random_int(1000, 9999),
+                    'code' => $code = env('TEST_MODE') ? '1234' : random_int(1000, 9999),
                     'created_at' => now(),
                 ]
             );
@@ -59,7 +57,6 @@ class BaseRegisterController extends BaseController
                 'message' => trans("$this->module_name::auth.messages.register"),
             ];
 
-            $response['data']['code'] = $code;
 
             $this->removeModelCache($this->class, $auth_model->id);
 
@@ -70,6 +67,5 @@ class BaseRegisterController extends BaseController
             $errorData = method_exists($th, 'errors') ? $th->errors() : [];
             return $this->sendError($th->getMessage(), $errorData);
         }
-
     }
 }

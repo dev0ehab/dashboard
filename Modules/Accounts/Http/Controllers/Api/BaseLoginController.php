@@ -26,6 +26,7 @@ class BaseLoginController extends BaseController
         $auth_model_type = $request->auth_type;
 
         $auth_model = $this->class::withTrashed()->where($auth_model_type, $request->username)->first();
+
         if (!$auth_model) {
             return $this->sendError(trans("$this->module_name::auth.validations.failed"));
         }
@@ -34,9 +35,17 @@ class BaseLoginController extends BaseController
             return $this->sendError(trans("$this->module_name::auth.validations.blocked"));
         }
 
-        if (method_exists($auth_model, 'roles') && $auth_model->role->blocked_at) {
-            return $this->sendError(trans("$this->module_name::auth.validations.blocked"));
+        if (method_exists($auth_model, 'roles')) {
+
+            if ($auth_model->role?->blocked_at) {
+                return $this->sendError(trans("$this->module_name::auth.validations.blocked"));
+            }
+
+            if ($auth_model->roles?->isEmpty()) {
+                return $this->sendError(trans("$this->module_name::auth.validations.dont_have_role"));
+            }
         }
+
 
         if ($auth_model->deleted_at) {
             return $this->sendError(trans("$this->module_name::auth.validations.deleted"));

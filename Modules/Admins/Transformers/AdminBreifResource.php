@@ -18,16 +18,16 @@ class AdminBreifResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'f_name' => $this->f_name,
-            'l_name' => $this->l_name,
+            'name' => (string) $this->name,
+            'f_name' => (string) $this->f_name,
+            'l_name' => (string) $this->l_name,
             'email' => (string) $this->email,
             'phone' => (string) $this->phone,
             'avatar' => $this->avatar,
             // 'preferred_locale' => $this->preferred_locale,
             // 'device_token' => $this->device_token,
-            'role' => $this->role->name,
-            'branch' => $this->branch->name,
+            'role' => (string) $this->role?->name,
+            'branch' => (string) $this->branch->name,
             'created_at' => $this->created_at,
         ];
     }

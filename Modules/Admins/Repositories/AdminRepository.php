@@ -12,13 +12,23 @@ class AdminRepository extends BaseAuthModelRepository
     protected $filter = AdminFilter::class;
 
 
-    protected function storeAddition($model, $data)
+    public function store($data)
     {
+        $model = parent::store($data);
+
         $model->permittedBranches()->sync($data['permitted_branches']);
+
+        return $model;
     }
 
-    protected function updateAddition($model, $data)
+    public function update($model, $data)
     {
-        $model->permittedBranches()->sync($data['permitted_branches']);
+        parent::update($model, $data);
+
+        if (isset($data['permitted_branches'])) {
+            $model->permittedBranches()->sync($data['permitted_branches']);
+        }
+
+        return $model->refresh();
     }
 }
