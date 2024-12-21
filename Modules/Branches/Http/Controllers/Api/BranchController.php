@@ -14,7 +14,8 @@ use Modules\Branches\Transformers\BranchResource;
 
 class BranchController extends BaseModelController
 {
-    use StatusTrait , MiddlewareTrait;
+    use StatusTrait;
+
     protected $class = Branch::class;
     protected $form_request = BranchRequest::class;
     protected $module_name = 'branches';
