@@ -3,6 +3,7 @@
 namespace Modules\Branches\Http\Controllers\Api;
 
 use App\Traits\CrudTraits\StatusTrait;
+use App\Traits\MiddlewareTrait;
 use DB;
 use Modules\Accounts\Http\Controllers\Api\BaseModelController;
 use Modules\Branches\Entities\Branch;
@@ -13,7 +14,7 @@ use Modules\Branches\Transformers\BranchResource;
 
 class BranchController extends BaseModelController
 {
-    use StatusTrait;
+    use StatusTrait , MiddlewareTrait;
     protected $class = Branch::class;
     protected $form_request = BranchRequest::class;
     protected $module_name = 'branches';
@@ -22,6 +23,12 @@ class BranchController extends BaseModelController
     protected $repository = BranchRepository::class;
     protected $resource = BranchResource::class;
     protected $brief_resource = BranchBreifResource::class;
+
+
+    protected $un_active_middlewares = [
+        'index',
+        'show',
+    ];
 
     /**
      * Determine if the specified model can be deleted.
