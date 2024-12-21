@@ -47,7 +47,7 @@ class BaseAuthModelRequest extends FormRequest
             'email' => ['required', 'email', "unique:$this->table,email"],
             'dial_code' => ['required', "max:4", "starts_with:+"],
             'password' => ['required', Password::min(8)->letters()->mixedCase()->numbers()->symbols(), 'confirmed'],
-            'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
+            'avatar' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10000'],
         ];
     }
 
